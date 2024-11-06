@@ -8,10 +8,11 @@ import Package from "../../assets/money.png";
 import course from "../../assets/course.png";
 import gc from "../../assets/book.png";
 import subscripe from "../../assets/subscription.png"
-import user from "../../assets/users.png"
-import team from "../../assets/group .png"
+import user from "../../assets/user.png"
+import team from "../../assets/team.png"
+import help from "../../assets/services.png"
 import report from "../../assets/report.png"
-import setting from "../../assets/settings .png"
+import setting from "../../assets/settings.png"
 const Layout = () => {
   const location = useLocation();
   const Menus = [
@@ -22,7 +23,7 @@ const Layout = () => {
      { title: "Subscriptions", icon:subscripe, to: "#" }, 
      { title: "Users", icon:user, to: "#" },
      { title: "Team", icon:team, to: "#" },
-     { title: "Help & Support", icon:course, to: "#" },
+     { title: "Help & Support", icon:help, to: "#" },
      { title: "Reports", icon:report, to: "#" },
      { title: "Settings", icon:setting, to: "#" },
      

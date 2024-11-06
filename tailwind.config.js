@@ -17,8 +17,8 @@ export default {
         // 'paginate-bg' : '#F3F3F3',
       },
       backgroundImage:{
-        'background':"url('./assets/images/background.png')",
-        'dark-blue':"url(./assets/images/loginback.png)"
+        'background':"url('./assets/background.png')",
+        'dark-blue':"url(./assets/loginback.png)"
       },
     },
   },
