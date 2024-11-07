@@ -14,8 +14,8 @@ const App = () => {
     <>
     <BrowserRouter>
       <Routes>
-         <Route path='' element={<Login/>}/>
-         <Route path='/forgot_password' element={<ForgotPassword/>}/> 
+         {/* <Route path='' element={<Login/>}/>
+         <Route path='/forgot_password' element={<ForgotPassword/>}/>  */}
          <Route path="/" element={<Layout />}>
         <Route path='/dashboard'element={<Dashboard/>}/>
         <Route path='/packages'element={<Package/>}/> 
