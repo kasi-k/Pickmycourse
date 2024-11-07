@@ -9,9 +9,9 @@ const ForgotPassword = () => {
 
   return (
     <>
-    <div className=" font-poppins flex justify-center h-screen items-center bg-background bg-center   ">
-    <div className="relative w-1/4 h-fit bg-dark-blue shadow-lg border-x-2 border-violet-950" >
-        <img src={frame} alt="Image" className='absolute opacity-10 z-0' />
+    <div className=" font-poppins flex justify-center h-screen items-center bg-[#300080]   ">
+    <div className="relative w-96 mx-1 bg-[#200098]  shadow-lg border-x-2 border-violet-950" >
+        <img src={frame} alt="Image" className='absolute opacity-20 z-0' />
         <img src={PMCLogo} alt="Image" className='mx-2 my-2' />
         <p className='text-white text-center'>Forgot Password</p>
     <form>
@@ -21,11 +21,11 @@ const ForgotPassword = () => {
         <input type="email" placeholder='Enter Email'required className='py-1.5 z-10  rounded-md text-center text-black'/>
         
         <div className='flex justify-center  my-24'>
-        <button className=' text-white bg-gradient-to-r from-blue-900 to-fuchsia-600 w-1/2 py-2 '>Continue</button>
+        <button className=' text-white bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-1/2 py-2 '>Continue</button>
         </div>
         </div>
     </form>
-    <p className='flex mx-3 text-white justify-evenly items-center text-sm my-1'><FaRegCopyright />PickMyCourse Developed with<IoHeart  className='text-red-600' />by SeenIT Pty Ltd</p>
+    <p className="text-sm mt-10 text-center text-white font-extralight">&#169; PickMyCourse Developed with <span className="text-red-500">&#x2764;</span> by SeenIT Pty Ltd</p>
     </div>
     
     </div>
