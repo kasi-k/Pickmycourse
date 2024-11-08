@@ -7,6 +7,7 @@ import ForgotPassword from './pages/login/ForgotPassword';
 import Package from './pages/Packages/Package';
 import Dashboard from './pages/dashboard/Dashboard';
 import AddPackage from './pages/Packages/AddPackage';
+import AdduserPackage from './pages/Packages/AdduserPackage';
 
 
 const App = () => {
@@ -20,6 +21,7 @@ const App = () => {
         <Route path='/dashboard'element={<Dashboard/>}/>
         <Route path='/packages'element={<Package/>}/> 
         <Route path='/add_package'element={<AddPackage/>}/>
+        <Route path='/add_userPackage'element={<AdduserPackage/>}/>
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

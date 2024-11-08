@@ -1,10 +1,13 @@
 import React from 'react'
+import { useForm} from 'Form'
+import { basicSchema } from '../../Schemas';
 
 const AddPackage = () => {
+  
   return (
     <>
     <div className='font-extralight'>
-        <p className='my-2 mx-2 mt-4 '>Add a new package</p>
+        <p className='mb-2 mx-2 mt-4 '>Add a new package</p>
         <hr />
     <form className='mx-4 my-6 '>
         <div className='grid gap-2.5 '>
@@ -15,14 +18,14 @@ const AddPackage = () => {
         <label className='col-span-12'>No of Courses per month <span className=' text-red-600'>*</span></label>
         <input type="number"placeholder='00' className='col-span-2 text-black rounded-md py-1.5 px-2'required  />
         <label className='col-span-12'>Tax <span className=' text-red-600'>*</span></label>
-        <select defaultValue="select" className='col-span-2 text-black rounded-md py-1.5 px-2 '>
+        <select defaultValue="select" className='col-span-2 text-black rounded-md py-1.5 px-2  '>
             <option value="select" disabled>Select Tax</option>
             <option value="1">1</option>
             <option value="2">2</option>
         </select>
         <label className='col-span-12'>No of Subtopic <span className=' text-red-600'>*</span></label>
         <span className='col-span-12'>
-        <input type="checkbox" />
+        <input type="radio" className='' />
         <label className=''>05</label> 
         </span>
         <span>

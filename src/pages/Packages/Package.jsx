@@ -4,7 +4,6 @@ import { FiShare2 } from "react-icons/fi";
 import { FiCopy } from "react-icons/fi";
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBinLine } from "react-icons/ri";
-import AddPackage from './AddPackage';
 import { useNavigate } from 'react-router-dom';
 
 const Package = () => {
@@ -13,12 +12,15 @@ const Package = () => {
     const handlePackage = ()=>{
         navigate ('/add_package');
     }
+    const handleUserPackage = ()=>{
+        navigate('/add_userPackage')
+    }
   return (
     <>
     <div className='h-full overflow-auto no-scrollbar'>
     <div className=' font-poppins flex justify-end   mx-4 gap-4 my-3 '>
-        <button onClick={ handlePackage } className='text-black bg-white px-4 py-1'>Add package</button>
-        <button className=' bg-gradient-to-r from-blue-900 to-fuchsia-600 px-4 py-1'>Add user to package</button>
+        <button onClick={ handlePackage } className='  text-blue-950  bg-white px-4 py-1'>Add package</button>
+        <button onClick={handleUserPackage} className=' bg-gradient-to-r from-blue-900 to-fuchsia-600 px-4 py-1'>Add user to package</button>
     </div>
     <hr />
     <div className=' grid  gap-4 my-6 mx-6 lg:grid-cols-12 md:grid-cols-10   '>
