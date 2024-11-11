@@ -8,6 +8,7 @@ import Package from './pages/Packages/Package';
 import Dashboard from './pages/dashboard/Dashboard';
 import AddPackage from './pages/Packages/AddPackage';
 import AdduserPackage from './pages/Packages/AdduserPackage';
+import Courses from './pages/courses/Courses';
 
 
 const App = () => {
@@ -22,6 +23,7 @@ const App = () => {
         <Route path='/packages'element={<Package/>}/> 
         <Route path='/add_package'element={<AddPackage/>}/>
         <Route path='/add_userPackage'element={<AdduserPackage/>}/>
+        <Route path='/courses' element={<Courses/>}/>
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

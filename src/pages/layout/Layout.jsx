@@ -18,7 +18,7 @@ const Layout = () => {
   const Menus = [
     { title: "Dashboard", icon: dashboard, to: "/dashboard" },
      { title: "Packages", icon: Package, to: "/packages"},
-     { title: "Courses", icon:course, to: "#" },
+     { title: "Courses", icon:course, to: "/courses" },
      { title: "Generate course", icon:gc, to: "#" },
      { title: "Subscriptions", icon:subscripe, to: "#" }, 
      { title: "Users", icon:user, to: "#" },
