@@ -7,7 +7,7 @@ import dashboard from "../../assets/dashboard.png";
 import Package from "../../assets/money.png";
 import course from "../../assets/course.png";
 import gc from "../../assets/book.png";
-import subscripe from "../../assets/subscription.png"
+import subscribe from "../../assets/subscription.png"
 import user from "../../assets/user.png"
 import team from "../../assets/team.png"
 import help from "../../assets/services.png"
@@ -19,9 +19,9 @@ const Layout = () => {
     { title: "Dashboard", icon: dashboard, to: "/dashboard" },
      { title: "Packages", icon: Package, to: "/packages"},
      { title: "Courses", icon:course, to: "/courses" },
-     { title: "Generate course", icon:gc, to: "#" },
-     { title: "Subscriptions", icon:subscripe, to: "#" }, 
-     { title: "Users", icon:user, to: "#" },
+     { title: "Generate course", icon:gc, to: "/generate course" },
+     { title: "Subscriptions", icon:subscribe, to: "/subscription" }, 
+     { title: "Users", icon:user, to: "/users" },
      { title: "Team", icon:team, to: "#" },
      { title: "Help & Support", icon:help, to: "#" },
      { title: "Reports", icon:report, to: "#" },
@@ -75,7 +75,7 @@ const Layout = () => {
           </div>
         </div>
         <div className="lg:w-10/12 md:w-full w-full bg-gradient-to-b from-[#110038] via-[#150243] to-[#300080] text-white">
-        <p className=" absolute bottom-2 right-4 text-sm text-white font-extralight">&#169; PickMyCourse Developed with <span className="text-red-500">&#x2764;</span> by SeenIT Pty Ltd</p>
+        <p className=" absolute bottom-2 right-4 text-sm text-white font-extralight ">&#169; PickMyCourse Developed with <span className="text-red-500">&#x2764;</span> by SeenIT Pty Ltd</p>
           <Suspense fallback={<Loading />}>
             <Outlet />
           </Suspense>

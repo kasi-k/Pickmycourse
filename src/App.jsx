@@ -9,6 +9,9 @@ import Dashboard from './pages/dashboard/Dashboard';
 import AddPackage from './pages/Packages/AddPackage';
 import AdduserPackage from './pages/Packages/AdduserPackage';
 import Courses from './pages/courses/Courses';
+import GenerateCourse from './pages/generate courses/GenerateCourse';
+import Subscription from './pages/subscription/Subscription';
+import User from './pages/users/User';
 
 
 const App = () => {
@@ -24,6 +27,9 @@ const App = () => {
         <Route path='/add_package'element={<AddPackage/>}/>
         <Route path='/add_userPackage'element={<AdduserPackage/>}/>
         <Route path='/courses' element={<Courses/>}/>
+        <Route path='/generate course' element={<GenerateCourse/>}/>
+        <Route path='/subscription' element={<Subscription/>}/>
+        <Route path='/users' element={<User/>}/>
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
