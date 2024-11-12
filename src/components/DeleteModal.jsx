@@ -1,5 +1,6 @@
-import {React} from 'react'
+import {React, useState} from 'react'
 import { IoClose } from "react-icons/io5";
+import Courses from '../pages/courses/Courses';
 
 const DeleteModal = ({onClose,Children}) => {
   return (
@@ -8,7 +9,7 @@ const DeleteModal = ({onClose,Children}) => {
         <div className='mx-2 bg-gradient-to-b from-[#110038] to-[#08006B] lg:w-2/5 md:w-2/4   h-96  '>
     <button onClick={onClose}  className='grid place-self-end'><IoClose className='size-[24px]' /></button>
     <div className='grid justify-center gap-6'>
-        <p className='text-center my-6'>Delete Course</p>
+        <p className='text-center my-6'>Delete course</p>
         <p className='h-40 '>Are you sure you want to delete this course</p>
         </div>
     <div className='flex justify-around'>

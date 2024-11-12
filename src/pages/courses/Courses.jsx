@@ -7,25 +7,25 @@ import Delete from "../../assets/delete.png"
 import DeleteModal from "../../components/DeleteModal";
 
 const Courses = () => {
-   const[del,setDel]=useState(false)
-   const handleDelete=()=>{
-    setDel(true)
+   const[isDeleteModal,setIsDeleteModal,]=useState(false)
+   const handleDeleteModal=()=>{
+    setIsDeleteModal(true)
    }
   return (
     <>
-      <div className="my-4 font-extralight">
-        <div className="flex justify-between items-center my-3">
+      <div className=" font-extralight">
+        <div className="flex justify-between items-center my-2">
           <p className=" mx-2 mt-6">Courses</p>
-          <div className=" mx-2 flex gap-6">
+          <div className=" mx-2 flex gap-6 mt-4">
             <button>
-              <img className="lg:size-12 md:size-10 size-8" src={Pdf} alt="Pdf image" />
+              <img className="size-8" src={Pdf} alt="Pdf image" />
             </button>
             <button>
               {" "}
-              <img className="lg:size-12 md:size-10 size-8" src={Csv} alt="csv image" />
+              <img className="size-8" src={Csv} alt="csv image" />
             </button>
             <button>
-              <img className="lg:size-12 md:size-10 size-8" src={Excel} alt="excel image" />
+              <img className="size-8 " src={Excel} alt="excel image" />
             </button>
           </div>
         </div>
@@ -76,7 +76,7 @@ const Courses = () => {
                   <p className=" cursor-pointer p-2  text-green-600 ">
                     <FaEye size={24} />
                   </p>
-                  <p onClick={handleDelete} className="cursor-pointer size-6">
+                  <p onClick={handleDeleteModal} className="cursor-pointer size-6">
                    <img src={Delete} alt="delete image" />
                   </p>
                 </td>
@@ -85,7 +85,7 @@ const Courses = () => {
           </table>
         </div>
       </div>
-     {del&&<DeleteModal onClose={()=>setDel(false)}/>} 
+     {isDeleteModal&&<DeleteModal onClose={()=>setIsDeleteModal(false)}/>} 
     </>
   );
 };

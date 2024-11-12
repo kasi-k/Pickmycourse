@@ -75,24 +75,24 @@ const AddPackage = () => {
             <label className="col-span-12">
               No of Subtopic <span className=" text-red-600">*</span>
             </label>
-            <span className="col-span-12">
-              <input type="radio" className="" />
-              <label className="">05</label>
+            <span className="col-span-12 ">
+              <span className="border-4 "><input type="radio" name="subtopic"  className="opacity-5"/> </span>
+              <label>05</label>
             </span>
-            <span>
-              <input type="checkbox" />
-              <label htmlFor="">10</label>
+            <span >
+             <span className="border-4 "><input type="radio"  name="subtopic" className="opacity-5"  /></span>
+              <label>10</label>
             </span>
             <label className="col-span-12">
               Course Type <span className=" text-red-600">*</span>
             </label>
             <span className="col-span-12">
               <input type="checkbox" />
-              <label className="">Theory & Image Course</label>
+              <label>Theory & Image Course</label>
             </span>
             <span>
-              <input type="checkbox" />
-              <label htmlFor="">Theory & Video Course</label>
+              <input type="checkbox"  />
+              <label>Theory & Video Course</label>
             </span>
           </div>
           <button

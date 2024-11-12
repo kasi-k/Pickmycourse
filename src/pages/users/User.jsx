@@ -5,27 +5,33 @@ import Excel from "../../assets/excel.png";
 import Edit from "../../assets/pencil.png";
 import DeleteModal from '../../components/DeleteModal';
 import Delete from "../../assets/delete.png"
-const User = ({onClose}) => {
-    const[del,setDel]=useState(false)
+
+const User = () => {
+  const[isDeleteModal,setIsDeleteModal,]=useState(false)
+  const handleDeleteModal=()=>{
+   setIsDeleteModal(true)
+  }
    
   return (
     <>
-    <div className="my-4 font-extralight">
-    <div className="flex justify-between items-center my-3">
+    <div className="font-extralight">
+    <div className="flex justify-between items-center my-2 ">
       <p className=" mx-2 mt-6">User</p>
-      <div className="flex items-center mx-2 space-x-3 ">
+      <div className="flex items-center gap-3 mt-4">
         <button>
-          <img className="lg:size-12 md:size-10 size-8" src={Pdf} alt="Pdf image" />
+          <img className=" size-8" src={Pdf} alt="Pdf image" />
         </button>
         <button>
           {" "}
-          <img className="lg:size-12 md:size-10 size-8" src={Csv} alt="csv image" />
+          <img className=" size-8" src={Csv} alt="csv image" />
         </button>
         <button>
-          <img className="lg:size-12 md:size-10 size-8" src={Excel} alt="excel image" />
+          <img className=" size-8" src={Excel} alt="excel image" />
         </button>
-        <button className='bg-white text-nowrap text-black lg:px-4 md:px-4 px-1  lg:py-1.5 md:py-1.5 py-1'>Bulk Upload</button>
-        <button className='bg-gradient-to-r from-[#3D03FA] to-[#A71CD2]  text-nowrap lg:px-4 md:px-4 px-1 lg:py-1.5 md:py-1.5 py-1'>Add user</button>
+        <div className=' flex mx-3 space-x-6'>
+        <button className='bg-white text-nowrap text-black py-1 lg:px-4 md:px-4 px-1'>Bulk Upload</button>
+        <button className='bg-gradient-to-r from-[#3D03FA] to-[#A71CD2]  text-nowrap py-1 lg:px-4 md:px-4 px-1  '>Add user</button>
+        </div>
       </div>
     </div>
     <div className="mx-1 overflow-auto no-scrollbar ">
@@ -79,7 +85,7 @@ const User = ({onClose}) => {
               <p className=" cursor-pointer p-2  text-green-600 ">
                 <img className='size-8' src={Edit} alt="edit image" />
               </p>
-               <p className="cursor-pointer size-9">
+               <p onClick={handleDeleteModal} className="cursor-pointer size-9">
                    <img src={Delete} alt="delete image" />
                   </p>
             </td> 
@@ -88,6 +94,7 @@ const User = ({onClose}) => {
       </table>
     </div>
   </div>
+  {isDeleteModal&&<DeleteModal onClose={()=>setIsDeleteModal(false)}/>} 
 </>
   )
 }

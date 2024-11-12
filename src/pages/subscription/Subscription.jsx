@@ -7,19 +7,19 @@ import { FaEye } from "react-icons/fa6";
 const Subscription = () => {
   return (
     <>
-    <div className="my-4 font-extralight">
-    <div className="flex justify-between items-center my-3">
+    <div className=" font-extralight">
+    <div className="flex justify-between items-center my-2">
       <p className=" mx-2 mt-6">Subscription</p>
-      <div className=" mx-2 flex gap-6">
+      <div className=" mx-2 flex gap-6 mt-4">
         <button>
-          <img className="lg:size-12 md:size-10 size-8" src={Pdf} alt="Pdf image" />
+          <img className="size-8" src={Pdf} alt="Pdf image" />
         </button>
         <button>
           {" "}
-          <img className="lg:size-12 md:size-10 size-8" src={Csv} alt="csv image" />
+          <img className="size-8" src={Csv} alt="csv image" />
         </button>
         <button>
-          <img className="lg:size-12 md:size-10 size-8" src={Excel} alt="excel image" />
+          <img className=" size-8" src={Excel} alt="excel image" />
         </button>
       </div>
     </div>
