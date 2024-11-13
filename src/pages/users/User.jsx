@@ -5,13 +5,20 @@ import Excel from "../../assets/excel.png";
 import Edit from "../../assets/pencil.png";
 import DeleteModal from '../../components/DeleteModal';
 import Delete from "../../assets/delete.png"
+import { useNavigate } from 'react-router-dom';
 
 const User = () => {
   const[isDeleteModal,setIsDeleteModal,]=useState(false)
   const handleDeleteModal=()=>{
    setIsDeleteModal(true)
   }
-   
+  const handleCloseModal=()=>{
+    setIsDeleteModal(false)
+  }
+   const navigate=useNavigate()
+   const handleEditModal=()=>{
+    navigate('/edit_user')
+   }
   return (
     <>
     <div className="font-extralight">
@@ -82,7 +89,7 @@ const User = () => {
             <td className="border border-slate-400 ">2</td>
             <td className="border border-slate-400 ">22-05-1990</td>
             <td className="flex justify-evenly items-center my-1 w-72  ">
-              <p className=" cursor-pointer p-2  text-green-600 ">
+              <p onClick={handleEditModal} className=" cursor-pointer p-2  text-green-600 ">
                 <img className='size-8' src={Edit} alt="edit image" />
               </p>
                <p onClick={handleDeleteModal} className="cursor-pointer size-9">
@@ -94,7 +101,7 @@ const User = () => {
       </table>
     </div>
   </div>
-  {isDeleteModal&&<DeleteModal onClose={()=>setIsDeleteModal(false)}/>} 
+  {isDeleteModal&&<DeleteModal onClose={handleCloseModal} title="user"/>} 
 </>
   )
 }

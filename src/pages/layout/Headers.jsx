@@ -13,7 +13,7 @@ const Headers = ({ Menus }) => {
   };
 
   return (
-    <div className='flex justify-between items-center px-3 bg-gradient-to-r from-[#110038] to-[#08006B] fixed w-full'>
+    <div className='flex justify-between items-center px-3 bg-gradient-to-r from-[#110038] to-[#08006B] fixed w-full '>
       <img src={PMCLogo} alt="PickMyCourse" className='w-42 h-14' />
       
       <p className='text-2xl text-white md:block lg:hidden block' onClick={toggleDropdown}>

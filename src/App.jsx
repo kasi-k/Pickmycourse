@@ -12,6 +12,10 @@ import Courses from './pages/courses/Courses';
 import GenerateCourse from './pages/generate courses/GenerateCourse';
 import Subscription from './pages/subscription/Subscription';
 import User from './pages/users/User';
+import EditUser from './pages/users/EditUser';
+import Team from './pages/team/Team';
+import EditTeam from './pages/team/EditTeam';
+import AddTeam from './pages/team/AddTeam';
 
 
 const App = () => {
@@ -30,6 +34,10 @@ const App = () => {
         <Route path='/generate course' element={<GenerateCourse/>}/>
         <Route path='/subscription' element={<Subscription/>}/>
         <Route path='/users' element={<User/>}/>
+        <Route path='/edit_user' element={<EditUser/>}/>
+        <Route path='/team' element={<Team/>}/>
+        <Route path='/edit_team' element={<EditTeam/>}/>
+        <Route path='/add_team' element={<AddTeam/>}/>
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

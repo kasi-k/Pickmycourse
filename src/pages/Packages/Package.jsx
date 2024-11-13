@@ -17,13 +17,12 @@ const Package = () => {
     }
   return (
     <>
-    <div className='h-full overflow-auto no-scrollbar'>
-    <div className=' font-poppins flex justify-end   mx-4 gap-4 my-3 '>
+    <div className=' font-poppins flex justify-end mx-4 gap-4 my-3 '>
         <button onClick={ handlePackage } className='  text-blue-950  bg-white px-4 py-1'>Add package</button>
         <button onClick={handleUserPackage} className=' bg-gradient-to-r from-blue-900 to-fuchsia-600 px-4 py-1'>Add user to package</button>
     </div>
     <hr />
-    <div className=' grid  gap-4 my-6 mx-6 lg:grid-cols-12 md:grid-cols-10   '>
+    <div className=' grid  gap-4 my-6 mx-6 lg:grid-cols-12 md:grid-cols-10  '>
      <div className='col-span-3 bg-slate-900  '>
         <div className=' grid  justify-center  '>
              <p className=' text-center my-4'>Free</p>
@@ -35,7 +34,7 @@ const Package = () => {
                <p> AI Teacher</p>
                <p> Theory & Image course</p>
                </div>
-                <p className='  float-end bg-white py-1  mx-1 mt-6 '>
+                <p className=' float-end bg-white py-1  mx-1 mt-6 '>
                     <button className='  bg-slate-500 py-1 px-1 mx-2 rounded-sm'><FiShare2  /></button>
                     <button  className=' bg-slate-500 py-1 px-1 mx-2 rounded-sm'><FiCopy  /></button>
                     <button  className='bg-indigo-400 py-1 px-1 mx-2 rounded-sm'><FiEdit  /></button>
@@ -74,14 +73,13 @@ const Package = () => {
              <p>Theory & Image Course</p>
              <p>Theory & Video Course</p>
              </div>
-                <div className='float-end bg-white py-1 mx-1 '>
-                    <button className='  bg-slate-500 py-1 px-1 mx-2 rounded-sm'><FiShare2  /></button>
+                <div className='  bg-white py-1  float-end '>
+                    <button className='  bg-slate-500 py-1 px-1 mx-1 rounded-sm'><FiShare2  /></button>
                     <button  className=' bg-slate-500 py-1 px-1 mx-2 rounded-sm'><FiCopy  /></button>
                     <button  className='bg-indigo-400 py-1 px-1 mx-2 rounded-sm'><FiEdit  /></button>
                     <button  className='bg-red-400 py-1 px-1 mx-2 rounded-sm'><RiDeleteBinLine /></button>
                 </div>
         </div>
-       </div>
        </div>
     </>
   )

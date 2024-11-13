@@ -11,6 +11,9 @@ const Courses = () => {
    const handleDeleteModal=()=>{
     setIsDeleteModal(true)
    }
+   const handleCloseModal=()=>{
+    setIsDeleteModal(false)
+  }
   return (
     <>
       <div className=" font-extralight">
@@ -85,7 +88,7 @@ const Courses = () => {
           </table>
         </div>
       </div>
-     {isDeleteModal&&<DeleteModal onClose={()=>setIsDeleteModal(false)}/>} 
+     {isDeleteModal&&<DeleteModal onClose={handleCloseModal} title="course"/>} 
     </>
   );
 };

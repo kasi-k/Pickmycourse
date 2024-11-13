@@ -22,7 +22,7 @@ const Layout = () => {
      { title: "Generate course", icon:gc, to: "/generate course" },
      { title: "Subscriptions", icon:subscribe, to: "/subscription" }, 
      { title: "Users", icon:user, to: "/users" },
-     { title: "Team", icon:team, to: "#" },
+     { title: "Team", icon:team, to: "/team" },
      { title: "Help & Support", icon:help, to: "#" },
      { title: "Reports", icon:report, to: "#" },
      { title: "Settings", icon:setting, to: "#" },
@@ -32,8 +32,8 @@ const Layout = () => {
   return (
     <div className="">
       <Headers Menus={Menus} />
-      <div className="flex w-full  h-screen pt-14 font-poppins ">
-        <div className="w-2/12  bg-[#200098] text-white lg:block md:hidden hidden overflow-auto no-scrollbar">
+      <div className="flex w-full h-screen pt-14 font-poppins ">
+        <div className="w-2/12   bg-[#200098] text-white lg:block md:hidden hidden overflow-auto no-scrollbar">
           <div className="flex gap-2 items-center pt-3 flex-wrap justify-center ">
             <img src={profile} alt="User" className="w-14 h-14 " />
             <div>
@@ -74,8 +74,8 @@ const Layout = () => {
             </ul>
           </div>
         </div>
-        <div className="lg:w-10/12 md:w-full w-full bg-gradient-to-b from-[#110038] via-[#150243] to-[#300080] text-white">
-        <p className=" absolute bottom-2 right-4 text-sm text-white font-extralight ">&#169; PickMyCourse Developed with <span className="text-red-500">&#x2764;</span> by SeenIT Pty Ltd</p>
+        <div className="lg:w-10/12 md:w-full w-full bg-gradient-to-b from-[#110038] via-[#150243] to-[#300080] text-white  overflow-auto no-scrollbar">
+        <p className=" absolute bottom-2 right-4 text-sm text-white font-extralight  ">&#169; PickMyCourse Developed with <span className="text-red-500">&#x2764;</span> by SeenIT Pty Ltd</p>
           <Suspense fallback={<Loading />}>
             <Outlet />
           </Suspense>
