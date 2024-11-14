@@ -23,7 +23,7 @@ const Layout = () => {
      { title: "Subscriptions", icon:subscribe, to: "/subscription" }, 
      { title: "Users", icon:user, to: "/users" },
      { title: "Team", icon:team, to: "/team" },
-     { title: "Help & Support", icon:help, to: "#" },
+     { title: "Help & Support", icon:help, to: "/help_support" },
      { title: "Reports", icon:report, to: "#" },
      { title: "Settings", icon:setting, to: "#" },
      

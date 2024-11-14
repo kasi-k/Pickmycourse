@@ -16,6 +16,7 @@ import EditUser from './pages/users/EditUser';
 import Team from './pages/team/Team';
 import EditTeam from './pages/team/EditTeam';
 import AddTeam from './pages/team/AddTeam';
+import Tickets from './pages/Help and Support/Tickets';
 
 
 const App = () => {
@@ -38,6 +39,7 @@ const App = () => {
         <Route path='/team' element={<Team/>}/>
         <Route path='/edit_team' element={<EditTeam/>}/>
         <Route path='/add_team' element={<AddTeam/>}/>
+        <Route path='/help_support' element={<Tickets/>}/>
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
