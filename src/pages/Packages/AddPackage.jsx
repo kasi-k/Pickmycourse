@@ -1,5 +1,7 @@
 import { useState } from "react";
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { FaCaretDown } from "react-icons/fa";
 
 const AddPackage = () => {
   const [selectedValue, setSelectedValue] = useState("5");
@@ -11,6 +13,10 @@ const AddPackage = () => {
   const handleRadioChange = (event) => {
     setSelectedValue(event.target.value);
   };
+  const navigate=useNavigate()
+  const redirectPackage=()=>{
+    navigate('/packages')
+  }
   return (
     <>
       <div className="font-extralight ">
@@ -48,16 +54,20 @@ const AddPackage = () => {
             <label className="text-lg col-span-12">
               Tax <span className=" text-red-600">*</span>
             </label>
-            <select
-              defaultValue="select"
-              className="col-span-2 text-black rounded-md py-1.5 px-2  "
-            >
-              <option value="select" disabled>
-                Select Tax
-              </option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-            </select>
+            <div className="relative inline-block col-span-2 ">
+              <select defaultValue="select" className=" w-full text-black px-2 py-1.5 outline-none rounded-md ">
+                <option value="select" disabled>
+                  Select Tax
+                </option>
+                <option value="">Tax1</option>
+                <option value="">Tax2</option>
+                <option value="">Tax3</option>
+              </select>
+              <div className="absolute inset-y-0 right-0 flex items-center pr-5 bg-gray-300 px-4 rounded-lg pointer-events-none outline-none">
+                <FaCaretDown className="text-black text-2xl" />
+              </div>
+            </div>
+
             <label className="text-lg col-span-12">
               No of Subtopic <span className=" text-red-600">*</span>
             </label>
@@ -149,7 +159,7 @@ const AddPackage = () => {
             </div>
           </div>
           </div>
-          <button
+          <button onClick={redirectPackage}
             type="submit"
             className="my-6 text-white bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-14 py-2 "
           >

@@ -19,6 +19,9 @@ const User = () => {
    const handleEditModal=()=>{
     navigate('/edit_user')
    }
+   const handleAddUserModal=()=>{
+    navigate('/add_user')
+   }
   return (
     <>
     <div className="font-extralight">
@@ -37,7 +40,7 @@ const User = () => {
         </button>
         <div className=' flex mx-3 space-x-6'>
         <button className='bg-white text-nowrap text-black py-1 lg:px-4 md:px-4 px-1'>Bulk Upload</button>
-        <button className='bg-gradient-to-r from-[#3D03FA] to-[#A71CD2]  text-nowrap py-1 lg:px-4 md:px-4 px-1  '>Add user</button>
+        <button onClick={handleAddUserModal} className='bg-gradient-to-r from-[#3D03FA] to-[#A71CD2]  text-nowrap py-1 lg:px-4 md:px-4 px-1  '>Add user</button>
         </div>
       </div>
     </div>

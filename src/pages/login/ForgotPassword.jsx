@@ -1,11 +1,13 @@
 import React from 'react'
 import PMCLogo from '../../assets/PMC_logo.png';
 import frame from "../../assets/backframe.png"
-import { IoHeart } from "react-icons/io5";
-import { FaRegCopyright } from "react-icons/fa";
-
+import { useNavigate } from 'react-router-dom';
 
 const ForgotPassword = () => {
+  const navigate=useNavigate()
+  const redirectLogin=()=>{
+      navigate('/')
+  }
 
   return (
     <>
@@ -21,7 +23,7 @@ const ForgotPassword = () => {
         <input type="email" placeholder='Enter Email'required className='py-1.5 z-10  rounded-md text-center text-black'/>
         
         <div className='flex justify-center  my-24'>
-        <button className=' text-white bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-1/2 py-2 '>Continue</button>
+        <button onClick={redirectLogin} className=' text-white bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-1/2 py-2 '>Continue</button>
         </div>
         </div>
     </form>

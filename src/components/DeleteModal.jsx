@@ -1,6 +1,5 @@
 import {React, useState} from 'react'
 import { IoClose } from "react-icons/io5";
-import Courses from '../pages/courses/Courses';
 
 const DeleteModal = ({title,onClose,Children}) => {
   return (
@@ -14,7 +13,7 @@ const DeleteModal = ({title,onClose,Children}) => {
         <p className='h-40 '>Are you sure you want to delete this {title}</p>
         </div>
     <div className='flex justify-around'>
-        <button className=' text-white bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-4 py-2 '>Delete Account</button>
+        <button className=' text-white bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-4 py-2 '>Delete {title}</button>
         <button className='text-black bg-white px-10 py-2'>Cancel</button>
         </div>
        

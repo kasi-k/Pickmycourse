@@ -5,6 +5,7 @@ import Excel from "../../assets/excel.png";
 import { FaEye } from "react-icons/fa6";
 import Delete from "../../assets/delete.png"
 import DeleteModal from "../../components/DeleteModal";
+import { useNavigate } from "react-router-dom";
 
 const Courses = () => {
    const[isDeleteModal,setIsDeleteModal,]=useState(false)
@@ -13,6 +14,10 @@ const Courses = () => {
    }
    const handleCloseModal=()=>{
     setIsDeleteModal(false)
+  }
+  const navigate=useNavigate()
+  const handleViewCourse=()=>{
+      navigate('/view_course')
   }
   return (
     <>
@@ -76,7 +81,7 @@ const Courses = () => {
                 <td className="border border-slate-400"> Video & Text</td>
                 <td className="border border-slate-400 text-slate-500 ">22-05-1990</td>
                 <td className="flex items-center justify-evenly my-1 ">
-                  <p className=" cursor-pointer p-2  text-green-600 ">
+                  <p onClick={handleViewCourse} className=" cursor-pointer p-2  text-green-600 ">
                     <FaEye size={24} />
                   </p>
                   <p onClick={handleDeleteModal} className="cursor-pointer size-6">

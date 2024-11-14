@@ -1,10 +1,10 @@
 import React from 'react'
 import Profile from "../../assets/profile.png"
 import { useNavigate } from 'react-router-dom';
-const AddTeam = () => {
+const AddUser = () => {
   const navigate=useNavigate()
-  const redirectTeam=()=>{
-   navigate('/team')
+  const redirectUser=()=>{
+   navigate('/user')
   }
   return (
     <>
@@ -38,20 +38,12 @@ const AddTeam = () => {
                 <label>Date Of Birth</label>
                 <input type="date" className='outline-none text-black rounded-md py-1.5 px-1 my-3'/>
               </div>
-              <div className='grid col-span-3'>
-                <label>Designation<span className='text-red-600 '>*</span></label>
-                <select defaultValue="select" className='outline-none text-black rounded-md py-1.5 px-1 my-3'>
-                  <option value="select" disabled>Select Designation</option>
-                  <option value="support">Support Executive</option>
-                  <option value="executive">Executive</option>
-                </select>
-              </div>
              </div>
-             <button onClick={redirectTeam} className='lg:absolute bottom-10 mx-6   bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-16 py-2'>Save</button>
+             <button onClick={redirectUser} className='lg:absolute bottom-10 mx-6   bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-16 py-2'>Save</button>
            </div>
       
     </>
   )
 }
 
-export default AddTeam
+export default AddUser

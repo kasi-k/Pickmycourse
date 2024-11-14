@@ -24,16 +24,16 @@ const Layout = () => {
      { title: "Users", icon:user, to: "/users" },
      { title: "Team", icon:team, to: "/team" },
      { title: "Help & Support", icon:help, to: "/help_support" },
-     { title: "Reports", icon:report, to: "#" },
-     { title: "Settings", icon:setting, to: "#" },
+     { title: "Reports", icon:report, to: "/report" },
+     { title: "Settings", icon:setting, to: "/setting" },
      
   ];
 
   return (
     <div className="">
       <Headers Menus={Menus} />
-      <div className="flex w-full h-screen pt-14 font-poppins ">
-        <div className="w-2/12   bg-[#200098] text-white lg:block md:hidden hidden overflow-auto no-scrollbar">
+      <div className="flex w-full h-screen pt-14 font-poppins  ">
+        <div className="w-2/12   bg-[#200098] text-white lg:block md:hidden hidden overflow-auto no-scrollbar ">
           <div className="flex gap-2 items-center pt-3 flex-wrap justify-center ">
             <img src={profile} alt="User" className="w-14 h-14 " />
             <div>

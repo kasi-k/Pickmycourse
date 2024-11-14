@@ -1,11 +1,14 @@
 import React from 'react';
 import PMCLogo from '../../assets/PMC_logo.png';
-import { IoHeart } from "react-icons/io5";
-import { FaRegCopyright } from "react-icons/fa";
 import frame from "../../assets/backframe.png"
+import { useNavigate } from 'react-router-dom';
 
 
 const Login = () => {
+  const navigate=useNavigate()
+  const handleLogin=()=>{
+    navigate('/dashboard')
+  }
   return (
     <>
     <div className=" font-poppins flex justify-center h-screen items-center bg-[#300080] ">
@@ -21,7 +24,7 @@ const Login = () => {
         <input type="password" placeholder='Enter Password'required className='py-1.5  z-10 rounded-md text-center text-black' />
         <a href='/forgot_password' className='relative text-end text-white'> forgot Password?</a>
         <div className='flex justify-center  my-24'>
-        <button className=' text-white bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-1/2 py-2 '>Login</button>
+        <button onClick={handleLogin} className=' text-white bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-1/2 py-2 '>Login</button>
         </div>
         </div>
     </form>

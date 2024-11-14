@@ -26,7 +26,7 @@ const Team = () => {
     <>
       <div className="font-extralight">
       <div className="flex justify-between items-center my-2 ">
-        <p className=" mx-2 mt-6">User</p>
+        <p className=" mx-2 mt-6">Team</p>
         <div className="flex items-center gap-3 mt-4">
           <button>
             <img className=" size-8" src={Pdf} alt="Pdf image" />

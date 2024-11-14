@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const GenerateCourse = () => {
   const maxSubtopics = 5;
@@ -33,11 +34,15 @@ const GenerateCourse = () => {
     newFormValues.pop();
     setFormValues(newFormValues);
   };
+  const navigate=useNavigate()
+  const handleViewOwnCourse=()=>{
+    navigate('/view_course')
+  }
 
   return (
     <>
     <div className="flex justify-end mx-1 my-2">
-    <button className=" font-extralight bg-gradient-to-r from-[#3D03FA] to-[#A71CD2]  py-1 px-2">View Own Courses</button>
+    <button onClick={handleViewOwnCourse} className=" font-extralight bg-gradient-to-r from-[#3D03FA] to-[#A71CD2]  py-1 px-2">View Own Courses</button>
     </div>
     <hr />
     <div className="my-5 text-white font-poppins overflow-auto no-scrollbar ">

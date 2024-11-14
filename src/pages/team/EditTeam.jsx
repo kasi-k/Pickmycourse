@@ -1,7 +1,12 @@
 import React from 'react'
 import Profile from "../../assets/profile.png"
+import { useNavigate } from 'react-router-dom';
 
 const EditTeam = () => {
+  const navigate=useNavigate()
+   const redirectTeam=()=>{
+    navigate('/team')
+   }
   return (
     <>
     <div className='font-extralight my-4'>
@@ -65,7 +70,7 @@ const EditTeam = () => {
                 <hr className='lg:w-1/2 md:w-54 w-48 mb-6' />
             </div>
           </div>
-          <button className=' mx-2 bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-16 py-2'>Save</button>
+          <button onClick={redirectTeam} className=' mx-2 bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-16 py-2'>Save</button>
         </div>
     </div>
     </>

@@ -1,7 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Profile from "../../assets/profile.png"
+import UpdatePhone from './UpdatePhone';
+import UpdateEmail from "./UpdateEmail"
 
 const EditUser = () => {
+  const [isModal, setIsModal] = useState(false);
+  const [isPhoneModal, setIsPhoneModal] = useState(false);
+
+  const CloseEmailModal = () =>{
+      setIsModal(!isModal)
+  }
+
+  const ClosePhoneModal =() =>{
+    setIsPhoneModal(!isPhoneModal)
+  }
   return (
     <>
     <div className='font-extralight my-4'>
@@ -46,7 +58,7 @@ const EditUser = () => {
                <input type="email" className='bg-transparent outline-none lg:w-54 md:w-54 w-48'/>
                </div>
                 <hr className='lg:w-54 md:w-54 w-48 mb-6' />
-                <button className='bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-5 py-2'>Update</button>
+                <button onClick={()=>setIsModal(true)} className='bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-5 py-2'>Update</button>
             </div>
             <div>
                 <div className='flex flex-col'>
@@ -54,11 +66,13 @@ const EditUser = () => {
                <input type="tel" name="phone" id="phone" className='bg-transparent  outline-none lg:w-1/2 md:w-54 w-48' />
                </div>
                 <hr className='lg:w-1/2 md:w-54 w-48 mb-6' />
-                <button className='bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-5 py-2 '>Update</button>
+                <button  onClick={()=>setIsPhoneModal(true)} className='bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-5 py-2 '>Update</button>
             </div>
           </div>
         </div>
     </div>
+    {isModal && <UpdateEmail CloseEmailModal={CloseEmailModal}/>}
+    {isPhoneModal && <UpdatePhone ClosePhoneModal={ClosePhoneModal}/>}
     </>
   )
 }
