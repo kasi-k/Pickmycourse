@@ -1,10 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Pdf from "../../assets/pdf.png";
 import Csv from "../../assets/csv.png";
 import Excel from "../../assets/excel.png";
 import { FaEye } from "react-icons/fa6";
+import Invoice from './Invoice';
 
 const Subscription = () => {
+  const[invoiceModal,setInvoiceModal]=useState(false)
+  const handleInvoiceModal=()=>{
+    setInvoiceModal(true)
+  }
   return (
     <>
     <div className=" font-extralight">
@@ -75,7 +80,7 @@ const Subscription = () => {
             <td className="border border-slate-400 ">6694dwwqwsaa</td>
             <td className="border border-slate-400 ">6694dwwqwsaa</td>
             <td className="flex  justify-center items-center my-1 ">
-              <p className=" cursor-pointer p-2  text-green-600 ">
+              <p onClick={handleInvoiceModal} className=" cursor-pointer p-2  text-green-600 ">
                 <FaEye size={24} />
               </p>
             </td>
@@ -84,7 +89,7 @@ const Subscription = () => {
       </table>
     </div>
   </div>
-  
+  {invoiceModal&&<Invoice/>}
 </>
   )
 }

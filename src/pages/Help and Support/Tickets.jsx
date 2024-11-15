@@ -5,6 +5,7 @@ import Excel from "../../assets/excel.png";
 import Delete from "../../assets/delete.png"
 import Edit from "../../assets/pencil.png";
 import DeleteModal from "../../components/DeleteModal";
+import { useNavigate } from "react-router-dom";
 
 const Tickets = () => {
     const[isDeleteModal,setIsDeleteModal,]=useState(false)
@@ -14,7 +15,10 @@ const Tickets = () => {
     const handleCloseModal=()=>{
      setIsDeleteModal(false)
      }
-  
+  const navigate=useNavigate()
+   const redirectViewTicket=()=>{
+    navigate('/view ticket')
+   }
   return (
     <>
     <div className=" font-extralight">
@@ -89,7 +93,7 @@ const Tickets = () => {
               <td className="border border-slate-400"> John</td>
               <td className="border border-slate-400"> Medium</td>
               <td className="flex items-center justify-evenly my-2 gap-1 ">
-              <p className=" cursor-pointer mx-0.5  text-green-600 ">
+              <p onClick={redirectViewTicket} className=" cursor-pointer mx-0.5  text-green-600 ">
                   <img className='lg:size-6 md:size-5 size-5' src={Edit} alt="edit image" />
                 </p>
                 <p onClick={handleDeleteModal} className="cursor-pointer lg:size-6 md:size-5 size-5">

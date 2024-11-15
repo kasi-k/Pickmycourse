@@ -21,6 +21,7 @@ import Report from "./pages/reports/Report";
 import ViewOwnCourse from "./pages/generate courses/ViewOwnCourse";
 import AddUser from "./pages/users/AddUser";
 import Setting from "./pages/settings/Setting";
+import ViewTicket from "./pages/Help and Support/ViewTicket";
 
 const App = () => {
   return (
@@ -45,6 +46,7 @@ const App = () => {
             <Route path="/edit_team" element={<EditTeam />} />
             <Route path="/add_team" element={<AddTeam />} />
             <Route path="/help_support" element={<Tickets />} />
+            <Route path="/view ticket" element={<ViewTicket />} />
             <Route path="/report" element={<Report />} />
             <Route path="/setting" element={<Setting />} />
           </Route>

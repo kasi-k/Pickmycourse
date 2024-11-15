@@ -7,7 +7,7 @@ const Setting = () => {
     const[activeTab,setActiveTab]=useState("tab1")
   return (
     <>
-    <div className='grid grid-cols-12 h-screen'>
+    <div className='grid grid-cols-12 h-screen my-2'>
     <div className='grid justify-center  col-span-3 border-r-[1px] '>
         <div className='my-6 space-y-2'>
         <p>Setting</p>
@@ -32,9 +32,11 @@ const Setting = () => {
         </p>
         </div>
         </div>
+        <div className='grid col-span-6'>
         {activeTab ==="tab1" && <RolesPermission/>}
         {activeTab ==="tab2" && <Taxes/>}
-        {activeTab ==="tab3" && <HelpSupport/>} 
+        {activeTab ==="tab3" && <HelpSupport/>}
+        </div> 
         </div>
         </>
   )
