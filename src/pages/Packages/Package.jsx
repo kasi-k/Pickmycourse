@@ -23,7 +23,7 @@ const Package = () => {
     </div>
     <hr />
     <div className=' grid  gap-4 my-6 mx-6 lg:grid-cols-12 md:grid-cols-10  '>
-     <div className='col-span-3 bg-slate-900  '>
+     <div className='col-span-3 bg-[#000928] '>
         <div className=' grid  justify-center  '>
              <p className=' text-center my-4'>Free</p>
              <p className=' bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-14 py-1.5 '>$ 0 / Month</p>
@@ -42,7 +42,7 @@ const Package = () => {
                 </p>
                
         </div>
-        <div className='col-span-3 bg-slate-900   '>
+        <div className='col-span-3 bg-[#000928]  '>
         <div className=' grid  justify-center  '>
         <p className=' text-center my-4'>Basic</p>
              <p className=' bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-14 py-1.5 '>$ 1 / Month</p>
@@ -61,7 +61,7 @@ const Package = () => {
                     <button  className='bg-red-400 py-1 px-1 mx-2 rounded-sm'><RiDeleteBinLine /></button>
                 </div>
         </div>
-        <div className='col-span-3 bg-slate-900 '>
+        <div className='col-span-3 bg-[#000928]'>
         <div className=' grid  justify-center   '>
         <p className=' text-center my-4'>Basic</p>
              <p className='bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-14 py-1.5'>$ 5 / Month</p>
@@ -73,7 +73,7 @@ const Package = () => {
              <p>Theory & Image Course</p>
              <p>Theory & Video Course</p>
              </div>
-                <div className='  bg-white py-1  float-end '>
+                <div className='  bg-white py-1 mx-1 float-end '>
                     <button className='  bg-slate-500 py-1 px-1 mx-1 rounded-sm'><FiShare2  /></button>
                     <button  className=' bg-slate-500 py-1 px-1 mx-2 rounded-sm'><FiCopy  /></button>
                     <button  className='bg-indigo-400 py-1 px-1 mx-2 rounded-sm'><FiEdit  /></button>

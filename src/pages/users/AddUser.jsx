@@ -4,12 +4,12 @@ import { useNavigate } from 'react-router-dom';
 const AddUser = () => {
   const navigate=useNavigate()
   const redirectUser=()=>{
-   navigate('/user')
+   navigate('/users')
   }
   return (
     <>
      <div className='font-extralight my-4'>
-        <p className=' mx-2 text-lg '>Add a new team</p>
+        <p className=' mx-2 text-lg '>Add a new user</p>
         <hr />
         <div className='mx-12 my-6 space-y-1'>
         <img src={Profile} alt=" profile image" className='size-36' />

@@ -77,7 +77,7 @@ const Tickets = () => {
           </thead>
           <tbody className="text-slate-400 ">
             <tr className=" text-nowrap text-center ">
-              <td className="border border-slate-400">6694dwwqwsaa</td>
+              <td className="border border-slate-400 p-2">6694dwwqwsaa</td>
               <td className="border border-slate-400 ">John </td>
               <td className="border border-slate-400 ">Doe</td>
               <td className="border border-slate-400">johndoe@gmail.com</td>
@@ -88,8 +88,8 @@ const Tickets = () => {
               <td className="border border-slate-400 text-slate-500 ">22-05-1990</td>
               <td className="border border-slate-400"> John</td>
               <td className="border border-slate-400"> Medium</td>
-              <td className="flex items-center justify-evenly my-1 gap-2">
-              <p className=" cursor-pointer  text-green-600 ">
+              <td className="flex items-center justify-evenly my-2 gap-1 ">
+              <p className=" cursor-pointer mx-0.5  text-green-600 ">
                   <img className='lg:size-6 md:size-5 size-5' src={Edit} alt="edit image" />
                 </p>
                 <p onClick={handleDeleteModal} className="cursor-pointer lg:size-6 md:size-5 size-5">

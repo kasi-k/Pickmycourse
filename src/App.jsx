@@ -20,6 +20,7 @@ import Tickets from "./pages/Help and Support/Tickets";
 import Report from "./pages/reports/Report";
 import ViewOwnCourse from "./pages/generate courses/ViewOwnCourse";
 import AddUser from "./pages/users/AddUser";
+import Setting from "./pages/settings/Setting";
 
 const App = () => {
   return (
@@ -45,6 +46,7 @@ const App = () => {
             <Route path="/add_team" element={<AddTeam />} />
             <Route path="/help_support" element={<Tickets />} />
             <Route path="/report" element={<Report />} />
+            <Route path="/setting" element={<Setting />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
