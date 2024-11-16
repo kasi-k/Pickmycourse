@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import EditImage from '../../assets/edit.png'
 import BinImage from "../../assets/bin.png"
 
 const Category = () => {
+  const[addCategory,setAddCategory]=useState(true)
   return (
     <div>
          <div className='flex justify-between mx-4 py-2 '>

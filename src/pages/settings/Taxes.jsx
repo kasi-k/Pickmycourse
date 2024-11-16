@@ -7,8 +7,8 @@ const Taxes = () => {
     const[addtaxmodal,setAddTaxModal]=useState(false)
   return (
     <>
-    <div className='font-extralight'>
-        <div className=' w-[500px] h-36  bg-[#000928] space-y-2 my-2 mx-4'>
+    <div className='font-extralight '>
+        <div className=' w-7/12 h-36  bg-[#000928] space-y-2 my-2 mx-4'>
         <div className='flex justify-between  '>
         <p className='mx-2 mt-1'>Taxes</p>
         <p onClick={()=>setAddTaxModal(true)} className='mx-2 mt-3 text-sm'>Add Tax</p>
@@ -24,7 +24,7 @@ const Taxes = () => {
             </div>
             <hr />
         </div>
-        <div className=' mx-2 my-8 '>
+        <div className=' mx-2 my-20 '>
         {addtaxmodal&&<AddTax/>}
         </div>
     </div>
