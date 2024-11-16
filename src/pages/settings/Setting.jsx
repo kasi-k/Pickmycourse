@@ -32,7 +32,7 @@ const Setting = () => {
         </p>
         </div>
         </div>
-        <div className='grid col-span-6'>
+        <div className=' col-span-9'>
         {activeTab ==="tab1" && <RolesPermission/>}
         {activeTab ==="tab2" && <Taxes/>}
         {activeTab ==="tab3" && <HelpSupport/>}

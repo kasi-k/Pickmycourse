@@ -7,7 +7,7 @@ import Status from './Status'
 const HelpSupport = () => {
     const[activeTab,setActiveTab]=useState("tab1")
   return (
-    <div className='font-extralight bg-[#000928] h-56 mx-2'>
+    <div className='font-extralight bg-[#000928] h-56 mx-2 w-4/6'>
     <div className='flex justify-between my-4 mx-4'>
         <div className='flex gap-8 '>
             <p className={` cursor-pointer flex justify-between items-center text-md  transition-all duration-700  font-extralight   ${

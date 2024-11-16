@@ -20,7 +20,7 @@ const AdduserPackage = () => {
         <div className="relative inline-block col-span-2 ">
               <select defaultValue="select" className=" w-full text-black px-2 py-1.5 outline-none rounded-md ">
                 <option value="select" disabled>
-                  Enter Topic
+                  Select Package 
                 </option>
                 <option value="">1</option>
                 <option value="">2</option>
@@ -45,7 +45,7 @@ const AdduserPackage = () => {
               </div>
             </div>
          </div>
-         <button onClick={redirectPackage} className='my-16 text-white bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-14 py-2 '>Save</button>
+         <button onClick={redirectPackage} className='my-12 text-white bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-14 py-2 '>Save</button>
         </form>
      </div>
     </>

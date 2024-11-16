@@ -29,7 +29,7 @@ const AddPackage = () => {
             </label>
             <input
               type="text"
-              placeholder="Enter Topic"
+              placeholder="Enter Package name"
               className="col-span-2 text-black rounded-md py-1.5 px-2"
               required
             />
