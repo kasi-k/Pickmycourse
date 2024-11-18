@@ -11,16 +11,18 @@ import team from "../../assets/team.png"
 import help from "../../assets/services.png"
 import report from "../../assets/report.png"
 import setting from "../../assets/settings.png"
+import AddRole from './AddRole';
+import { useNavigate } from 'react-router-dom';
 
 const RolesPermission = () => {
     const[activeTab,setActiveTab]=useState("tab1")
-  return (
+      return (
     <>
     <div className='font-extralight grid grid-cols-9  '>
     <div className='  h-56 bg-[#000928] space-y-4 my-2 mx-4 col-span-4'>
         <div className='flex justify-between '>
         <p className='mx-2 mt-4'>Roles</p>
-        <p  className='mx-2 mt-4'>Add Role</p>
+        <p onClick={()=>setActiveTab("tab3")} className='mx-2 mt-4'>Add Role</p>
         </div>
         <div className={` cursor-pointer flex justify-between items-center text-md  pl-1 p-2 transition-all duration-700 hover:bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] font-extralight   ${
                          activeTab === "tab1"
@@ -48,7 +50,7 @@ const RolesPermission = () => {
         </div>
         <hr />
         </div>
-    <div className=' font-extralight my-2 col-span-5 mr-6 mx-6 bg-[#000928]'> 
+    <div className=' font-extralight my-2 col-span-5 mr-6 bg-[#000928] '> 
         <p className='my-2 mx-2'>Permission</p>
         <hr />
         <div className=''> 
@@ -103,10 +105,7 @@ const RolesPermission = () => {
             <hr />
 
         </div>
-        <div>
-           
-        </div>
-        
+     {/* {activeTab==="tab3"&&<AddRole/>}  */}
     </div>
     </div>
     

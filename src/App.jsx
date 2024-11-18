@@ -22,6 +22,8 @@ import ViewOwnCourse from "./pages/generate courses/ViewOwnCourse";
 import AddUser from "./pages/users/AddUser";
 import Setting from "./pages/settings/Setting";
 import ViewTicket from "./pages/Help and Support/ViewTicket";
+import AddRole from "./pages/settings/AddRole";
+import ResetPassword from "./pages/login/ResetPassword";
 
 const App = () => {
   return (
@@ -29,7 +31,8 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path='' element={<Login/>}/>
-         <Route path='/forgot_password' element={<ForgotPassword/>}/> 
+         <Route path='/forgot_password' element={<ForgotPassword/>}/>
+         <Route path='/reset_password' element={<ResetPassword/>}/>  
           <Route path="/" element={<Layout />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/packages" element={<Package />} />
@@ -49,6 +52,7 @@ const App = () => {
             <Route path="/view ticket" element={<ViewTicket />} />
             <Route path="/report" element={<Report />} />
             <Route path="/setting" element={<Setting />} />
+            <Route path="/add_role" element={<AddRole/>} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

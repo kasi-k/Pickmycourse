@@ -1,18 +1,18 @@
 import React from "react";
 
-const AddCategory = () => {
+const AddPriority = () => {
   return (
     <div>
       <div className="font-extralight mx-3">
         {" "}
-        <p className="my-8">Add Category</p>
+        <p className="my-8">Add Priority</p>
         <form className="grid gap-4 items-center my-4 ">
           <label htmlFor="">
-            Category Name <span className="text-red-600">*</span>
+            Priority Name <span className="text-red-600">*</span>
           </label>
           <input
             type="text"
-            placeholder=" Enter Category Name"
+            placeholder=" Enter Priority Name"
             className="rounded-md w-4/5 py-1.5 px-1 "
           />
           <div className="flex justify-center my-4 w-4/5">
@@ -26,4 +26,4 @@ const AddCategory = () => {
   );
 };
 
-export default AddCategory;
+export default AddPriority;
