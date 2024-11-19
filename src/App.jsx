@@ -24,6 +24,7 @@ import Setting from "./pages/settings/Setting";
 import ViewTicket from "./pages/Help and Support/ViewTicket";
 import AddRole from "./pages/settings/AddRole";
 import ResetPassword from "./pages/login/ResetPassword";
+import Form from "./pages/Form";
 
 const App = () => {
   return (
@@ -32,7 +33,7 @@ const App = () => {
         <Routes>
           <Route path='' element={<Login/>}/>
          <Route path='/forgot_password' element={<ForgotPassword/>}/>
-         <Route path='/reset_password' element={<ResetPassword/>}/>  
+         <Route path='/reset_password' element={<Form/>}/>  
           <Route path="/" element={<Layout />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/packages" element={<Package />} />

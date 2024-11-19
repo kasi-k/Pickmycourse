@@ -31,8 +31,8 @@ const Dashboard = () => {
         <p className='font-poppins my-4 text-sm'>Monthly Activity Progress</p>
         <span>
           <p className='w-1/3 text-xl mx-4 text-end'>6/10</p>
-          <div class='w-1/3 bg-gray-200 rounded-full h-3 dark:bg-gray-700 mx-5'>
-            <div class=" bg-gradient-to-r from-blue-900 to-fuchsia-600 h-3 rounded-full"style={{width:"75%"}}>
+          <div className='w-1/3 bg-gray-200 rounded-full h-3 dark:bg-gray-700 mx-5'>
+            <div className=" bg-gradient-to-r from-blue-900 to-fuchsia-600 h-3 rounded-full"style={{width:"75%"}}>
 
             </div>
           </div>
@@ -40,8 +40,8 @@ const Dashboard = () => {
         </span>
         <span>
           <p className='w-1/3 text-xl mx-4 text-end'>2/10</p>
-          <div class='w-1/3 bg-gray-200 rounded-full h-3 dark:bg-gray-700 mx-5'>
-            <div class=" bg-gradient-to-r from-blue-900 to-fuchsia-600 h-3 rounded-full"style={{width:"25%"}}>
+          <div className='w-1/3 bg-gray-200 rounded-full h-3 dark:bg-gray-700 mx-5'>
+            <div className=" bg-gradient-to-r from-blue-900 to-fuchsia-600 h-3 rounded-full"style={{width:"25%"}}>
 
             </div>
           </div>
@@ -49,8 +49,8 @@ const Dashboard = () => {
         </span>
         <span>
           <p className='w-1/3 text-xl mx-4 text-end'>5/10</p>
-          <div class='w-1/3 bg-gray-200 rounded-full h-3 dark:bg-gray-700 mx-5'>
-            <div class=" bg-gradient-to-r from-blue-900 to-fuchsia-600 h-3 rounded-full"style={{width:"50%"}}>
+          <div className='w-1/3 bg-gray-200 rounded-full h-3 dark:bg-gray-700 mx-5'>
+            <div className=" bg-gradient-to-r from-blue-900 to-fuchsia-600 h-3 rounded-full"style={{width:"50%"}}>
 
             </div>
           </div>
