@@ -1,7 +1,22 @@
+import axios from 'axios';
 import {React, useState} from 'react'
 import { IoClose } from "react-icons/io5";
 
-const DeleteModal = ({title,onClose,Children}) => {
+const DeleteModal = ({title,onClose,onDelete,Children}) => {
+  console.log(onDelete);
+
+  const handleDeleteplan = async () => {
+    try {
+      const response = await axios.delete(onDelete);
+      const responseData = response.data;
+      onClose()
+      console.log(response);
+      console.log(responseData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
   return (
     <>
 
@@ -13,7 +28,7 @@ const DeleteModal = ({title,onClose,Children}) => {
         <p className='h-40 '>Are you sure you want to delete this {title}</p>
         </div>
     <div className='flex justify-around'>
-        <button className=' text-white bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-4 py-2 '>Delete {title}</button>
+        <button className=' text-white bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-4 py-2 ' onClick={()=>handleDeleteplan()}>Delete {title}</button>
         <button className='text-black bg-white px-10 py-2'>Cancel</button>
         </div>
        

@@ -78,6 +78,7 @@ const Login = () => {
               </label>
               <input
                 {...register("email")}
+                type="email"
                 placeholder="Enter Email"
                 required
                 className="py-1.5 z-10  rounded-md text-center text-black"
@@ -88,8 +89,8 @@ const Login = () => {
               </label>
               <input
                 {...register("password")}
+                // type="password"
                 placeholder="Enter Password"
-                required
                 className="py-1.5  z-10 rounded-md text-center text-black"
               />
               <p className="text-red-700">{errors.password?.message}</p>

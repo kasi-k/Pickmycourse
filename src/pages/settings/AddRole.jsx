@@ -1,31 +1,29 @@
 import React, { useState } from 'react'
+import dashboard from "../../assets/dashboard.png";
+import Package from "../../assets/money.png";
+import course from "../../assets/course.png";
+import gc from "../../assets/book.png";
+import subscribe from "../../assets/subscription.png"
+import user from "../../assets/user.png"
+import team from "../../assets/team.png"
+import help from "../../assets/services.png"
+import report from "../../assets/report.png"
+import setting from "../../assets/settings.png"
 
 const AddRole = () => {
-    // const [features, setFeatures] = useStateState([
-    //     { name: "Dashboard", value: "dashboard", checked: false },
-    //     { name: "Organization", value: "organization", checked: false },
-    //     { name: "Department", value: "department", checked: false },
-    //     { name: "Zone", value: "zone", checked: false },
-    //     { name: "Ward", value: "ward", checked: false },
-    //     { name: "Street", value: "street", checked: false },
-    //     { name: "Complaint", value: "complaint", checked: false },
-    //     { name: "Complaint Type", value: "complainttype", checked: false },
-    //     { name: "Designation", value: "designation", checked: false },
-    //     { name: "Employee", value: "emp", checked: false },
-    //     { name: "AdminUser", value: "admin", checked: false },
-    //     { name: "PublicUser", value: "user", checked: false },
-    //     { name: "Status", value: "status", checked: false },
-    //     { name: "Setting", value: "setting", checked: false },
-    //     { name: "Escalation", title: true },
-    //     { name: "Escalation", value: "escalate", checked: false },
-    //     { name: "Escalation Commissioner", value: "escalation", checked: false },
-    //     { name: "Grievance", title: true }, // Title without value, checkbox, etc.
-    //     { name: "SuperAdmin", value: "grievance", checked: false },
-    //     { name: "Commissioner", value: "requestview4", checked: false },
-    //     { name: "Department Admin", value: "requestview2", checked: false },
-    //     { name: "Engineer", value: "requestview3", checked: false },
-    //     { name: "Operator", value: "requestview1", checked: false },
-    //   ]);
+    const [features, setFeatures] = useState([
+     {name: "Dashboard", icon: dashboard, value: "dashboard" },
+     { name: "Packages", icon: Package, value: "packages"},
+     {name: "Courses", icon:course, value: "courses" },
+     { name: "Generate course", icon:gc, value: "generate course" },
+     { name: "Subscriptions", icon:subscribe, value: "subscription" }, 
+     { name: "Users", icon:user, value: "users" },
+     { name: "Team", icon:team, value: "team" },
+     { name: "Help & Support", icon:help, value: "help_support" },
+     { name: "Reports", icon:report, value: "report" },
+     { name: "Settings", icon:setting,value: "setting" },
+     
+      ]);
   return (
     <div className='bg-[#000928]'>hi</div>
   )

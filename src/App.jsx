@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./pages/layout/Layout";
 import NotFound from "./404";
-import Login from "./pages/Login/Login";
+import Login from "./pages/login/Login"
 import ForgotPassword from "./pages/login/ForgotPassword";
 import Package from "./pages/Packages/Package";
 import Dashboard from "./pages/dashboard/Dashboard";
@@ -22,10 +22,8 @@ import ViewOwnCourse from "./pages/generate courses/ViewOwnCourse";
 import AddUser from "./pages/users/AddUser";
 import Setting from "./pages/settings/Setting";
 import ViewTicket from "./pages/Help and Support/ViewTicket";
-import AddRole from "./pages/settings/AddRole";
-import ResetPassword from "./pages/login/ResetPassword";
-import Form from "./pages/Form";
-
+import AddRole from "./pages/settings/AddRole"
+import ResetPassword from "./pages/login/ResetPassword"
 const App = () => {
   return (
     <>
@@ -33,7 +31,7 @@ const App = () => {
         <Routes>
           <Route path='' element={<Login/>}/>
          <Route path='/forgot_password' element={<ForgotPassword/>}/>
-         <Route path='/reset_password' element={<Form/>}/>  
+         <Route path='/reset_password' element={<ResetPassword/>}/>  
           <Route path="/" element={<Layout />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/packages" element={<Package />} />
