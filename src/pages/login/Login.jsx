@@ -55,10 +55,13 @@ const Login = () => {
       
 
       if (response.status === 200) {
+        // toast.success("Logged in Successfully");
+        localStorage.setItem("email", responseData.adminData.email);
+        localStorage.setItem("password", responseData.adminData.password);
         navigate("/dashboard");
       }
     } catch (error) {
-      console.log("error");
+      console.log(error);
     }
   };
   const redirectForgotPassword = () => {

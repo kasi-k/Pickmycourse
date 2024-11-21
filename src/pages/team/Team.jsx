@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Pdf from "../../assets/pdf.png";
 import Csv from "../../assets/csv.png";
 import Excel from "../../assets/excel.png";
@@ -6,18 +6,40 @@ import Edit from "../../assets/pencil.png";
 import DeleteModal from '../../components/DeleteModal';
 import Delete from "../../assets/delete.png"
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+import { API } from "../../Host";
 
 const Team = () => {
+  const[team,setTeam]=useState([])
     const[isDeleteModal,setIsDeleteModal,]=useState(false)
-    const handleDeleteModal=()=>{
+    const [onDelete, setOnDelete] = useState("");
+    const navigate = useNavigate();
+
+    useEffect(() => {
+      fetchNewAdmin();
+  
+    }, [isDeleteModal]);
+
+
+    const fetchNewAdmin = async () => {
+      try {
+        const response = await axios.get(`${API}/api/getadmin`);
+        const responseTeam = response.data.user;
+        setTeam(responseTeam);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    const handleDeleteModal=(dataId)=>{
+    setOnDelete(`${API}/api/deleteadmin/${dataId}`); 
      setIsDeleteModal(true)
     }
     const handleCloseModal=()=>{
       setIsDeleteModal(false)
     }
-     const navigate=useNavigate()
+    
      const handleEditModal=()=>{
-      navigate('/edit_team')
+      navigate("/edit_team ")
      }
      const handleAddTeamModal=()=>{
         navigate('/add_team')
@@ -45,7 +67,7 @@ const Team = () => {
         </div>
       </div>
       <div className="mx-1 overflow-auto no-scrollbar ">
-        <table className=" border border-collapse  w-full">
+        <table className=" w-full">
           <thead className="text-slate-300">
             <tr>
               <th className="p-2 font-extralight border border-slate-400">
@@ -75,28 +97,33 @@ const Team = () => {
             </tr>
           </thead>
           <tbody className="text-slate-400 ">
-            <tr className=" text-nowrap text-center ">
-              <td className="border border-slate-400 ">6694dwwqwsaa</td>
-              <td className="border border-slate-400 ">John </td>
-              <td className="border border-slate-400 ">Doe</td>
-              <td className="border border-slate-400">johndoe@gmail.com</td>
-              <td className="border border-slate-400">+91 98945452</td>
-              <td className="border border-slate-400">22-05-1990</td>
-              <td className="border border-slate-400 ">2</td>
-              <td className="flex justify-around items-center my-1 w-72  ">
+          {team &&
+          team.map((data, index) => (
+            <tr className=" text-nowrap text-center" key={index}>
+              <td className="border border-slate-400 ">{data._id}</td>
+              <td className="border border-slate-400 ">{data.fname}</td>
+              <td className="border border-slate-400 ">{data.lname}</td>
+              <td className="border border-slate-400">{data.email}</td>
+              <td className="border border-slate-400">{data.phone}</td>
+              <td className="border border-slate-400">{data.dob}</td>
+              <td className="border border-slate-400 ">{data.designation}</td>
+              <td className=" border-b border-r border-slate-400 flex justify-around items-center  ">
                 <p onClick={handleEditModal} className=" cursor-pointer p-2  text-green-600 ">
                   <img className='size-8' src={Edit} alt="edit image" />
                 </p>
-                 <p onClick={handleDeleteModal} className="cursor-pointer size-9">
+                 <p  onClick={() => {
+                    handleDeleteModal(data._id);
+                  }} className="cursor-pointer size-9">
                      <img src={Delete} alt="delete image" />
                     </p>
               </td> 
             </tr>
+            ))}
           </tbody>
         </table>
       </div>
     </div>
-    {isDeleteModal&&<DeleteModal onClose={handleCloseModal} title="team"/>} 
+    {isDeleteModal&&<DeleteModal onClose={handleCloseModal} title="team" onDelete={onDelete} />} 
     </>
   )
 }

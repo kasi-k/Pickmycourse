@@ -7,35 +7,26 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
 import { API } from "../../Host";
-const schema = yup
-  .object().shape({
-    packagename: yup
-      .string()
-      .trim()
-      .required("Package name is required"),
-       price: yup
-       .number()
-      .required("price is required"),
-      course: yup
-      .string()
-      .trim()
-      .required("courses is required"),
-      tax: yup
-      .number()
-      .required("tax is required"),
-      subtopic: yup
-      .string()
-      .oneOf(["5", "10"], "Please select a valid number of subtopics")
-      .required("Please select the number of subtopics"),
-    coursetype: yup
-      .string()
-      .oneOf(["Text & Image Course", "Video & Text Course"], "Please select a valid course type")
-      .required("Please select the course type"),
-  
-  })
+const schema = yup.object().shape({
+  packagename: yup.string().trim().required("Package name is required"),
+  price: yup.number().required("price is required"),
+  course: yup.string().trim().required("courses is required"),
+  tax: yup.number().required("tax is required"),
+  subtopic: yup
+    .string()
+    .oneOf(["5", "10"], "Please select a valid number of subtopics")
+    .required("Please select the number of subtopics"),
+  coursetype: yup
+    .string()
+    .oneOf(
+      ["Text & Image Course", "Video & Text Course"],
+      "Please select a valid course type"
+    )
+    .required("Please select the course type"),
+});
 
 const AddPackage = () => {
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -44,7 +35,7 @@ const AddPackage = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const watchSubtopics = watch("subtopic"); 
+  const watchSubtopics = watch("subtopic");
   const watchCourseType = watch("coursetype");
   const onSubmit = async (data) => {
     console.log(data);
@@ -56,18 +47,15 @@ const AddPackage = () => {
         `${API}/api/subscriptionplan`,
         formData
       );
-     
-      
+
       if (response.status === 200) {
-      navigate('/packages')
+        navigate("/packages");
       }
     } catch (error) {
       console.log(error);
     }
   };
-  
-  
-  
+
   return (
     <>
       <div className="font-extralight ">
@@ -79,7 +67,7 @@ const AddPackage = () => {
               Package Name <span className=" text-red-600">*</span>
             </label>
             <input
-                {...register("packagename")}
+              {...register("packagename")}
               placeholder="Enter Package name"
               className="col-span-2 text-black rounded-md py-1.5 px-2"
               required
@@ -89,8 +77,8 @@ const AddPackage = () => {
               Price <span className=" text-red-600">*</span>
             </label>
             <input
-                {...register("price")}
-               placeholder="Enter Price"
+              {...register("price")}
+              placeholder="Enter Price"
               className="col-span-2 text-black rounded-md py-1.5 px-2"
               required
             />
@@ -99,8 +87,8 @@ const AddPackage = () => {
               No of Courses per month <span className=" text-red-600">*</span>
             </label>
             <input
-                {...register("course")}
-                type="number"
+              {...register("course")}
+              type="number"
               placeholder="00"
               className="col-span-2 text-black rounded-md py-1.5 px-2"
               required
@@ -110,7 +98,11 @@ const AddPackage = () => {
               Tax <span className=" text-red-600">*</span>
             </label>
             <div className="relative inline-block col-span-2 ">
-              <select {...register("tax")}defaultValue="select" className=" w-full text-black px-2 py-1.5 outline-none rounded-md ">
+              <select
+                {...register("tax")}
+                defaultValue="select"
+                className=" w-full text-black px-2 py-1.5 outline-none rounded-md "
+              >
                 <option value="select" disabled>
                   Select Tax
                 </option>
@@ -128,92 +120,107 @@ const AddPackage = () => {
               No of Subtopic <span className=" text-red-600">*</span>
             </label>
             <div className="flex flex-col space-y-1">
-            <div className="flex items-center cursor-pointer">
-              <input
-              {...register("subtopic")}
-                type="radio"
-                id="5"
-                value="5"
-                className="hidden peer"
-              />
-              <p className="text-red-700">{errors.subtopic?.message}</p>
-              <label htmlFor="5" className="flex items-center cursor-pointer">
-                <span className="w-4 h-4 border-2 border-gray-400 rounded-sm flex items-center justify-center peer-checked:border-blue-500 peer-checked:bg-blue-500">
-                  <span
-                    className={`w-3 h-3  ${
-                      watchSubtopics=== "5" ? "bg-white" : "hidden"
-                    }`}
-                  ></span>
-                </span>
-                <span className="ml-2">05</span>
-              </label>
-            </div>
+              <div className="flex items-center cursor-pointer">
+                <input
+                  {...register("subtopic")}
+                  type="radio"
+                  id="5"
+                  value="5"
+                  className="hidden peer"
+                />
+                <p className="text-red-700">{errors.subtopic?.message}</p>
+                <label htmlFor="5" className="flex items-center cursor-pointer">
+                  <span className="w-4 h-4 border-2 border-gray-400 rounded-sm flex items-center justify-center peer-checked:border-blue-500 peer-checked:bg-blue-500">
+                    <span
+                      className={`w-3 h-3  ${
+                        watchSubtopics === "5" ? "bg-white" : "hidden"
+                      }`}
+                    ></span>
+                  </span>
+                  <span className="ml-2">05</span>
+                </label>
+              </div>
 
-            <div className="flex items-center cursor-pointer">
-              <input
-               {...register("subtopic")}
-                type="radio"
-                id="10"
-                value="10"
-                className="hidden peer"
-              />
-              <p className="text-red-700">{errors.subtopic?.message}</p>
-              <label htmlFor="10" className="flex items-center cursor-pointer">
-                <span className="w-4 h-4 border-2 border-gray-400 rounded-sm flex items-center justify-center peer-checked:border-blue-500 peer-checked:bg-blue-500">
-                  <span
-                    className={`w-3 h-3  ${
-                       watchSubtopics==="10" ? "bg-white" : "hidden" 
-                    }`}
-                  ></span>
-                </span>
-                <span className="ml-2">10</span>
-              </label>
+              <div className="flex items-center cursor-pointer">
+                <input
+                  {...register("subtopic")}
+                  type="radio"
+                  id="10"
+                  value="10"
+                  className="hidden peer"
+                />
+                <p className="text-red-700">{errors.subtopic?.message}</p>
+                <label
+                  htmlFor="10"
+                  className="flex items-center cursor-pointer"
+                >
+                  <span className="w-4 h-4 border-2 border-gray-400 rounded-sm flex items-center justify-center peer-checked:border-blue-500 peer-checked:bg-blue-500">
+                    <span
+                      className={`w-3 h-3  ${
+                        watchSubtopics === "10" ? "bg-white" : "hidden"
+                      }`}
+                    ></span>
+                  </span>
+                  <span className="ml-2">10</span>
+                </label>
+              </div>
             </div>
-          </div>
-          <p className="text-lg py-2 col-span-12">Course Type  <span className="text-red-600">*</span></p>
-          <div className="flex flex-col space-y-1">
-            <div className="flex items-center cursor-pointer">
-              <input
-               {...register("coursetype")}
-                type="radio"
-                id="textcourse"
-                value="Text & Image Course"
-                className="hidden peer"
-              />
-              <p className="text-red-700">{errors.coursetype?.message}</p>
-              <label htmlFor="textcourse" className="flex items-center cursor-pointer">
-                <span className="w-4 h-4 border-2 border-gray-400 rounded-sm flex items-center justify-center peer-checked:border-blue-500 peer-checked:bg-blue-500">
-                  <span
-                    className={`w-3 h-3  ${
-                        watchCourseType  === "Text & Image Course" ? "bg-white" : "hidden"
-                    }`}
-                  ></span>
-                </span>
-                <span className="ml-2">Theory & Image Course</span>
-              </label>
-            </div>
+            <p className="text-lg py-2 col-span-12">
+              Course Type <span className="text-red-600">*</span>
+            </p>
+            <div className="flex flex-col space-y-1">
+              <div className="flex items-center cursor-pointer">
+                <input
+                  {...register("coursetype")}
+                  type="radio"
+                  id="textcourse"
+                  value="Text & Image Course"
+                  className="hidden peer"
+                />
+                <p className="text-red-700">{errors.coursetype?.message}</p>
+                <label
+                  htmlFor="textcourse"
+                  className="flex items-center cursor-pointer"
+                >
+                  <span className="w-4 h-4 border-2 border-gray-400 rounded-sm flex items-center justify-center peer-checked:border-blue-500 peer-checked:bg-blue-500">
+                    <span
+                      className={`w-3 h-3  ${
+                        watchCourseType === "Text & Image Course"
+                          ? "bg-white"
+                          : "hidden"
+                      }`}
+                    ></span>
+                  </span>
+                  <span className="ml-2">Theory & Image Course</span>
+                </label>
+              </div>
 
-            <div className="flex items-center cursor-pointer">
-              <input
-              {...register("coursetype")}
-                type="radio"
-                id="videocourse"
-                value="Video & Text Course"
-                className="hidden peer"
-              />
-              <p className="text-red-700">{errors.coursetype?.message}</p>
-              <label htmlFor="videocourse" className="flex items-center cursor-pointer">
-                <span className="w-4 h-4 border-2 border-gray-400 rounded-sm flex items-center justify-center peer-checked:border-blue-500 peer-checked:bg-blue-500">
-                  <span
-                    className={`w-3 h-3  ${
-                       watchCourseType  === "Video & Text Course" ? "bg-white" : "hidden"
-                    }`}
-                  ></span>
-                </span>
-                <span className="ml-2">Video & Theory Course</span>
-              </label>
+              <div className="flex items-center cursor-pointer">
+                <input
+                  {...register("coursetype")}
+                  type="radio"
+                  id="videocourse"
+                  value="Video & Text Course"
+                  className="hidden peer"
+                />
+                <p className="text-red-700">{errors.coursetype?.message}</p>
+                <label
+                  htmlFor="videocourse"
+                  className="flex items-center cursor-pointer"
+                >
+                  <span className="w-4 h-4 border-2 border-gray-400 rounded-sm flex items-center justify-center peer-checked:border-blue-500 peer-checked:bg-blue-500">
+                    <span
+                      className={`w-3 h-3  ${
+                        watchCourseType === "Video & Text Course"
+                          ? "bg-white"
+                          : "hidden"
+                      }`}
+                    ></span>
+                  </span>
+                  <span className="ml-2">Video & Theory Course</span>
+                </label>
+              </div>
             </div>
-          </div>
           </div>
           <button
             type="submit"

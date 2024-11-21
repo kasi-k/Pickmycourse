@@ -24,6 +24,7 @@ import Setting from "./pages/settings/Setting";
 import ViewTicket from "./pages/Help and Support/ViewTicket";
 import AddRole from "./pages/settings/AddRole"
 import ResetPassword from "./pages/login/ResetPassword"
+import Category from "./pages/settings/Category";
 const App = () => {
   return (
     <>
@@ -52,6 +53,8 @@ const App = () => {
             <Route path="/report" element={<Report />} />
             <Route path="/setting" element={<Setting />} />
             <Route path="/add_role" element={<AddRole/>} />
+            <Route path="/category" element={<Category/>} />
+
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
