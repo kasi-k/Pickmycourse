@@ -65,7 +65,7 @@ const AddCategory = () => {
           />
           <p className="text-red-700">{errors.category?.message}</p>
           <div className="flex justify-center my-4 w-4/5">
-            <button type="submit" className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-36 py-1.5  ">
+            <button type="submit" className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-36 py-1.5 ">
               Save
             </button>
           </div>

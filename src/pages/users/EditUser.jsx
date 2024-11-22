@@ -1,11 +1,49 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Profile from "../../assets/profile.png"
 import UpdatePhone from './UpdatePhone';
 import UpdateEmail from "./UpdateEmail"
+import axios from "axios";
+import { API } from "../../Host";
 
 const EditUser = () => {
   const [isModal, setIsModal] = useState(false);
   const [isPhoneModal, setIsPhoneModal] = useState(false);
+  const [isProfileModal, setIsProfileModal] = useState(false);
+  const user = localStorage.getItem("user");
+
+  const [userData, setUserData] = useState({});
+  const [userImage, setUserImage] = useState({});
+
+  useEffect(() => {
+    fetchUser();
+    fetchImage();
+  }, [isProfileModal]);
+
+  const fetchUser = async () => {
+    try {
+      const response = await axios.get(`${API}/api/getusersbyid/${user}`);
+      const responseData = response.data.user;
+      setUserData(responseData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchImage = async () => {
+    try {
+      const response = await axios.get(`${API}/api/getimagebyid?user=${user}`);
+      const responseData = response.data.user;
+      setUserImage(responseData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+  const CloseProfileModal = () => {
+    setIsProfileModal(!isProfileModal);
+  };
+
 
   const CloseEmailModal = () =>{
       setIsModal(!isModal)
@@ -20,8 +58,17 @@ const EditUser = () => {
         <p className=' mx-2 text-lg '>Edit User</p>
         <hr />
         <div className='mx-12 my-6 space-y-1'>
-        <img src={Profile} alt=" profile image" className='size-36' />
-        <button className=' bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-5 py-2'>Change Image</button>
+        <img
+            src={userImage?.image ? userImage.image : Profile}
+            alt="Profile"
+            className={`w-40 h-40 ${userImage?.image ? ' rounded-3xl object-cover' : ''}`}
+          />
+          <button
+            className={` text-base  bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] lg:w-40 md:w-40 w-40 py-2.5 my-5 `}
+            onClick={() => setIsProfileModal(true)}
+          >
+            Change Image
+          </button>
         </div>
         <div className='mx-2 '>
           <p className='my-2'>Personal Information</p>

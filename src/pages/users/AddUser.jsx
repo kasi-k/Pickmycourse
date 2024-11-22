@@ -52,7 +52,7 @@ const AddUser = () => {
         <hr />
         <div className='mx-12 my-6 space-y-1'>
         <img src={Profile} alt=" profile image" className='size-36' />
-        <button className=' bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-5 py-2'>Change Image</button>
+        <button className=' bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-5 py-2'>Upload Image</button>
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
         <div className='grid lg:grid-cols-12 md:grid-cols-10 mx-6 gap-6 '>

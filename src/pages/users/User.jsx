@@ -24,8 +24,11 @@ const User = () => {
   const fetchNewUser = async () => {
     try {
       const response = await axios.get(`${API}/api/getusers`);
-      const responsedata = response.data.User;
+      const responsedata = response.data.user;
       setUser(responsedata);
+      if(response===200){
+        localStorage.setItem("user", responsedata.user);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -116,8 +119,8 @@ const User = () => {
             <td className="border border-slate-400 ">2</td>
             <td className="border border-slate-400  ">22-05-1990</td>
             <td className=" border-b border-r border-slate-400 flex justify-around items-center  ">
-              <p onClick={handleEditModal} className=" cursor-pointer mx-1  text-green-600 ">
-                <img className='size-6' src={Edit} alt="edit image" />
+              <p onClick={() => handleEditModal(data._id, data.user)} className=" cursor-pointer mx-1  text-green-600 ">
+                <img   className='size-6' src={Edit} alt="edit image" />
               </p>
                <p  onClick={() => {
                     handleDeleteModal(data._id);
