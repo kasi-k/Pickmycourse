@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {React, useState} from 'react'
 import { IoClose } from "react-icons/io5";
+import { toast } from 'react-toastify';
 
 const DeleteModal = ({title,onClose,onDelete,Children}) => {
   console.log(onDelete);
@@ -9,6 +10,7 @@ const DeleteModal = ({title,onClose,onDelete,Children}) => {
     try {
       const response = await axios.delete(onDelete);
       const responseData = response.data;
+      toast.success(`${title} Deleted Successfully`)
       onClose()
       console.log(response);
       console.log(responseData);

@@ -34,8 +34,7 @@ const User = () => {
       console.log(error);
     }
   };
-  const handleDeleteModal=(dataId)=>{
-    
+  const handleDeleteModal=(dataId)=>{ 
   setOnDelete(`${API}/api/deleteuser/${dataId}`); 
    setIsDeleteModal(true)
  

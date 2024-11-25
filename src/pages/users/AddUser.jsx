@@ -76,9 +76,9 @@ const AddUser = () => {
         const response = await axios.post(`${API}/api/images`, payload);
         const responseData = response.data.image;
         console.log(responseData);
-        toast.success("User and profile Image Added Successfully");
+        toast.success("User and profile Image created Successfully");
         navigate("/users");
-      } else toast.success("User Added Successfully");
+      } else toast.success("User created Successfully");
       navigate("/users");
     } catch (error) {
       console.log("error");
@@ -175,10 +175,10 @@ const AddUser = () => {
           >
             {isSaving ? (
               <>
-                <p className="flex text-xl gap-2">
-                  <div className="animate-spin border-4 border-t-4 border-white border-solid rounded-full w-6 h-6 mx-auto"></div>{" "}
+                <div className="flex  text-xl gap-2">
+                  <span className="animate-spin border-4 border-t-4 border-white border-solid rounded-full w-8 h-8 mx-auto "></span>{" "}
                   Saving...
-                </p>
+                </div>
               </>
             ) : (
               "Save"

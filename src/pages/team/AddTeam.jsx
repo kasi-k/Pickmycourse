@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Profile from "../../assets/profile.png";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -20,6 +20,10 @@ const schema = yup.object().shape({
   designation: yup.string().required("Please select Designation"),
 });
 const AddTeam = () => {
+  const [isSaving, setIsSaving] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [base64Image, setBase64Image] = useState("");
+  const [preview, setPreview] = useState(null);
   const navigate = useNavigate();
   const {
     register,
@@ -28,19 +32,52 @@ const AddTeam = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (!file) {
+      alert("Please select a file!");
+      return;
+    }
+    const maxSizeInBytes = 2 * 1024 * 1024; // 2MB
+    if (file.size > maxSizeInBytes) {
+      alert("File size exceeds 2MB!");
+      return;
+    }
+    setSelectedFile(file);
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64String = reader.result;
+      setBase64Image(base64String);
+      setPreview(base64String);
+    };
+    reader.readAsDataURL(file);
+  };
+
   const onSubmit = async (data) => {
+    setIsSaving(true)
     console.log(data);
     const formData = {
       ...data,
     };
     try {
       const response = await axios.post(`${API}/api/adminsignup`, formData);
-      const responseData = response.data;
-      console.log(responseData);
+      const resuserid = response.data.email;
+      console.log(resuserid);
 
-      if (response.status === 200) {
+      if (response.status === 200 && selectedFile !== null) {
+        const payload = {
+          name: selectedFile.name,
+          user: resuserid,
+          image: base64Image,
+        };
+
+        const response = await axios.post(`${API}/api/images`, payload);
+        const responseData = response.data.image;
+        console.log(responseData);
+        toast.success("AdminId and profile Image created Successfully");
         navigate("/team");
-      }
+      } else toast.success("User created Successfully");
+
     } catch (error) {
       console.log("error");
     }
@@ -52,10 +89,26 @@ const AddTeam = () => {
         <p className=" mx-2 text-lg ">Add a new team</p>
         <hr />
         <div className="mx-12 my-6 space-y-1">
-          <img src={Profile} alt=" profile image" className="size-36" />
-          <button className=" bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-5 py-2">
-            Upload Image
-          </button>
+        <img
+            src={preview ? preview : Profile}
+            alt="Profile"
+            className={`w-40 h-40 ${
+              preview ? " rounded-3xl object-cover" : ""
+            }`}
+          />
+
+          <div
+            className={`relative text-base  bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] lg:w-40 h-12   my-5  `}
+          >
+            <p className=" absolute text-lg  py-2.5 text-center right-4">
+              Upload Image
+            </p>
+            <input
+              type="file"
+              onChange={handleFileChange}
+              className="opacity-0 w-full h-full"
+            />
+          </div>
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid lg:grid-cols-12 md:grid-cols-10 mx-6 gap-6 ">
@@ -130,9 +183,21 @@ const AddTeam = () => {
           </div>
           <button
             type="submit"
-            className="lg:absolute bottom-10 mx-6   bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-16 py-2"
+            className={`lg:absolute text-lg bottom-10 mx-6   bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-16 py-2 ${
+              isSaving ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            disabled={isSaving}
           >
-            Save
+            {isSaving ? (
+              <>
+                <div className="flex  text-xl gap-2">
+                  <span className="animate-spin border-4 border-t-4 border-white border-solid rounded-full w-8 h-8 mx-auto "></span>{" "}
+                  Saving...
+                </div>
+              </>
+            ) : (
+              "Save"
+            )}
           </button>
         </form>{" "}
       </div>
