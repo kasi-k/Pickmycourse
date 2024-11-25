@@ -8,6 +8,7 @@ import Delete from "../../assets/delete.png"
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { API } from "../../Host";
+import { toast } from 'react-toastify';
 
 const User = () => {
   const[user,setUser]=useState([])
@@ -34,8 +35,10 @@ const User = () => {
     }
   };
   const handleDeleteModal=(dataId)=>{
+    
   setOnDelete(`${API}/api/deleteuser/${dataId}`); 
    setIsDeleteModal(true)
+ 
   }
   const handleCloseModal=()=>{
     setIsDeleteModal(false)

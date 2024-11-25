@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PMCLogo from "../../assets/PMC_logo.png";
 import frame from "../../assets/backframe.png";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +7,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
 import { API } from "../../Host";
+import { IoIosEye } from "react-icons/io";
+import { IoIosEyeOff } from "react-icons/io";
+import { toast } from "react-toastify";
+
 const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
 // min 6 characters, 1 upper case letter, 1 lower case letter, 1 numeric digit.
 const schema = yup
@@ -30,6 +34,7 @@ const schema = yup
 
 const Login = () => {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
   const {
     register,
     handleSubmit,
@@ -43,19 +48,14 @@ const Login = () => {
       ...data,
     };
     try {
-      const response = await axios.post(
-        `${API}/api/adminsignin`,
-        formData
-      );
-     
+      const response = await axios.post(`${API}/api/adminsignin`, formData);
+
       const responseData = response.data;
       console.log(responseData.adminData);
       console.log(responseData.adminData.email);
 
-      
-
       if (response.status === 200) {
-        // toast.success("Logged in Successfully");
+        toast.success("Logged in Successfully");
         localStorage.setItem("email", responseData.adminData.email);
         localStorage.setItem("password", responseData.adminData.password);
         navigate("/dashboard");
@@ -92,10 +92,18 @@ const Login = () => {
               </label>
               <input
                 {...register("password")}
-                // type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Enter Password"
                 className="py-1.5  z-10 rounded-md text-center text-black"
               />
+              <p
+                onClick={() => setShowPassword(!showPassword)}
+                className="flex justify-end items-center mx-4"
+              >
+                <p className="absolute top-60 my-[60px] z-10 ">
+                  {showPassword ? <IoIosEye /> : <IoIosEyeOff />}
+                </p>
+              </p>
               <p className="text-red-700">{errors.password?.message}</p>
               <div className="text-end cursor-pointer">
                 <span

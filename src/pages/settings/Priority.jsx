@@ -77,6 +77,7 @@ const Priority = () => {
             <hr />
           </div>
         ))}
+        {}
       {isDeleteModal && (
         <DeleteModal
           onClose={handleCloseModal}

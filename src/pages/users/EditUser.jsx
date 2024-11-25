@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Profile from "../../assets/profile.png"
 import UpdatePhone from './UpdatePhone';
 import UpdateEmail from "./UpdateEmail"
+import UpdateImage from './UpdateImage';
 import axios from "axios";
 import { API } from "../../Host";
 
@@ -118,6 +119,7 @@ const EditUser = () => {
           </div>
         </div>
     </div>
+    {isProfileModal && <UpdateImage CloseProfileModal={CloseProfileModal} />}
     {isModal && <UpdateEmail CloseEmailModal={CloseEmailModal}/>}
     {isPhoneModal && <UpdatePhone ClosePhoneModal={ClosePhoneModal}/>}
     </>

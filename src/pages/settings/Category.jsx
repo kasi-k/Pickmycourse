@@ -78,6 +78,7 @@ const Category = () => {
             <hr />
           </div>
         ))}
+        
 
       {isDeleteModal && (
         <DeleteModal
