@@ -8,7 +8,6 @@ import Delete from "../../assets/delete.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API } from "../../Host";
-import { toast } from "react-toastify";
 
 const User = () => {
   const [user, setUser] = useState([]);
@@ -39,9 +38,6 @@ const User = () => {
     setIsDeleteModal(false);
   };
 
-  const handleEditModal = () => {
-    navigate("/edit_user");
-  };
   const handleAddUserModal = () => {
     navigate("/add_user");
   };
@@ -123,7 +119,13 @@ const User = () => {
                     <td className="border border-slate-400  ">22-05-1990</td>
                     <td className=" border-b border-r border-slate-400 flex justify-around items-center  ">
                       <p
-                        onClick={() => handleEditModal()}
+                         onClick={() =>
+                          navigate(`/edit_user`, {
+                            state: {
+                               userId:data._id
+                            },
+                          })
+                        }
                         className=" cursor-pointer mx-1 p-1 text-green-600 "
                       >
                         <img className="size-6" src={Edit} alt="edit image" />

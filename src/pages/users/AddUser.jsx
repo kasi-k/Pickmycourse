@@ -65,7 +65,6 @@ const AddUser = () => {
       const response = await axios.post(`${API}/api/usersignup`, formData);
       const resuserid = response.data.userId._id;
       console.log(resuserid);
-      
 
       if (response.status === 200 && selectedFile !== null) {
         localStorage.setItem("user", resuserid);
