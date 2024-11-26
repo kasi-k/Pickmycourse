@@ -14,7 +14,7 @@ const Category = () => {
 
   useEffect(() => {
     fetchCategory();
-  }, [isDeleteModal]);
+  }, [isDeleteModal,category]);
 
   const fetchCategory = async () => {
     try {
@@ -60,7 +60,7 @@ const Category = () => {
           <div key={index}>
             <div className="flex justify-between mx-4 py-2 h-full">
               <p>{data.category}</p>
-              <div className="flex mr-6 size-4 gap-2">
+              <div className="flex mr-6 size-4 gap-2 cursor-pointer">
                 <img
                   onClick={() => handleEditModal(data._id, data.category)}
                   src={EditImage}

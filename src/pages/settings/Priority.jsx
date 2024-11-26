@@ -14,7 +14,7 @@ const Priority = () => {
 
   useEffect(() => {
     fetchPriority();
-  }, [isDeleteModal]);
+  }, [isDeleteModal,priority]);
 
   const fetchPriority = async () => {
     try {
@@ -59,7 +59,7 @@ const Priority = () => {
           <div key={index}>
             <div className="flex justify-between mx-4 py-2 ">
               <p>{data.priority}</p>
-              <div className="flex mr-6 size-4 gap-2">
+              <div className="flex mr-6 size-4 gap-2 cursor-pointer">
                 <img
                   onClick={() => handleEditModal(data._id, data.priority)}
                   src={EditImage}

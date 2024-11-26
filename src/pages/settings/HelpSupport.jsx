@@ -44,7 +44,7 @@ const HelpSupport = () => {
             status
           </p>
         </div>
-        <div className="">
+        <div className="cursor-pointer">
           <p className="text-sm mt-5" onClick={() => setAddModal("1")}>
             {" "}
             {activeTab === "tab1" ? "Add Category" : ""}
@@ -58,14 +58,14 @@ const HelpSupport = () => {
         </div>
       </div>
       <hr />
-      {activeTab === "tab1" && <Category />}
+      {activeTab === "tab1" && <Category/>}
       {activeTab === "tab2" && <Priority />}
       {activeTab === "tab3" && <Status />}
       <div className="my-32">
         {activeTab === "tab1" && addModal === "1" ? (
-          <AddCategory />
+          <AddCategory onClose={()=>setAddModal(!addModal)}/>
         ) : activeTab === "tab2" && addModal === "2" ? (
-          <AddPriority />
+          <AddPriority onClose={()=>setAddModal(!addModal)} />
         ) : activeTab === "tab3" && addModal === "3" ? (
           <AddStatus />
         ) : (

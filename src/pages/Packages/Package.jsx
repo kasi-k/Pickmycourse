@@ -63,11 +63,11 @@ const Package = () => {
         </button>
       </div>
       <hr />
-      <div className=" grid  gap-4 my-6 mx-6 lg:grid-cols-12 md:grid-cols-10  ">
+      <div className=" grid  gap-4 my-6 mx-6  lg:grid-cols-12 md:grid-cols-10 ">
         {data &&
           data.map((plan, index) => (
-            <div className="col-span-3 bg-[#000928] " key={index}>
-              <div className=" grid  justify-center  ">
+            <div className="col-span-3 bg-[#000928]" key={index}>
+              <div className=" grid  justify-center">
                 <p className=" text-center my-4">{plan.packagename}</p>
                 <p className=" bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-14 py-1.5 ">
                   $ {plan.price} / Month
@@ -78,11 +78,14 @@ const Package = () => {
                 <p> Up to {plan.subtopic} subtopics </p>
                 <p> AI Teacher</p>
                 <p>Theory & Image course</p>
+                {plan.coursetype !== "Video & Text Course" && (
+                  <p>Video Course not available.</p>
+                )}
                 {plan.coursetype === "Video & Text Course" && (
                   <p>Theory & Video Course </p>
                 )}
               </div>
-              <p className=" float-end bg-white py-1  mx-1 mt-6 ">
+              <p className=" float-end bg-white py-1 mx-1">
                 <button className="  bg-slate-500 py-1 px-1 mx-2 rounded-sm">
                   <FiShare2 />
                 </button>

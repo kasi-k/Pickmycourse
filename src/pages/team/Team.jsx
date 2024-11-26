@@ -8,11 +8,14 @@ import Delete from "../../assets/delete.png"
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { API } from "../../Host";
+import EditTeam from './EditTeam';
 
 const Team = () => {
   const[team,setTeam]=useState([])
     const[isDeleteModal,setIsDeleteModal,]=useState(false)
     const [onDelete, setOnDelete] = useState("");
+    const[isEditmodal,setIsEditModal]=useState(false)
+    const[onEdit,setOnEdit] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -38,7 +41,9 @@ const Team = () => {
       setIsDeleteModal(false)
     }
     
-     const handleEditModal=()=>{
+     const handleEditModal=(dataId)=>{
+      setOnEdit(`${API}/api/getadminbyid/${dataId}`); 
+      setIsEditModal(true)
       navigate("/edit_team ")
      }
      const handleAddTeamModal=()=>{
@@ -108,12 +113,14 @@ const Team = () => {
               <td className="border border-slate-400">{data.dob}</td>
               <td className="border border-slate-400 ">{data.designation}</td>
               <td className=" border-b border-r border-slate-400 flex justify-around items-center  ">
-                <p onClick={handleEditModal} className=" cursor-pointer p-2  text-green-600 ">
-                  <img className='size-8' src={Edit} alt="edit image" />
+                <p   onClick={() => {
+                    handleEditModal(data._id);
+                  }}  className=" cursor-pointer p-1  text-green-600 ">
+                  <img className='size-6' src={Edit} alt="edit image" />
                 </p>
                  <p  onClick={() => {
                     handleDeleteModal(data._id);
-                  }} className="cursor-pointer size-9">
+                  }} className="cursor-pointer size-6">
                      <img src={Delete} alt="delete image" />
                     </p>
               </td> 
@@ -124,6 +131,7 @@ const Team = () => {
       </div>
     </div>
     {isDeleteModal&&<DeleteModal onClose={handleCloseModal} title="team" onDelete={onDelete} />} 
+    
     </>
   )
 }

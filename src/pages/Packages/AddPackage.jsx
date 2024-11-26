@@ -7,6 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
 import { API } from "../../Host";
+import { toast } from "react-toastify";
 const schema = yup.object().shape({
   packagename: yup.string().trim().required("Package name is required"),
   price: yup.number().required("price is required"),
@@ -26,7 +27,7 @@ const schema = yup.object().shape({
 });
 
 const AddPackage = () => {
-  const[isSaving,setIsSaving]=useState(false)
+  const [isSaving, setIsSaving] = useState(false);
   const navigate = useNavigate();
   const {
     register,
@@ -39,7 +40,7 @@ const AddPackage = () => {
   const watchSubtopics = watch("subtopic");
   const watchCourseType = watch("coursetype");
   const onSubmit = async (data) => {
-    setIsSaving(true)
+    setIsSaving(true);
     console.log(data);
     const formData = {
       ...data,
@@ -51,6 +52,7 @@ const AddPackage = () => {
       );
 
       if (response.status === 200) {
+        toast.success("Package created Successfully");
         navigate("/packages");
       }
     } catch (error) {
@@ -226,11 +228,19 @@ const AddPackage = () => {
           </div>
           <button
             type="submit"
-            className={`my-6 text-white bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-14 py-2 ${isSaving ? 'opacity-50 cursor-not-allowed' : ''} `}
+            className={`my-6 text-white bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-14 py-2 ${
+              isSaving ? "opacity-50 cursor-not-allowed" : ""
+            } `}
             disabled={setIsSaving}
           >
-             {isSaving ? (
-              <div className="animate-spin border-4 border-t-4 border-white border-solid rounded-full w-6 h-6 mx-auto"></div>
+            {isSaving ? (
+              <div className="flex  text-xl gap-2">
+                <span
+                  className="animate-spin border-4 border-t-4 border-white
+                  border-solid rounded-full w-6 h-6 mx-auto">
+                </span>
+                Saving....
+              </div>
             ) : (
               "Save"
             )}

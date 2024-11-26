@@ -23,8 +23,8 @@ const EditUser = () => {
   const fetchUser = async () => {
     try {
       const response = await axios.get(`${API}/api/getusersbyid/${user}`);
-      const responseData = response.data.user;
-      setUserData(responseData);
+     const responseData = response.data.user;
+     setUserData(responseData);
     } catch (error) {
       console.log(error);
     }

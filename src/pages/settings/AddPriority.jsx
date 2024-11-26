@@ -4,6 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
 import { API } from "../../Host";
+import { toast } from "react-toastify";
 
 const schema = yup
   .object()
@@ -15,7 +16,7 @@ const schema = yup
   })
   .required();
 
-const AddPriority = () => {
+const AddPriority = ({onClose}) => {
   const {
     register,
     handleSubmit,
@@ -40,6 +41,11 @@ const AddPriority = () => {
       
 
       if (response.status === 200) {
+        toast.success("New Priority Added")
+        if(onClose){
+          onClose();
+        }
+        
       }
     } catch (error) {
       console.log(error);

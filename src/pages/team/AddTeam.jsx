@@ -6,6 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
 import { API } from "../../Host";
+import { toast } from "react-toastify";
 
 const schema = yup.object().shape({
   fname: yup.string().trim().required("First name is required"),
@@ -54,20 +55,20 @@ const AddTeam = () => {
   };
 
   const onSubmit = async (data) => {
-    setIsSaving(true)
+    setIsSaving(true);
     console.log(data);
     const formData = {
       ...data,
     };
     try {
       const response = await axios.post(`${API}/api/adminsignup`, formData);
-      const resuserid = response.data.email;
-      console.log(resuserid);
+      const reAdminId = response.data.userId;
+      console.log(reAdminId);
 
       if (response.status === 200 && selectedFile !== null) {
         const payload = {
           name: selectedFile.name,
-          user: resuserid,
+          user: reAdminId,
           image: base64Image,
         };
 
@@ -77,9 +78,12 @@ const AddTeam = () => {
         toast.success("AdminId and profile Image created Successfully");
         navigate("/team");
       } else toast.success("User created Successfully");
-
+      navigate("/team");
     } catch (error) {
-      console.log("error");
+      console.log(
+        "error",
+        error.response ? error.response.data : error.message
+      );
     }
   };
 
@@ -89,7 +93,7 @@ const AddTeam = () => {
         <p className=" mx-2 text-lg ">Add a new team</p>
         <hr />
         <div className="mx-12 my-6 space-y-1">
-        <img
+          <img
             src={preview ? preview : Profile}
             alt="Profile"
             className={`w-40 h-40 ${
@@ -118,7 +122,7 @@ const AddTeam = () => {
                 {...register("fname")}
                 type="text"
                 placeholder="Enter First name"
-                className="outline-none text-black rounded-md py-1.5 px-1 my-3 "
+                className="outline-none text-black rounded-md py-1.5 px-3 my-3 "
               />
               <p className="text-red-700">{errors.fname?.message}</p>
             </div>
@@ -128,7 +132,7 @@ const AddTeam = () => {
                 {...register("lname")}
                 type="text"
                 placeholder="Enter Last name"
-                className="outline-none text-black rounded-md py-1.5 px-1 my-3"
+                className="outline-none text-black rounded-md py-1.5 px-3 my-3"
               />
               <p className="text-red-700">{errors.lname?.message}</p>
             </div>
@@ -138,7 +142,7 @@ const AddTeam = () => {
                 {...register("email")}
                 type="email"
                 placeholder="Enter Email"
-                className="outline-none text-black rounded-md py-1.5 px-1 my-3"
+                className="outline-none text-black rounded-md py-1.5 px-3 my-3"
               />
               <p className="text-red-700">{errors.email?.message}</p>
             </div>
@@ -149,7 +153,7 @@ const AddTeam = () => {
               <input
                 {...register("phone")}
                 type="text"
-                className="outline-none text-black rounded-md py-1.5 px-1 my-3"
+                className="outline-none text-black rounded-md py-1.5 px-3 my-3"
                 placeholder="Enter Mobile Number"
               />
               <p className="text-red-700">{errors.phone?.message}</p>
@@ -159,7 +163,7 @@ const AddTeam = () => {
               <input
                 {...register("dob")}
                 type="date"
-                className="outline-none text-black rounded-md py-1.5 px-1 my-3"
+                className="outline-none text-black rounded-md py-1.5 px-3 my-3"
               />
               <p className="text-red-700">{errors.dob?.message}</p>
             </div>
@@ -170,7 +174,7 @@ const AddTeam = () => {
               <select
                 {...register("designation")}
                 defaultValue="select"
-                className="outline-none text-black rounded-md py-1.5 px-1 my-3"
+                className="outline-none text-black rounded-md py-1.5 px-3 my-3"
               >
                 <option value="select" disabled>
                   Select Designation
