@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useState } from "react";
 import Headers from "./Headers";
 import profile from "../../assets/profile.png";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
@@ -13,21 +13,34 @@ import team from "../../assets/team.png"
 import help from "../../assets/services.png"
 import report from "../../assets/report.png"
 import setting from "../../assets/settings.png"
+import logout from "../../assets/logout.png";
+import LogOut from "../auth/LogOut";
 const Layout = () => {
   const location = useLocation();
+  const [isLogOutModalOpen, setLogOutModalOpen] = useState(false);
   const Menus = [
     { title: "Dashboard", icon: dashboard, to: "/dashboard" },
      { title: "Packages", icon: Package, to: "/packages"},
      { title: "Courses", icon:course, to: "/courses" },
-     { title: "Generate course", icon:gc, to: "/generate course" },
+     { title: "Generate course", icon:gc, to: "/create" },
      { title: "Subscriptions", icon:subscribe, to: "/subscription" }, 
      { title: "Users", icon:user, to: "/users" },
      { title: "Team", icon:team, to: "/team" },
      { title: "Help & Support", icon:help, to: "/help_support" },
      { title: "Reports", icon:report, to: "/report" },
      { title: "Settings", icon:setting, to: "/setting" },
+     {
+      title: "Logout",
+      icon: logout,
+      to: "#",
+      onClick: () => setLogOutModalOpen(true),
+    },
+    
      
   ];
+  const handleCloseModal = () => {
+    setLogOutModalOpen(false);
+  };
 
   return (
     <div className="">
@@ -51,7 +64,7 @@ const Layout = () => {
             <ul className="pt-2">
               {Menus.map((menu, index) => (
                 <React.Fragment key={index}>
-                  <NavLink to={menu.to}>
+                  <NavLink to={menu.to} onClick={menu.onClick}>
                     <li
                       className={` cursor-pointer text-md flex items-center gap-x-3 p-1.5 mt-1 pl-3 transition-all duration-700 hover:bg-gradient-to-r from-[#110038] to-[#08006B] font-extralight   ${
                         location.pathname === menu.to
@@ -81,6 +94,7 @@ const Layout = () => {
           </Suspense>
         </div>
       </div>
+      {isLogOutModalOpen && <LogOut handleCloseModal={handleCloseModal} />}
     </div>
   );
 };

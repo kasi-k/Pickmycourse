@@ -54,10 +54,14 @@ const Login = () => {
       console.log(responseData.adminData);
       console.log(responseData.adminData.email);
 
+
       if (response.status === 200) {
         toast.success("Logged in Successfully");
         localStorage.setItem("email", responseData.adminData.email);
-        localStorage.setItem("password", responseData.adminData.password);
+        localStorage.setItem("fname", responseData.adminData.fname);
+        localStorage.setItem("lname", responseData.adminData.lname);
+        localStorage.setItem("phone", responseData.adminData.phone);
+        localStorage.setItem("user", responseData.adminData._id);
         navigate("/dashboard");
       }
     } catch (error) {

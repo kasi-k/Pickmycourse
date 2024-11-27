@@ -27,6 +27,9 @@ import ViewTicket from "./pages/Help and Support/ViewTicket";
 import AddRole from "./pages/settings/AddRole";
 import ResetPassword from "./pages/login/ResetPassword";
 import Category from "./pages/settings/Category";
+import ListTopics from "./pages/generate courses/ListTopics";
+import Content from "./pages/generate courses/Content";
+import ViewCertificate from "./pages/generate courses/ViewCertificate";
 const App = () => {
   return (
     <>
@@ -35,14 +38,17 @@ const App = () => {
           <Route path="" element={<Login />} />
           <Route path="/forgot_password" element={<ForgotPassword />} />
           <Route path="/reset_password" element={<ResetPassword />} />
+          <Route path="/content" element={<Content />} />
           <Route path="/" element={<Layout />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/packages" element={<Package />} />
             <Route path="/add_package" element={<AddPackage />} />
             <Route path="/add_userPackage" element={<AdduserPackage />} />
             <Route path="/courses" element={<Courses />} />
-            <Route path="/generate course" element={<GenerateCourse />} />
+            <Route path="/create" element={<GenerateCourse />} />
+            <Route path="/topics" element={<ListTopics />} />
             <Route path="/view_course" element={<ViewOwnCourse />} />
+            <Route path="/viewcertificate" element={<ViewCertificate/>} />
             <Route path="/subscription" element={<Subscription />} />
             <Route path="/users" element={<User />} />
             <Route path="/add_user" element={<AddUser />} />
@@ -60,7 +66,18 @@ const App = () => {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
-      <ToastContainer />
+      <ToastContainer
+        position="top-right"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </>
   );
 };

@@ -110,7 +110,7 @@ const Team = () => {
                 <p    onClick={() =>
                           navigate(`/edit_team`, {
                             state: {
-                               adminId:data._id
+                               userId:data._id
                             },
                           })
                         }

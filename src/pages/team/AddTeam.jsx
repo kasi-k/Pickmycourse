@@ -59,6 +59,7 @@ const AddTeam = () => {
     console.log(data);
     const formData = {
       ...data,
+      password:"Admin@123"
     };
     try {
       const response = await axios.post(`${API}/api/adminsignup`, formData);
@@ -77,7 +78,7 @@ const AddTeam = () => {
         console.log(responseData);
         toast.success("AdminId and profile Image created Successfully");
         navigate("/team");
-      } else toast.success("User created Successfully");
+      } else toast.success("New Admin created Successfully");
       navigate("/team");
     } catch (error) {
       console.log(

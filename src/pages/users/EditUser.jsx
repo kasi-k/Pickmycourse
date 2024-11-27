@@ -44,26 +44,13 @@ const EditUser = () => {
   } = useForm({
     resolver: yupResolver(EditSchema),
   });
-  const onSubmit = async (data) => {
-    const formData = {
-      ...data,
-    };
-    try {
-      const response = await axios.get(`${API}/api/getusers`, formData);
-
-      if (response.status === 200) {
-      }
-    } catch (error) {
-      console.error("Error in posting data", error);
-    }
-  };
 
   const fetchUser = async () => {
     try {
       const response = await axios.get(`${API}/api/getusersbyid/${userId}`);
       const responseData = response.data.user;
       setUserData(responseData);
-      
+
       const data = response.data.user;
       setValue("fname", data.fname);
       setValue("lname", data.lname);
@@ -86,7 +73,12 @@ const EditUser = () => {
       console.log(error);
     }
   };
-  
+  const onSubmit = async (data) => {
+    const formData = {
+      ...data,
+    };
+    
+  };
 
   const CloseProfileModal = () => {
     setIsProfileModal(!isProfileModal);
@@ -128,11 +120,13 @@ const EditUser = () => {
                 <div className="flex flex-col">
                   <label className="mb-6 ">First Name</label>
                   <input
+                    disabled
                     type="text"
                     id="fname"
-                    className=" outline-none bg-transparent lg:w-1/2 md:w-1/2 w-28"
+                    className=" outline-none bg-transparent lg:w-1/2 md:w-1/2 w-28 px-2"
                     {...register("fname")}
                   />
+                  <p className="text-red-700">{errors.fname?.message}</p>
                 </div>
                 <hr className="lg:w-1/2 md:w-1/2 w-20" />
               </div>
@@ -140,11 +134,13 @@ const EditUser = () => {
                 <div className="flex flex-col">
                   <label className="mb-6 ">Last Name</label>
                   <input
+                    disabled
                     type="text"
                     id="lname"
-                    className=" outline-none bg-transparent lg:w-1/2 md:w-1/2 w-28"
+                    className=" outline-none bg-transparent lg:w-1/2 md:w-1/2 w-28 px-2"
                     {...register("lname")}
                   />
+                  <p className="text-red-700">{errors.lname?.message}</p>
                 </div>
                 <hr className="lg:w-1/2 md:w-1/2 w-20" />
               </div>
@@ -152,11 +148,13 @@ const EditUser = () => {
                 <div className="flex flex-col">
                   <label className="mb-6 ">Date Of Birth</label>
                   <input
+                    disabled
                     type="date"
                     id="dob"
-                    className="outline-none bg-transparent lg:w-1/2 md:w-1/2 w-28"
+                    className="outline-none bg-transparent lg:w-1/2 md:w-1/2 w-28 px-2"
                     {...register("dob")}
                   />
+                  <p className="text-red-700">{errors.dob?.message}</p>
                 </div>
                 <hr className="lg:w-1/2 md:w-1/2 w-28" />
               </div>
@@ -170,13 +168,20 @@ const EditUser = () => {
                   <input
                     type="email"
                     id="email"
-                    className="bg-transparent outline-none lg:w-54 md:w-54 w-48"
+                    className="bg-transparent outline-none lg:w-54 md:w-54 w-48 px-2"
                     {...register("email")}
                   />
+                  <p className="text-red-700">{errors.email?.message}</p>
                 </div>
                 <hr className="lg:w-54 md:w-54 w-48 mb-6" />
                 <button
-                  onClick={() => setIsModal(true)}
+                  onClick={() =>
+                    setIsModal(true, {
+                      // state: {
+                      //   userId:data._id,
+                      // },
+                    })
+                  }
                   className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-5 py-2"
                 >
                   Update
@@ -189,9 +194,10 @@ const EditUser = () => {
                     type="tel"
                     name="phone"
                     id="phone"
-                    className="bg-transparent  outline-none lg:w-1/2 md:w-54 w-48"
+                    className="bg-transparent  outline-none lg:w-1/2 md:w-54 w-48 px-2"
                     {...register("phone")}
                   />
+                  <p className="text-red-700">{errors.phone?.message}</p>
                 </div>
                 <hr className="lg:w-1/2 md:w-54 w-48 mb-6" />
                 <button
