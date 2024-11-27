@@ -2,12 +2,16 @@ import React, { useState } from "react";
 import Modal from "../../components/Modal";
 import axios from "axios";
 import { API } from "../../Host";
-// import { toast } from "react-toastify";
+import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
+
 
 const UpdateImage = ({ CloseProfileModal }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [base64Image, setBase64Image] = useState("");
   const [preview, setPreview] = useState("");
+  const location = useLocation();
+  const userId = location.state?.userId;
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -17,7 +21,7 @@ const UpdateImage = ({ CloseProfileModal }) => {
     }
     const maxSizeInBytes = 2 * 1024 * 1024; // 2MB
     if (file.size > maxSizeInBytes) {
-      // toast.error("File size exceeds 2MB!");
+       toast.error("File size exceeds 2MB!");
       return;
     }
     setSelectedFile(file);
@@ -32,20 +36,20 @@ const UpdateImage = ({ CloseProfileModal }) => {
 
   const handleUpload = async () => {
     if (!selectedFile) {
-      // toast.error("No file selected!");
+      toast.error("No file selected!");
       return;
     }
 
     const payload = {
       name: selectedFile.name,
-      user: localStorage.getItem("user"),
+      user: userId,
       image: base64Image,
     };
 
     try {
       const response = await axios.post(`${API}/api/images`, payload);
       if (response.status === 200) {
-        // toast.success("Profile Image Updated Succesfully");
+        toast.success("Profile Image Updated Succesfully");
         CloseProfileModal();
       } else {
         console.log("Failed to Upload");
@@ -99,7 +103,7 @@ const UpdateImage = ({ CloseProfileModal }) => {
             className={` font-normal   bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] text-center w-36 py-2.5 my-2 `}
             onClick={handleUpload}
           >
-            Upload Image
+            Change Image
           </button>
         </div>
       </div>

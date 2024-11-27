@@ -1,9 +1,78 @@
-import React from "react";
+import React, { useState } from "react";
 import Profile from "../../assets/profile.png";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import axios from "axios";
+import { API } from "../../Host";
+import { toast } from "react-toastify";
+
+
+const schema = yup.object().shape({
+  fname: yup.string().trim().required("First name is required"),
+  lname: yup.string().required("Last name is required"),
+  email: yup
+    .string()
+    .email("Please Enter a valid Email")
+    .trim()
+    .required("Email is required"),
+  phone: yup.string().required("Please enter mob.no"),
+  dob: yup.string().required("Please enter Date of birth"),
+  designation: yup.string().required("Please select Designation"),
+});
 
 const EditTeam = () => {
+  const [isProfileModal, setIsProfileModal] = useState(false);
+  const location = useLocation();
+  const userId = location.state?.userId;
+  const [userData, setUserData] = useState({});
+  const [userImage, setUserImage] = useState({});
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchTeam();
+    fetchImage();
+  }, [isProfileModal]);
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(EditSchema),
+  });
+  const onSubmit = async (data) => {
+    const formData = {
+      ...data,
+    };
+    try {
+      const response = await axios.get(`${API}/api/getadmin`, formData);
+
+      if (response.status === 200) {
+      }
+    } catch (error) {
+      console.error("Error in posting data", error);
+    }
+  };
+
+  const fetchUser = async () => {
+    try {
+      const response = await axios.get(`${API}/api/getadminbyid/${userId}`);
+      const responseData = response.data.user;
+      setUserData(responseData);
+      
+      const data = response.data.user;
+      setValue("fname", data.fname);
+      setValue("lname", data.lname);
+      setValue("dob", data.dob);
+      setValue("email", data.email);
+      setValue("phone", data.phone);
+      setValue("designation",data.designation);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const redirectTeam = () => {
     navigate("/team");
   };

@@ -3,15 +3,31 @@ import Profile from "../../assets/profile.png";
 import UpdatePhone from "./UpdatePhone";
 import UpdateEmail from "./UpdateEmail";
 import UpdateImage from "./UpdateImage";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import axios from "axios";
 import { API } from "../../Host";
 import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
+
+const EditSchema = yup.object().shape({
+  fname: yup.string().trim().required("First name is required"),
+  lname: yup.string().required("Last name is required"),
+  dob: yup.string().required("Please enter Date of birth"),
+  email: yup
+    .string()
+    .email("Please Enter a valid Email")
+    .trim()
+    .required("Email is required"),
+  phone: yup.string().required("Please enter mob.no"),
+});
 
 const EditUser = () => {
   const [isModal, setIsModal] = useState(false);
   const [isPhoneModal, setIsPhoneModal] = useState(false);
   const [isProfileModal, setIsProfileModal] = useState(false);
-  const location = useLocation()
+  const location = useLocation();
   const userId = location.state?.userId;
   const [userData, setUserData] = useState({});
   const [userImage, setUserImage] = useState({});
@@ -20,12 +36,40 @@ const EditUser = () => {
     fetchUser();
     fetchImage();
   }, [isProfileModal]);
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(EditSchema),
+  });
+  const onSubmit = async (data) => {
+    const formData = {
+      ...data,
+    };
+    try {
+      const response = await axios.get(`${API}/api/getusers`, formData);
+
+      if (response.status === 200) {
+      }
+    } catch (error) {
+      console.error("Error in posting data", error);
+    }
+  };
 
   const fetchUser = async () => {
     try {
       const response = await axios.get(`${API}/api/getusersbyid/${userId}`);
       const responseData = response.data.user;
       setUserData(responseData);
+      
+      const data = response.data.user;
+      setValue("fname", data.fname);
+      setValue("lname", data.lname);
+      setValue("dob", data.dob);
+      setValue("email", data.email);
+      setValue("phone", data.phone);
     } catch (error) {
       console.log(error);
     }
@@ -33,13 +77,16 @@ const EditUser = () => {
 
   const fetchImage = async () => {
     try {
-      const response = await axios.get(`${API}/api/getimagebyid?user=${userId}`); 
+      const response = await axios.get(
+        `${API}/api/getimagebyid?user=${userId}`
+      );
       const responseData = response.data.user;
-       setUserImage(responseData);
+      setUserImage(responseData);
     } catch (error) {
       console.log(error);
     }
   };
+  
 
   const CloseProfileModal = () => {
     setIsProfileModal(!isProfileModal);
@@ -75,76 +122,87 @@ const EditUser = () => {
         <div className="mx-2 ">
           <p className="my-2">Personal Information</p>
           <hr />
-          <div className="grid grid-cols-12 my-6 mx-4 text-slate-400">
-            <div className="col-span-4  ">
-              <div className="flex flex-col">
-                <label className="mb-6 ">First Name</label>
-                <input
-                  type="text"
-                  className=" outline-none bg-transparent lg:w-1/2 md:w-1/2 w-28"
-                />
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="grid grid-cols-12 my-6 mx-4 text-slate-400">
+              <div className="col-span-4  ">
+                <div className="flex flex-col">
+                  <label className="mb-6 ">First Name</label>
+                  <input
+                    type="text"
+                    id="fname"
+                    className=" outline-none bg-transparent lg:w-1/2 md:w-1/2 w-28"
+                    {...register("fname")}
+                  />
+                </div>
+                <hr className="lg:w-1/2 md:w-1/2 w-20" />
               </div>
-              <hr className="lg:w-1/2 md:w-1/2 w-20" />
-            </div>
-            <div className="col-span-4 ">
-              <div className="flex flex-col">
-                <label className="mb-6 ">Last Name</label>
-                <input
-                  type="text"
-                  className=" outline-none bg-transparent lg:w-1/2 md:w-1/2 w-28"
-                />
+              <div className="col-span-4 ">
+                <div className="flex flex-col">
+                  <label className="mb-6 ">Last Name</label>
+                  <input
+                    type="text"
+                    id="lname"
+                    className=" outline-none bg-transparent lg:w-1/2 md:w-1/2 w-28"
+                    {...register("lname")}
+                  />
+                </div>
+                <hr className="lg:w-1/2 md:w-1/2 w-20" />
               </div>
-              <hr className="lg:w-1/2 md:w-1/2 w-20" />
-            </div>
-            <div className="col-span-4">
-              <div className="flex flex-col">
-                <label className="mb-6 ">Date Of Birth</label>
-                <input
-                  type="date"
-                  className="outline-none bg-transparent lg:w-1/2 md:w-1/2 w-28"
-                />
+              <div className="col-span-4">
+                <div className="flex flex-col">
+                  <label className="mb-6 ">Date Of Birth</label>
+                  <input
+                    type="date"
+                    id="dob"
+                    className="outline-none bg-transparent lg:w-1/2 md:w-1/2 w-28"
+                    {...register("dob")}
+                  />
+                </div>
+                <hr className="lg:w-1/2 md:w-1/2 w-28" />
               </div>
-              <hr className="lg:w-1/2 md:w-1/2 w-28" />
             </div>
-          </div>
-          <p className="my-2">Contact Information</p>
-          <hr />
-          <div className="grid lg:grid-cols-3 mx-2 my-8 gap-4">
-            <div>
-              <div className="flex flex-col">
-                <label className="mb-6">Email</label>
-                <input
-                  type="email"
-                  className="bg-transparent outline-none lg:w-54 md:w-54 w-48"
-                />
+            <p className="my-2">Contact Information</p>
+            <hr />
+            <div className="grid lg:grid-cols-3 mx-2 my-8 gap-4">
+              <div>
+                <div className="flex flex-col">
+                  <label className="mb-6">Email</label>
+                  <input
+                    type="email"
+                    id="email"
+                    className="bg-transparent outline-none lg:w-54 md:w-54 w-48"
+                    {...register("email")}
+                  />
+                </div>
+                <hr className="lg:w-54 md:w-54 w-48 mb-6" />
+                <button
+                  onClick={() => setIsModal(true)}
+                  className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-5 py-2"
+                >
+                  Update
+                </button>
               </div>
-              <hr className="lg:w-54 md:w-54 w-48 mb-6" />
-              <button
-                onClick={() => setIsModal(true)}
-                className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-5 py-2"
-              >
-                Update
-              </button>
-            </div>
-            <div>
-              <div className="flex flex-col">
-                <label className="mb-6">Phone</label>
-                <input
-                  type="tel"
-                  name="phone"
-                  id="phone"
-                  className="bg-transparent  outline-none lg:w-1/2 md:w-54 w-48"
-                />
+              <div>
+                <div className="flex flex-col">
+                  <label className="mb-6">Phone</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    id="phone"
+                    className="bg-transparent  outline-none lg:w-1/2 md:w-54 w-48"
+                    {...register("phone")}
+                  />
+                </div>
+                <hr className="lg:w-1/2 md:w-54 w-48 mb-6" />
+                <button
+                  onClick={() => setIsPhoneModal(true)}
+                  className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-5 py-2 "
+                >
+                  Update
+                </button>
               </div>
-              <hr className="lg:w-1/2 md:w-54 w-48 mb-6" />
-              <button
-                onClick={() => setIsPhoneModal(true)}
-                className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-5 py-2 "
-              >
-                Update
-              </button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
       {isProfileModal && <UpdateImage CloseProfileModal={CloseProfileModal} />}
