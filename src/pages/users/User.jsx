@@ -8,6 +8,7 @@ import Delete from "../../assets/delete.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API } from "../../Host";
+import { formatDate2 } from "../../Host";
 
 const User = () => {
   const [user, setUser] = useState([]);
@@ -113,7 +114,7 @@ const User = () => {
                     <td className="border border-slate-400 ">{data.lname}</td>
                     <td className="border border-slate-400">{data.email}</td>
                     <td className="border border-slate-400">{data.phone}</td>
-                    <td className="border border-slate-400">{data.dob}</td>
+                    <td className="border border-slate-400">{formatDate2(data.dob)}</td>
                     <td className="border border-slate-400 "> Basic</td>
                     <td className="border border-slate-400 ">2</td>
                     <td className="border border-slate-400  ">22-05-1990</td>

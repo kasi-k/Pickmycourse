@@ -4,6 +4,7 @@ import BinImage from "../../assets/bin.png";
 import axios from "axios";
 import { API } from "../../Host";
 import DeleteModal from "../../components/DeleteModal";
+import AddCategory from "./AddCategory";
 
 const Category = () => {
   const [category, setCategory] = useState([]);
@@ -87,7 +88,7 @@ const Category = () => {
           onDelete={onDelete}
         />
       )}
-      {onEdit && (
+      {onEdit &&(
         <div className=" font-extralight my-12 mx-4 space-y-6">
           <p>Edit Category</p>
           <input

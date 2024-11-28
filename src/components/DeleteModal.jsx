@@ -4,7 +4,7 @@ import { IoClose } from "react-icons/io5";
 import { toast } from 'react-toastify';
 
 const DeleteModal = ({title,onClose,onDelete,Children}) => {
-  console.log(onDelete);
+  
 
   const handleDeleteplan = async () => {
     try {
@@ -31,7 +31,7 @@ const DeleteModal = ({title,onClose,onDelete,Children}) => {
         </div>
     <div className='flex justify-around'>
         <button className=' text-white bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-4 py-2 ' onClick={()=>handleDeleteplan()}>Delete {title}</button>
-        <button className='text-black bg-white px-10 py-2'>Cancel</button>
+        <button onClick={onClose}className='text-black bg-white px-10 py-2'>Cancel</button>
         </div>
        
     </div>

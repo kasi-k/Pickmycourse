@@ -9,7 +9,6 @@ import { API } from "../../Host";
 import { toast } from "react-toastify";
 import UpdateImage from "../users/UpdateImage";
 
-
 const EditSchema = yup.object().shape({
   fname: yup.string().trim().required("First name is required"),
   lname: yup.string().required("Last name is required"),
@@ -43,22 +42,21 @@ const EditTeam = () => {
   } = useForm({
     resolver: yupResolver(EditSchema),
   });
- 
 
   const fetchTeam = async () => {
     try {
       const response = await axios.get(`${API}/api/getadminbyid/${userId}`);
       const responseData = response.data.user;
       setUserData(responseData);
-      
+
       const data = response.data.user;
-      
+
       setValue("fname", data.fname);
       setValue("lname", data.lname);
       setValue("dob", data.dob);
       setValue("email", data.email);
       setValue("phone", data.phone);
-      setValue("designation",data.designation);
+      setValue("designation", data.designation);
     } catch (error) {
       console.log(error);
     }
@@ -78,16 +76,25 @@ const EditTeam = () => {
     setIsProfileModal(!isProfileModal);
   };
 
-
   const onSubmit = async (data) => {
     const formData = {
       ...data,
     };
-    
-    
-  };
-    
+    try {
+      const response = await axios.put(
+        `${API}/api/adminupdate/${userId}`,
+        formData
+      );
+      console.log(response);
 
+      if (response.status === 200) {
+        toast.success("Admin Updated Successfully")
+        navigate("/team")
+      }
+    } catch (error) {
+      console.error("Error updating category:", error);
+    }
+  };
   return (
     <>
       <div className="font-extralight my-4">
@@ -98,123 +105,122 @@ const EditTeam = () => {
             Change Password
           </button>
           <div className="mx-10 ">
-          <img
-            src={userImage?.image ? userImage.image : Profile}
-            alt="Profile"
-            className={`w-40 h-40 ${
-              userImage?.image ? " rounded-3xl object-cover" : ""
-            }`}
-          />
-          <button
-            className={` text-base  bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] lg:w-40 md:w-40 w-40 py-2.5 my-5 `}
-            onClick={() => setIsProfileModal(true)}
-          >
-            Change Image
-          </button>
+            <img
+              src={userImage?.image ? userImage.image : Profile}
+              alt="Profile"
+              className={`w-40 h-40 ${
+                userImage?.image ? " rounded-3xl object-cover" : ""
+              }`}
+            />
+            <button
+              className={` text-base  bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] lg:w-40 md:w-40 w-40 py-2.5 my-5 `}
+              onClick={() => setIsProfileModal(true)}
+            >
+              Change Image
+            </button>
           </div>
-        </div> 
-        <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="mx-2 ">
-          <p className="my-2">Personal Information</p>
-          <hr />
-         
-          <div className="grid lg:grid-cols-12 my-6 mx-4 gap-4 text-slate-400">
-            <div className="col-span-3">
-              <div className="flex flex-col">
-                <label className="mb-7 ">First Name</label>
-                <input
-                  type="text"
-                  id="fname"
-                  className=" outline-none bg-transparent lg:w-2/3 md:w-1/2 w-28 px-2"
-                  {...register("fname")}
-                />
-                <p className="text-red-700">{errors.fname?.message}</p>
-              </div>
-              <hr className="lg:w-2/3 md:w-1/2 w-20" />
-            </div>
-            <div className="col-span-3 ">
-              <div className="flex flex-col">
-                <label className="mb-7 ">Last Name</label>
-                <input
-                  type="text"
-                  id="lname"
-                  className=" outline-none bg-transparent lg:w-2/3 md:w-1/2 w-28 px-2 "
-                  {...register("lname")}
-                />
-                <p className="text-red-700">{errors.lname?.message}</p>
-              </div>
-              <hr className="lg:w-2/3 md:w-1/2 w-20" />
-            </div>
-            <div className="col-span-3">
-              <div className="flex flex-col">
-                <label className="mb-6 ">Date Of Birth</label>
-                <input
-                  type="date"
-                  className="outline-none bg-transparent lg:w-2/3 md:w-1/2 w-28 "
-                  {...register("dob")}
-                />
-                <p className="text-red-700">{errors.dob?.message}</p>
-              </div>
-              <hr className="lg:w-2/3 md:w-1/2 w-28" />
-            </div>
-            <div className="col-span-3">
-              <div className="flex flex-col">
-                <label className="mb-3 ">Designation</label>
-                <select
-                {...register("designation")}
-                defaultValue="select"
-                className=" w-2/3 outline-none  rounded-md py-1.5 px-2  bg-transparent"
-              >
-                <option value="select" disabled>
-                  Select Designation
-                </option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-              </select>
-              <p className="text-red-700">{errors.designation?.message}</p>
-              </div>
-              <hr className="lg:w-2/3 md:w-1/2 w-28" />
-            </div>
-          </div>
-          <p className="my-2">Contact Information</p>
-          <hr />
-          <div className="font-extralight grid lg:grid-cols-3 mx-2 my-8 gap-4">
-            <div>
-              <div className="flex flex-col">
-                <label className="mb-6">Email</label>
-                <input
-                  type="email"
-                  id="email"
-                  className=" bg-transparent outline-none lg:w-54 md:w-54 w-48 px-2"
-                  {...register("email")}
-
-                />
-                <p className="text-red-700">{errors.email?.message}</p>
-              </div>
-              <hr className="lg:w-54 md:w-54 w-48 mb-6" />
-            </div>
-            <div>
-              <div className="flex flex-col">
-                <label className="mb-6">Phone</label>
-                <input
-                  type="tel"
-                  name="phone"
-                  id="phone"
-                  className="bg-transparent  outline-none lg:w-1/2 md:w-54 w-48 px-2"
-                  {...register("phone")}
-                />
-                <p className="text-red-700">{errors.phone?.message}</p>
-              </div>
-              <hr className="lg:w-1/2 md:w-54 w-48 mb-6" />
-            </div>
-          </div>
-          <button
-            type="submit"
-            className=" mx-2 bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-16 py-2"
-          >
-            Save
-          </button>
         </div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="mx-2 ">
+            <p className="my-2">Personal Information</p>
+            <hr />
+
+            <div className="grid lg:grid-cols-12 my-6 mx-4 gap-4 text-slate-400">
+              <div className="col-span-3">
+                <div className="flex flex-col">
+                  <label className="mb-7 ">First Name</label>
+                  <input
+                    type="text"
+                    id="fname"
+                    className=" outline-none bg-transparent lg:w-2/3 md:w-1/2 w-28 px-2"
+                    {...register("fname")}
+                  />
+                  <p className="text-red-700">{errors.fname?.message}</p>
+                </div>
+                <hr className="lg:w-2/3 md:w-1/2 w-20" />
+              </div>
+              <div className="col-span-3 ">
+                <div className="flex flex-col">
+                  <label className="mb-7 ">Last Name</label>
+                  <input
+                    type="text"
+                    id="lname"
+                    className=" outline-none bg-transparent lg:w-2/3 md:w-1/2 w-28 px-2 "
+                    {...register("lname")}
+                  />
+                  <p className="text-red-700">{errors.lname?.message}</p>
+                </div>
+                <hr className="lg:w-2/3 md:w-1/2 w-20" />
+              </div>
+              <div className="col-span-3">
+                <div className="flex flex-col">
+                  <label className="mb-6 ">Date Of Birth</label>
+                  <input
+                    type="date"
+                    className="outline-none bg-transparent lg:w-2/3 md:w-1/2 w-28 "
+                    {...register("dob")}
+                  />
+                  <p className="text-red-700">{errors.dob?.message}</p>
+                </div>
+                <hr className="lg:w-2/3 md:w-1/2 w-28" />
+              </div>
+              <div className="col-span-3">
+                <div className="flex flex-col">
+                  <label className="mb-3 ">Designation</label>
+                  <select
+                    {...register("designation")}
+                    defaultValue="select"
+                    className=" w-2/3 outline-none  rounded-md py-1.5 px-2  bg-transparent"
+                  >
+                    <option value="select" disabled>
+                      Select Designation
+                    </option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                  </select>
+                  <p className="text-red-700">{errors.designation?.message}</p>
+                </div>
+                <hr className="lg:w-2/3 md:w-1/2 w-28" />
+              </div>
+            </div>
+            <p className="my-2">Contact Information</p>
+            <hr />
+            <div className="font-extralight grid lg:grid-cols-3 mx-2 my-8 gap-4">
+              <div>
+                <div className="flex flex-col">
+                  <label className="mb-6">Email</label>
+                  <input
+                    type="email"
+                    id="email"
+                    className=" bg-transparent outline-none lg:w-54 md:w-54 w-48 px-2"
+                    {...register("email")}
+                  />
+                  <p className="text-red-700">{errors.email?.message}</p>
+                </div>
+                <hr className="lg:w-54 md:w-54 w-48 mb-6" />
+              </div>
+              <div>
+                <div className="flex flex-col">
+                  <label className="mb-6">Phone</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    id="phone"
+                    className="bg-transparent  outline-none lg:w-1/2 md:w-54 w-48 px-2"
+                    {...register("phone")}
+                  />
+                  <p className="text-red-700">{errors.phone?.message}</p>
+                </div>
+                <hr className="lg:w-1/2 md:w-54 w-48 mb-6" />
+              </div>
+            </div>
+            <button
+              type="submit"
+              className=" mx-2 bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-16 py-2"
+            >
+              Save
+            </button>
+          </div>
         </form>
       </div>
       {isProfileModal && <UpdateImage CloseProfileModal={CloseProfileModal} />}

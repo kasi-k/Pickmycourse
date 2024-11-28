@@ -8,7 +8,7 @@ import Delete from "../../assets/delete.png"
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { API } from "../../Host";
-import EditTeam from './EditTeam';
+import { formatDate2 } from '../../Host';
 
 const Team = () => {
   const[team,setTeam]=useState([])
@@ -104,7 +104,7 @@ const Team = () => {
               <td className="border border-slate-400 ">{data.lname}</td>
               <td className="border border-slate-400">{data.email}</td>
               <td className="border border-slate-400">{data.phone}</td>
-              <td className="border border-slate-400">{data.dob}</td>
+              <td className="border border-slate-400">{formatDate2(data.dob)}</td>
               <td className="border border-slate-400 ">{data.designation}</td>
               <td className=" border-b border-r border-slate-400 flex justify-around items-center  ">
                 <p    onClick={() =>

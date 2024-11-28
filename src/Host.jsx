@@ -30,3 +30,17 @@ export function formatDate(dateString) {
 
     return `${datePart.replace(/\//g, '-')} / ${timePart}`;
 }
+
+export function formatDate2(isoDate) {
+  const date = new Date(isoDate);
+  const options = { 
+    day: '2-digit', 
+    month: '2-digit', 
+    year: 'numeric' 
+  };
+
+  // Convert the date to the desired format (DD-MM-YYYY)
+  const formattedDate = date.toLocaleDateString('en-GB', options);
+
+  return formattedDate.replace(/\//g, '-');
+}

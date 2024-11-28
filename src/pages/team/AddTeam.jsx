@@ -59,7 +59,8 @@ const AddTeam = () => {
     console.log(data);
     const formData = {
       ...data,
-      password:"Admin@123"
+      password:"Admin@123",
+      type:"free"
     };
     try {
       const response = await axios.post(`${API}/api/adminsignup`, formData);

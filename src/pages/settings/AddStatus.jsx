@@ -1,15 +1,65 @@
 import React, { useState } from "react";
 import Select from "react-select";
 import { FaCaretDown } from "react-icons/fa";
+import { useForm,Controller} from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import axios from "axios";
+import { API } from "../../Host";
+import { toast } from "react-toastify";
 
-const AddStatus = () => {
+const schema = yup
+  .object()
+  .shape({
+    status: yup.string().trim().required("Priority Name is required"),
+    color: yup
+    .string()
+    .required("Please select a color")
+    .oneOf(["green", "blue", "yellow"], "Invalid color selection"),
+ })
+  .required();
+
+const AddStatus = ({ onClose }) => {
   const [selectedColor, setSelectedColor] = useState(null);
+  const [colorData, setColorData] = useState([]);
 
   const colorOptions = [
-    { value: "green", label: "Green", color: "green" },
-    { value: "blue", label: "Blue", color: "blue" },
-    { value: "yellow", label: "Yellow", color: "yellow" },
+    { value: "green",  color: "green" },
+    { value: "blue", color: "blue" },
+    { value: "yellow",  color: "yellow" },
   ];
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+  const onSubmit = async (data) => {
+    setColorData([...colorData, data.color]);
+    console.log(data);
+    const formData = {
+      ...data,
+    };
+    console.log(formData);
+    try {
+      const response = await axios.post(`${API}/api/status`, formData);
+      console.log(response);
+
+      const responseData = response.data.Status;
+      console.log(responseData);
+
+      if (response.status === 200) {
+        toast.success("New status Added");
+        if (onClose) {
+          onClose();
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleChange = (selectedOption) => {
     setSelectedColor(selectedOption);
@@ -17,41 +67,60 @@ const AddStatus = () => {
   return (
     <div className="mx-4">
       <p className="my-8">Add Status</p>
-      <form className="grid gap-4 items-center my-4 ">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="grid gap-4 items-center my-4 "
+      >
         <label htmlFor="">
           Status Name <span className="text-red-600">*</span>
         </label>
         <input
           type="text"
           placeholder="Status Name"
-          className=" text-black rounded-md w-7/12 py-2 px-1 "
+          className=" text-black rounded-md w-7/12 py-2 px-3 "
+          {...register("status")}
         />
         <label htmlFor="">
           Select Color <span className="text-red-600 ">*</span>
         </label>
         <div className="relative inline-block ">
+        <Controller
+            name="color"
+            control={control}
+            rules={{ required: "Please select a color" }}
+            render={({ field }) =>(
           <Select
-            className="w-7/12  outline-none  rounded-md "
-            value={selectedColor}
-            onChange={handleChange}
-            options={colorOptions}
-            getOptionLabel={(e) => (
-              <div
-                style={{
-                  backgroundColor: e.color,
-                  padding: "16px",
-                  width: "95%",
-                }}
-              ></div>
-            )}
-            placeholder="Select Color"
-          />
+          {...field}
+          className="w-7/12 outline-none rounded-md"
+          value={selectedColor}
+          onChange={(selectedOption) => {
+            field.onChange(selectedOption.value);
+            handleChange(selectedOption);
+          }}
+          options={colorOptions}
+          getOptionLabel={(e) => (
+            <div
+              style={{
+                backgroundColor: e.color,
+                padding: "16px",
+                width: "95%",
+              }}
+            >
+            </div>
+          )}
+        />
+      )}
+    />
+    <p className="text-red-500 text-sm">{errors.color?.message}</p>
           <div className="absolute inset-y-0 right-[305px] flex items-center pr-5 bg-gray-300 px-4 rounded-lg pointer-events-none outline-none">
             <FaCaretDown className="text-black text-2xl" />
           </div>
         </div>
         <div className="flex justify-center my-4 w-7/12">
-          <button className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-36 py-1.5  ">
+          <button
+            type="submit"
+            className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-36 py-1.5  "
+          >
             Save
           </button>
         </div>

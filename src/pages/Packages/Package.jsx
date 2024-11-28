@@ -63,7 +63,7 @@ const Package = () => {
         </button>
       </div>
       <hr />
-      <div className=" grid  gap-4 my-6 mx-6  lg:grid-cols-12 md:grid-cols-10 ">
+      <div className=" grid  gap-4 my-6 mx-6  lg:grid-cols-11 md:grid-cols-8 ">
         {data &&
           data.map((plan, index) => (
             <div className="col-span-3 bg-[#000928]" key={index}>
@@ -74,12 +74,12 @@ const Package = () => {
                 </p>
               </div>
               <div className=" font-extralight mx-4 my-6">
-                <p>Generate {plan.course} free course </p>
+                <p>Generate {plan.course} free course/month </p>
                 <p> Up to {plan.subtopic} subtopics </p>
                 <p> AI Teacher</p>
                 <p>Theory & Image course</p>
                 {plan.coursetype !== "Video & Text Course" && (
-                  <p>Video Course not available.</p>
+                  <p className="opacity-0">Video Course not available.</p>
                 )}
                 {plan.coursetype === "Video & Text Course" && (
                   <p>Theory & Video Course </p>

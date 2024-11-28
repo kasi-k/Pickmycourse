@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect} from "react";
 import Category from "./Category";
 import Priority from "./Priority";
 import Status from "./Status";
@@ -9,6 +9,10 @@ import AddStatus from "./AddStatus";
 const HelpSupport = () => {
   const [activeTab, setActiveTab] = useState("tab1");
   const [addModal, setAddModal] = useState("");
+  
+  useEffect(() => {
+    setAddModal(""); // Reset the modal when the tab changes
+  }, [activeTab]);
   return (
     <div className="font-extralight bg-[#000928] h-56 mx-2 lg:w-4/5 md:w-5/6 w-4/5">
       <div className="flex justify-between my-4 mx-4">
@@ -58,16 +62,16 @@ const HelpSupport = () => {
         </div>
       </div>
       <hr />
-      {activeTab === "tab1" && <Category/>}
+      {activeTab === "tab1" && <Category />}
       {activeTab === "tab2" && <Priority />}
       {activeTab === "tab3" && <Status />}
       <div className="my-32">
         {activeTab === "tab1" && addModal === "1" ? (
-          <AddCategory onClose={()=>setAddModal(!addModal)}/>
+          <AddCategory onClose={()=>setAddModal("")}/>
         ) : activeTab === "tab2" && addModal === "2" ? (
-          <AddPriority onClose={()=>setAddModal(!addModal)} />
+          <AddPriority onClose={()=>setAddModal("")} />
         ) : activeTab === "tab3" && addModal === "3" ? (
-          <AddStatus />
+          <AddStatus onClose={()=>setAddModal("")} />
         ) : (
           ""
         )}
