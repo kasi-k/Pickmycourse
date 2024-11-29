@@ -41,7 +41,7 @@ const Team = () => {
     
 
      const handleAddTeamModal=()=>{
-        navigate('/add_team')
+        navigate('/addteam')
      }
   return (
     <>
@@ -108,7 +108,7 @@ const Team = () => {
               <td className="border border-slate-400 ">{data.designation}</td>
               <td className=" border-b border-r border-slate-400 flex justify-around items-center  ">
                 <p    onClick={() =>
-                          navigate(`/edit_team`, {
+                          navigate(`/editteam`, {
                             state: {
                                userId:data._id
                             },

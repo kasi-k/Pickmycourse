@@ -40,7 +40,7 @@ const User = () => {
   };
 
   const handleAddUserModal = () => {
-    navigate("/add_user");
+    navigate("/adduser");
   };
   return (
     <>
@@ -121,7 +121,7 @@ const User = () => {
                     <td className=" border-b border-r border-slate-400 flex justify-around items-center  ">
                       <p
                          onClick={() =>
-                          navigate(`/edit_user`, {
+                          navigate(`/edituser`, {
                             state: {
                                userId:data._id
                             },

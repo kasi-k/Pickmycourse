@@ -91,7 +91,7 @@ const GenerateCourse = () => {
     setSelectedType(event.target.value);
   };
   const handleViewOwnCourse=()=>{
-    navigate('/view_course')
+    navigate('/viewcourse')
   }
 
   let handleChange = (i, e) => {

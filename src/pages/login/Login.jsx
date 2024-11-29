@@ -69,7 +69,7 @@ const Login = () => {
     }
   };
   const redirectForgotPassword = () => {
-    navigate("/forgot_password");
+    navigate("/forgotpassword");
   };
   return (
     <>

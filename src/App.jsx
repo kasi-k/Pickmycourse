@@ -36,31 +36,31 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path="" element={<Login />} />
-          <Route path="/forgot_password" element={<ForgotPassword />} />
-          <Route path="/reset_password" element={<ResetPassword />} />
+          <Route path="/forgotpassword" element={<ForgotPassword />} />
+          <Route path="/resetpassword" element={<ResetPassword />} />
           <Route path="/content" element={<Content />} />
           <Route path="/" element={<Layout />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/packages" element={<Package />} />
-            <Route path="/add_package" element={<AddPackage />} />
-            <Route path="/add_userPackage" element={<AdduserPackage />} />
+            <Route path="/addpackage" element={<AddPackage />} />
+            <Route path="/adduserPackage" element={<AdduserPackage />} />
             <Route path="/courses" element={<Courses />} />
             <Route path="/create" element={<GenerateCourse />} />
             <Route path="/topics" element={<ListTopics />} />
-            <Route path="/view_course" element={<ViewOwnCourse />} />
+            <Route path="/viewcourse" element={<ViewOwnCourse />} />
             <Route path="/viewcertificate" element={<ViewCertificate/>} />
             <Route path="/subscription" element={<Subscription />} />
             <Route path="/users" element={<User />} />
-            <Route path="/add_user" element={<AddUser />} />
-            <Route path="/edit_user" element={<EditUser />} />
+            <Route path="/adduser" element={<AddUser />} />
+            <Route path="/edituser" element={<EditUser />} />
             <Route path="/team" element={<Team />} />
-            <Route path="/edit_team" element={<EditTeam />} />
-            <Route path="/add_team" element={<AddTeam />} />
-            <Route path="/help_support" element={<Tickets />} />
-            <Route path="/view ticket" element={<ViewTicket />} />
+            <Route path="/editteam" element={<EditTeam />} />
+            <Route path="/addteam" element={<AddTeam />} />
+            <Route path="/helpsupport" element={<Tickets />} />
+            <Route path="/viewticket" element={<ViewTicket />} />
             <Route path="/report" element={<Report />} />
             <Route path="/setting" element={<Setting />} />
-            <Route path="/add_role" element={<AddRole />} />
+            <Route path="/addrole" element={<AddRole />} />
             <Route path="/category" element={<Category />} />
           </Route>
           <Route path="*" element={<NotFound />} />

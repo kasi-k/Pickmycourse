@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 const ForgotPassword = () => {
   const navigate=useNavigate()
   const redirectResetPassword=()=>{
-    navigate('/reset_password')
+    navigate('/resetpassword')
   }
 
   return (

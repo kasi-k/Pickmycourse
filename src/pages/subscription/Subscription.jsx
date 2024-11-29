@@ -29,7 +29,7 @@ const Subscription = () => {
       </div>
     </div>
     <div className="mx-1 overflow-auto no-scrollbar ">
-      <table className=" border border-collapse  w-full">
+      <table className="  w-full">
         <thead className="text-slate-300">
           <tr>
             <th className="p-2 font-extralight border border-slate-400">
@@ -79,7 +79,7 @@ const Subscription = () => {
             <td className="border border-slate-400 ">$1</td>
             <td className="border border-slate-400 ">6694dwwqwsaa</td>
             <td className="border border-slate-400 ">6694dwwqwsaa</td>
-            <td className="flex  justify-center items-center my-1 ">
+            <td className=" border-b border-r border-slate-400 flex  justify-center items-center  ">
               <p onClick={handleInvoiceModal} className=" cursor-pointer p-2  text-green-600 ">
                 <FaEye size={24} />
               </p>
@@ -89,7 +89,7 @@ const Subscription = () => {
       </table>
     </div>
   </div>
-  {invoiceModal&&<Invoice/>}
+  {invoiceModal&&<Invoice onClose={()=>setInvoiceModal(!invoiceModal)}/>}
 </>
   )
 }

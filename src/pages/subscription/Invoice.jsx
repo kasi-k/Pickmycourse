@@ -2,11 +2,12 @@ import React from "react";
 import Logo from "../../assets/PMC_Logo.png";
 import Modal from "../../components/Modal";
 
-const Invoice = () => {
+const Invoice = ({onClose}) => {
   return (
     <Modal>
 
       <div className="max-w-xl h-auto bg-white py-1 px-2 font-poppins font-extralight">
+      <p onClick={onClose} className=" cursor-pointer text-slate-400 place-self-end text-2xl font-medium ">X</p>
         <span className="flex justify-center my-3">
           <img src={Logo} alt="Image" className="w-48 " />
         </span>

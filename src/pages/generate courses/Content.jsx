@@ -532,7 +532,7 @@ const Content = () => {
   }
 
   const redirectcourse = () =>{
-    navigate('/view_course')
+    navigate('/viewcourse')
    }
 
   const renderTopicsAndSubtopics = (topics) => {

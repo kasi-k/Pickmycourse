@@ -29,8 +29,8 @@ const Tickets = () => {
       console.log(error);
     }
   };
-  const handleDeleteModal = (dataId) => {
-    setOnDelete(`${API}/api/deleteticket/${dataId}`); 
+  const handleDeleteModal = (ticketId) => {
+    setOnDelete(`${API}/api/deleteticket?ticketId=${ticketId}`); 
     setIsDeleteModal(true);
   };
   const handleCloseModal = () => {
@@ -57,7 +57,7 @@ const Tickets = () => {
           </div>
         </div>
         <div className="mx-1 overflow-auto no-scrollbar  ">
-          <table className=" border border-collapse   w-full">
+          <table className=" w-full">
             <thead className="text-slate-300">
               <tr>
                 <th className="p-2 font-extralight border border-slate-400">
@@ -111,32 +111,32 @@ const Tickets = () => {
                     <td className="border border-slate-400">{data.category}</td>
                     <td className="border border-slate-400">{data.status} </td>
                     <td className="border border-slate-400 text-slate-500 ">{formatDate2(data.createdAt)}</td>
-                    <td className="border border-slate-400">John</td>
+                    <td className="border border-slate-400">{data.team}</td>
                     <td className="border border-slate-400">{data.priority} </td>
-                    <td className="flex items-center justify-evenly my-2 gap-1 ">
+                    <td className="flex items-center justify-evenly border-b border-r border-slate-400 ">
                       <p
                         onClick={() =>
-                          navigate(`/view ticket`, {
+                          navigate(`/viewticket`, {
                             state: {
                                userId:data.ticketId
                             },
                           })
                         }
-                        className=" cursor-pointer mx-0.5  text-green-600 "
+                        className=" cursor-pointer p-2 text-green-600 "
                       >
                         <img
-                          className="lg:size-6 md:size-5 size-5"
+                          className="size-6 "
                           src={Edit}
                           alt="edit image"
                         />
                       </p>
                       <p
                           onClick={() => {
-                          handleDeleteModal(data._id);
+                          handleDeleteModal(data.ticketId);
                         }}
-                        className="cursor-pointer lg:size-6 md:size-5 size-5"
+                        className="cursor-pointer "
                       >
-                        <img src={Delete} alt="delete image" />
+                        <img className="size-6" src={Delete} alt="delete image" />
                       </p>
                     </td>
                   </tr>

@@ -17,7 +17,7 @@ const Courses = () => {
   }
   const navigate=useNavigate()
   const handleViewCourse=()=>{
-      navigate('/view_course')
+      navigate('/viewcourse')
   }
   return (
     <>

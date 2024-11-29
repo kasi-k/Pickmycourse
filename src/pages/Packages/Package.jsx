@@ -38,10 +38,10 @@ const Package = () => {
     setIsDeleteModal(false);
   };
   const handlePackage = () => {
-    navigate("/add_package");
+    navigate("/addpackage");
   };
   const handleUserPackage = () => {
-    navigate("/add_userPackage");
+    navigate("/adduserPackage");
   };
 
   
