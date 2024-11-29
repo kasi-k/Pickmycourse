@@ -9,6 +9,10 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API } from "../../Host";
 import { formatDate2 } from "../../Host";
+import * as XLSX from "xlsx";  // For Excel export
+import { CSVLink } from "react-csv";  // For CSV export
+import { jsPDF } from "jspdf";
+import "jspdf-autotable"; 
 
 const User = () => {
   const [user, setUser] = useState([]);
@@ -42,20 +46,111 @@ const User = () => {
   const handleAddUserModal = () => {
     navigate("/adduser");
   };
+    // Prepare table data for export (exclude unnecessary fields like IDs)
+    const getExportData = () => {
+      return user.map((data) => ({
+        "User Id": data._id,
+        "First Name": data.fname,
+        "Last Name": data.lname,
+        "Email": data.email,
+        "Phone": data.phone,
+        "DOB": formatDate2(data.dob),
+        "Plan": "Basic", // Or any other plan logic
+        "Courses": 2, // Or any dynamic value you want to show
+        "Subscription Date": "22-05-1990", // Adjust based on your needs
+      }));
+    };
+
+  
+// Export to Excel
+const exportToExcel = () => {
+  const ws = XLSX.utils.json_to_sheet(getExportData());
+   // Format the columns to ensure they have proper width
+   const wscols = [
+    { wpx: 100 },
+    { wpx: 100 }, // Column 1: First Name width
+    { wpx: 100 }, // Column 2: Last Name width
+    { wpx: 180 }, // Column 3: Email width
+    { wpx: 100 }, // Column 4: Phone width
+    { wpx: 80 }, // Column 5: DOB width
+    { wpx: 80 },  // Column 6: Plan width
+    { wpx: 80 },  // Column 7: Courses width
+    { wpx: 100 }, // Column 8: Subscription Date width
+  ];
+
+  ws["!cols"] = wscols;  // Set the column widths
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Users");
+  XLSX.writeFile(wb, "users.xlsx");
+};
+
+  // Export to PDF with Table Format
+  const exportToPDF = () => {
+    const doc = new jsPDF();
+    const columns = [
+      "User Id",
+      "First Name", 
+      "Last Name", 
+      "Email", 
+      "Phone", 
+      "DOB", 
+      "Plan", 
+      "Courses", 
+      "Subscription Date"
+    ];
+
+    // Prepare the rows data for the table
+    const rows = getExportData().map((userData) => [
+      userData["User Id"],
+      userData["First Name"],
+      userData["Last Name"],
+      userData["Email"],
+      userData["Phone"],
+      userData["DOB"],
+      userData["Plan"],
+      userData["Courses"],
+      userData["Subscription Date"]
+    ]);
+
+    // Add the table to the PDF
+    doc.autoTable({
+      head: [columns],
+      body: rows,
+      startY: 20, // Start position for the table
+      theme: "grid", // Optional: to add grid lines
+      headStyles: {
+        fillColor: [97, 144, 213], // Header background color
+        textColor: [255, 255, 255], // Header text color
+        fontStyle: "bold",
+        halign: "center" ,
+
+      },
+      bodyStyles: {
+        textColor: [0, 0, 0], // Body text color
+        halign: "center"  
+      }
+    });
+
+    doc.save("users.pdf");
+  };
   return (
     <>
       <div className="font-extralight">
         <div className="flex justify-between items-center my-2 ">
           <p className=" mx-2 mt-6">User</p>
           <div className="flex items-center gap-3 mt-4">
-            <button>
+            <button onClick={exportToPDF}>
               <img className=" size-8" src={Pdf} alt="Pdf image" />
             </button>
-            <button>
-              {" "}
-              <img className=" size-8" src={Csv} alt="csv image" />
-            </button>
-            <button>
+            <CSVLink
+              data={getExportData()} 
+              filename={"users.csv"}
+              className="cursor-pointer"
+              target="_blank"
+            >
+              <img className="size-8" src={Csv} alt="csv image" />
+            </CSVLink>
+            <button onClick={exportToExcel}>
               <img className=" size-8" src={Excel} alt="excel image" />
             </button>
             <div className=" flex mx-3 space-x-6">

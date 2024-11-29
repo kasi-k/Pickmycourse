@@ -73,8 +73,8 @@ const Package = () => {
                   $ {plan.price} / Month
                 </p>
               </div>
-              <div className=" font-extralight mx-4 my-6">
-                <p>Generate {plan.course} free course/month </p>
+              <div className=" text-lg font-extralight mx-4 my-6">
+                <p>Generate {plan.course} {plan.course ==="1"?"free":"Courses"} /month </p>
                 <p> Up to {plan.subtopic} subtopics </p>
                 <p> AI Teacher</p>
                 <p>Theory & Image course</p>

@@ -7,6 +7,7 @@ import * as yup from "yup";
 import axios from "axios";
 import { API } from "../../Host";
 import { toast } from "react-toastify";
+import { AiOutlineLoading } from "react-icons/ai";
 
 const schema = yup.object().shape({
   fname: yup.string().trim().required("First name is required"),
@@ -175,12 +176,10 @@ const AddUser = () => {
             disabled={isSaving}
           >
             {isSaving ? (
-              <>
-                <div className="flex  text-xl gap-2">
-                  <span className="animate-spin border-4 border-t-4 border-white border-solid rounded-full w-8 h-8 mx-auto "></span>{" "}
-                  Saving...
-                </div>
-              </>
+              <div className="flex  text-xl gap-2">
+                <AiOutlineLoading className="h-6 w-6 animate-spin" />
+                <p>Saving....</p>
+              </div>
             ) : (
               "Save"
             )}

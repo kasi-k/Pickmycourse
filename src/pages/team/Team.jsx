@@ -9,6 +9,10 @@ import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { API } from "../../Host";
 import { formatDate2 } from '../../Host';
+import * as XLSX from "xlsx";  // For Excel export
+import { CSVLink } from "react-csv";  // For CSV export
+import { jsPDF } from "jspdf";
+import "jspdf-autotable"; 
 
 const Team = () => {
   const[team,setTeam]=useState([])
@@ -43,20 +47,106 @@ const Team = () => {
      const handleAddTeamModal=()=>{
         navigate('/addteam')
      }
+       // Prepare table data for export (exclude unnecessary fields like IDs)
+    const getExportData = () => {
+      return team.map((data) => ({
+        "User Id": data._id,
+        "First Name": data.fname,
+        "Last Name": data.lname,
+        "Email": data.email,
+        "Phone": data.phone,
+        "DOB": formatDate2(data.dob),
+        "Designation": (data.designation), 
+        
+      }));
+    };
+
+  
+// Export to Excel
+const exportToExcel = () => {
+  const ws = XLSX.utils.json_to_sheet(getExportData());
+   // Format the columns to ensure they have proper width
+   const wscols = [
+    { wpx: 180 }, 
+    { wpx: 100 }, 
+    { wpx: 100 }, 
+    { wpx: 180 }, 
+    { wpx: 80 }, 
+    { wpx: 80 },  
+    { wpx: 80 },    
+  ];
+
+  ws["!cols"] = wscols;  // Set the column widths
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Teams");
+  XLSX.writeFile(wb, "teams.xlsx");
+};
+
+  // Export to PDF with Table Format
+  const exportToPDF = () => {
+    const doc = new jsPDF();
+    const columns = [
+      "User Id",
+      "First Name", 
+      "Last Name", 
+      "Email", 
+      "Phone", 
+      "DOB", 
+      "Designation", 
+    
+    ];
+
+    // Prepare the rows data for the table
+    const rows = getExportData().map((userData) => [
+      userData["User Id"],
+      userData["First Name"],
+      userData["Last Name"],
+      userData["Email"],
+      userData["Phone"],
+      userData["DOB"],
+      userData["Designation"],
+      
+    ]);
+
+    // Add the table to the PDF
+    doc.autoTable({
+      head: [columns],
+      body: rows,
+      startY: 20, // Start position for the table
+      theme: "grid", // Optional: to add grid lines
+      headStyles: {
+        fillColor: [97, 144, 213], // Header background color
+        textColor: [255, 255, 255], // Header text color
+        fontStyle: "bold",
+        halign: "center" ,
+
+      },
+      bodyStyles: {
+        textColor: [0, 0, 0], // Body text color
+        halign: "center"  
+      }
+    });
+
+    doc.save("teams.pdf");
+  };
   return (
     <>
       <div className="font-extralight">
       <div className="flex justify-between items-center my-2 ">
         <p className=" mx-2 mt-6">Team</p>
         <div className="flex items-center gap-3 mt-4">
-          <button>
+          <button onClick={exportToPDF}>
             <img className=" size-8" src={Pdf} alt="Pdf image" />
           </button>
-          <button>
-            {" "}
-            <img className=" size-8" src={Csv} alt="csv image" />
-          </button>
-          <button>
+          <CSVLink
+              data={getExportData()} 
+              filename={"teams.csv"}
+              className="cursor-pointer"
+              target="_blank"
+            >
+              <img className="size-8" src={Csv} alt="csv image" />
+            </CSVLink>
+          <button onClick={exportToExcel}>
             <img className=" size-8" src={Excel} alt="excel image" />
           </button>
           <div className=' flex mx-3 space-x-6'>
