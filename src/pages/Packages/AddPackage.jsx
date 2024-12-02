@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FaCaretDown } from "react-icons/fa";
@@ -29,14 +29,12 @@ const schema = yup.object().shape({
 
 const AddPackage = () => {
   const [isSaving, setIsSaving] = useState(false);
+  const[optionsTax,setOptionsTax]= useState([]);
   const navigate = useNavigate();
-  const [selectedTaxPercentage, setSelectedTaxPercentage] = useState("");
 
-  const handleTaxSelect = (taxPercentage) => {
-    setSelectedTaxPercentage(taxPercentage);  // Handle the selected tax percentage
-    console.log(`Selected Tax Percentage: ${taxPercentage}%`);
-  };
-  
+  useEffect(()=>{
+    fetchTaxOptions();
+  },[])
   const {
     register,
     handleSubmit,
@@ -67,7 +65,20 @@ const AddPackage = () => {
       console.log(error);
     }
   };
-  
+
+  const fetchTaxOptions = async () => {
+    try {
+      const response = await axios.get(`${API}/api/gettax`);
+      if (Array.isArray(response.data.tax)) {
+        setOptionsTax(response.data.tax);
+      } else {
+        console.error("Expected an array of tax options, but got:", response.data);
+        setOptionsTax([]);  // Fallback to an empty array if the structure is unexpected
+      }
+    } catch (error) {
+      console.error("Error fetching taxes:", error);
+    }
+  };
 
   return (
     <>
@@ -119,9 +130,11 @@ const AddPackage = () => {
                 <option value="select" disabled>
                   Select Tax
                 </option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
+              {optionsTax && optionsTax.map((tax, index) => (
+                   <option key={index} value={tax.percentage}>
+                           {tax.percentage}
+                          </option>
+                 ))}
               </select>
               <p className="text-red-700">{errors.tax?.message}</p>
               <div className="absolute inset-y-0 right-0 flex items-center pr-5 bg-gray-300 px-4 rounded-lg pointer-events-none outline-none">
