@@ -20,7 +20,6 @@ const Category = () => {
   const fetchCategory = async () => {
     try {
       const response = await axios.get(`${API}/api/getcategory`);
-
       const responseData = response.data.cate;
       setCategory(responseData);
     } catch (error) {

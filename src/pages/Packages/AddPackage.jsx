@@ -30,6 +30,13 @@ const schema = yup.object().shape({
 const AddPackage = () => {
   const [isSaving, setIsSaving] = useState(false);
   const navigate = useNavigate();
+  const [selectedTaxPercentage, setSelectedTaxPercentage] = useState("");
+
+  const handleTaxSelect = (taxPercentage) => {
+    setSelectedTaxPercentage(taxPercentage);  // Handle the selected tax percentage
+    console.log(`Selected Tax Percentage: ${taxPercentage}%`);
+  };
+  
   const {
     register,
     handleSubmit,
@@ -60,6 +67,7 @@ const AddPackage = () => {
       console.log(error);
     }
   };
+  
 
   return (
     <>

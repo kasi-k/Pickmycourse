@@ -9,6 +9,10 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API } from "../../Host";
 import { formatDate2 } from "../../Host";
+import * as XLSX from "xlsx";  // For Excel export
+import { CSVLink } from "react-csv";  // For CSV export
+import { jsPDF } from "jspdf";
+import "jspdf-autotable"; 
 
 const Tickets = () => {
   const [ticket, setTicket] = useState([]);
@@ -36,6 +40,107 @@ const Tickets = () => {
   const handleCloseModal = () => {
     setIsDeleteModal(false);
   };
+
+  // Prepare table data for export (exclude unnecessary fields like IDs)
+  const getExportData = () => {
+    return ticket.map((data) => ({
+      "User Id": data._id,
+      "First Name": data.fname,
+      "Last Name": data.lname,
+      "Email": data.email,
+      "Phone": data.phone,
+      "Ticket":data.ticketId,
+      "Category":data.category,
+      "Status":data.status,
+      "Date": formatDate2(data.createdAt),
+      "Team Member":data.team,
+      "Priority":data.priority 
+
+      
+    }));
+  };
+
+
+// Export to Excel
+const exportToExcel = () => {
+const ws = XLSX.utils.json_to_sheet(getExportData());
+ // Format the columns to ensure they have proper width
+ const wscols = [
+  { wpx: 180 }, 
+  { wpx: 100 }, 
+  { wpx: 100 },
+  { wpx: 180 }, 
+  { wpx: 100 }, 
+  { wpx: 100 }, 
+  { wpx: 100 }, 
+  { wpx: 100 }, 
+  { wpx: 100 }, 
+  { wpx: 100 },  
+  { wpx: 100 },    
+];
+
+ws["!cols"] = wscols;  // Set the column widths
+const wb = XLSX.utils.book_new();
+XLSX.utils.book_append_sheet(wb, ws, "Tickets");
+XLSX.writeFile(wb, "Tickets.xlsx");
+};
+
+// Export to PDF with Table Format
+const exportToPDF = () => {
+  const doc = new jsPDF('landscape', 'mm', 'a4');
+  const columns = [
+    "User Id",
+    "First Name", 
+    "Last Name", 
+    "Email", 
+    "Phone",
+    "Ticket",
+    "Category",
+    "Status", 
+    "Date", 
+    "Team Member",
+    "Priority", 
+  
+  ];
+  // Prepare the rows data for the table
+  const rows = getExportData().map((userData) => [
+    userData["User Id"],
+    userData["First Name"],
+    userData["Last Name"],
+    userData["Email"],
+    userData["Phone"],
+    userData["Ticket"],
+    userData["Category"],
+    userData["Status"],
+    userData["Date"],
+    userData["Team Member"],
+    userData["Priority"]
+    
+  ]);
+
+  // Add the table to the PDF
+  doc.autoTable({
+    head: [columns],
+    body: rows,
+    startY: 20, 
+    theme: "grid", 
+    headStyles: {
+      fillColor: [97, 144, 213],
+      textColor: [255, 255, 255], 
+      fontStyle: "bold",
+      halign: "center" ,
+
+    },
+    bodyStyles: {
+      textColor: [0, 0, 0], 
+      halign: "center"  
+    },
+    
+
+  });
+
+  doc.save("Tickets.pdf");
+};
  
   
   return (
@@ -44,14 +149,18 @@ const Tickets = () => {
         <div className="flex justify-between items-center my-2">
           <p className=" mx-2 mt-6">Help and Support </p>
           <div className=" mx-2 flex gap-6 mt-4">
-            <button>
+            <button onClick={exportToPDF}>
               <img className="size-8" src={Pdf} alt="Pdf image" />
             </button>
-            <button>
-              {" "}
+            <CSVLink
+              data={getExportData()} 
+              filename={"tickets.csv"}
+              className="cursor-pointer"
+              target="_blank"
+            >
               <img className="size-8" src={Csv} alt="csv image" />
-            </button>
-            <button>
+            </CSVLink>
+            <button onClick={exportToExcel}>
               <img className="size-8 " src={Excel} alt="excel image" />
             </button>
           </div>
