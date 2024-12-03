@@ -18,6 +18,8 @@ import LogOut from "../auth/LogOut";
 const Layout = () => {
   const location = useLocation();
   const [isLogOutModalOpen, setLogOutModalOpen] = useState(false);
+  const fname=localStorage.getItem("fname")
+  const lname = localStorage.getItem("lname")
   const Menus = [
     { title: "Dashboard", icon: dashboard, to: "/dashboard" },
      { title: "Packages", icon: Package, to: "/packages"},
@@ -50,7 +52,7 @@ const Layout = () => {
           <div className="flex gap-2 items-center pt-3 flex-wrap justify-center ">
             <img src={profile} alt="User" className="w-14 h-14 " />
             <div>
-              <p className="text-xl font-extralight">Hello ! John Doe</p>
+              <p className="text-xl font-extralight">Hello ! {fname} {lname}</p>
               <p className="text-xs font-extralight pt-1">
                 Subscription : Gold
               </p>

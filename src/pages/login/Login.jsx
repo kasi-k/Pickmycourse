@@ -49,7 +49,8 @@ const Login = () => {
     };
     try {
       const response = await axios.post(`${API}/api/adminsignin`, formData);
-
+      console.log(response);
+      
       const responseData = response.data;
       console.log(responseData.adminData);
       console.log(responseData.adminData.email);
@@ -66,6 +67,7 @@ const Login = () => {
       }
     } catch (error) {
       console.log(error);
+      toast.error("Invalid Email-id Or Password")
     }
   };
   const redirectForgotPassword = () => {
@@ -100,14 +102,14 @@ const Login = () => {
                 placeholder="Enter Password"
                 className="py-1.5  z-10 rounded-md text-center text-black"
               />
-              <p
+              <div
                 onClick={() => setShowPassword(!showPassword)}
                 className="flex justify-end items-center mx-4"
               >
                 <p className="absolute top-60 my-[60px] z-10 ">
                   {showPassword ? <IoIosEye /> : <IoIosEyeOff />}
                 </p>
-              </p>
+              </div>
               <p className="text-red-700">{errors.password?.message}</p>
               <div className="text-end cursor-pointer">
                 <span

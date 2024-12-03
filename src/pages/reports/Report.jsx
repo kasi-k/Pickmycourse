@@ -10,7 +10,7 @@ const Report = () => {
   
   return (
     <>
-    <div className='className="overflow-auto my-6 -z-10 "'>
+    <div className="overflow-auto my-6 -z-10 ">
       <div className='flex justify-between mt-8 mx-4 flex-wrap  font-poppins'>
         <div className='flex gap-4 flex-wrap my-2'>
        <div class="relative inline-block">

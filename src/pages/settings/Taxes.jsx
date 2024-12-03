@@ -103,7 +103,7 @@ const Taxes = () => {
                 <hr />
               </div>
             ))}
-            <TaxOptions taxData={addTax} onTaxSelect={onTaxSelect} />
+            
         </div>
         {addtaxmodal && <AddTax onClose={() => setAddTaxModal(false)} />}
         {isDeleteModal && (

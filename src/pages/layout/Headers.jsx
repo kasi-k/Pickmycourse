@@ -7,6 +7,8 @@ import { NavLink, useLocation } from 'react-router-dom';
 const Headers = ({ Menus }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const location = useLocation();
+  const fname=localStorage.getItem("fname")
+  const lname = localStorage.getItem("lname")
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -25,7 +27,7 @@ const Headers = ({ Menus }) => {
           <div className="flex gap-2 items-center pt-3 mx-3">
             <img src={profile} alt="User" className="w-14 h-14" />
             <div>
-              <p className="text-xl font-extralight">Hello! John Doe</p>
+              <p className="text-xl font-extralight">Hello! {fname} {lname}</p>
               <p className="text-xs font-extralight pt-1">Subscription: Gold</p>
               <p className="text-xs font-extralight whitespace-nowrap py-1">
                 Subscription Expiry: 12/12/26
