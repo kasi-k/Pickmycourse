@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API } from "../../Host";
 import DeleteModal from "../../components/DeleteModal";
+import { toast } from "react-toastify";
+import AddPackage from "./AddPackage";
 
 const Package = () => {
   const [data, setData] = useState([]);
@@ -18,7 +20,7 @@ const Package = () => {
   useEffect(() => {
     fetchSubscriptionPlan();
 
-  }, [isDeleteModal]);
+  }, []);
 
   const fetchSubscriptionPlan = async () => {
     try {
@@ -29,6 +31,7 @@ const Package = () => {
       console.log(error);
     }
   };
+ 
   // const deleteSubscription = () => {};
   const handleDeleteModal = (planId) => {
     setOnDelete(`${API}/api/subscriptionplan/${planId}`); 
@@ -42,6 +45,26 @@ const Package = () => {
   };
   const handleUserPackage = () => {
     navigate("/adduserPackage");
+  };
+  const handleEdit = (planId) => {
+    navigate(`/editpackage/${planId}`); 
+  };
+  const handleCopy = (plan) => {
+    const packageDetails = `
+      Package Name: ${plan.packagename}
+      Price: $${plan.price} / Month
+      Generate: ${plan.course} ${plan.course === "1" ? "free" : "Courses"} /month
+      Subtopics: ${plan.subtopic}
+      AI Teacher: Yes
+      Theory & Image course
+      ${plan.coursetype === "Video & Text Course" ? "Theory & Video Course" : ""}
+    `;
+
+    navigator.clipboard.writeText(packageDetails).then(() => {
+      toast.success("Package details copied to clipboard!");
+    }).catch((error) => {
+      console.error("Failed to copy package details: ", error);
+    });
   };
 
   
@@ -89,10 +112,16 @@ const Package = () => {
                 <button className="  bg-slate-500 py-1 px-1 mx-2 rounded-sm">
                   <FiShare2 />
                 </button>
-                <button className=" bg-slate-500 py-1 px-1 mx-2 rounded-sm">
+                <button onClick={()=>handleCopy(plan)} className=" bg-slate-500 py-1 px-1 mx-2 rounded-sm">
                   <FiCopy />
                 </button>
-                <button className="bg-indigo-400 py-1 px-1 mx-2 rounded-sm">
+                <button    onClick={() =>
+                          navigate(`/editpackage`, {
+                            state: {
+                              userId:plan._id
+                            },
+                          })
+                        } className="bg-indigo-400 py-1 px-1 mx-2 rounded-sm">
                   <FiEdit />
                 </button>
                 <button
@@ -107,6 +136,7 @@ const Package = () => {
             </div>
           ))}
       </div>
+
       {isDeleteModal && (
         <DeleteModal onClose={handleCloseModal} title="package" onDelete={onDelete} />
       )}

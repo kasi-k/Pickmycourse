@@ -30,6 +30,7 @@ import Category from "./pages/settings/Category";
 import ListTopics from "./pages/generate courses/ListTopics";
 import Content from "./pages/generate courses/Content";
 import ViewCertificate from "./pages/generate courses/ViewCertificate";
+import EditPackage from "./pages/Packages/EditPackage";
 const App = () => {
   return (
     <>
@@ -43,6 +44,7 @@ const App = () => {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/packages" element={<Package />} />
             <Route path="/addpackage" element={<AddPackage />} />
+            <Route path="/editpackage" element={<EditPackage/>} />
             <Route path="/adduserPackage" element={<AdduserPackage />} />
             <Route path="/courses" element={<Courses />} />
             <Route path="/create" element={<GenerateCourse />} />
