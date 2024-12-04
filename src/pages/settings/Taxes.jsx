@@ -83,7 +83,7 @@ const Taxes = () => {
                 <div className="flex justify-between mx-2">
                   <p>{data.taxname}</p>
                   <div className="flex items-center mr-14 size-4 gap-2">
-                    <p>{data.percentage}</p>
+                    <p>{data.percentage}%</p>
                     <img
                       onClick={() =>
                         handleEditModal(data._id, data.taxname, data.percentage)

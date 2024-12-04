@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Pdf from "../../assets/pdf.png";
 import Csv from "../../assets/csv.png";
 import Excel from "../../assets/excel.png";
@@ -9,15 +9,24 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API } from "../../Host";
 import { formatDate2 } from "../../Host";
-import * as XLSX from "xlsx";  // For Excel export
-import { CSVLink } from "react-csv";  // For CSV export
+import * as XLSX from "xlsx"; // For Excel export
+import { CSVLink } from "react-csv"; // For CSV export
 import { jsPDF } from "jspdf";
-import "jspdf-autotable"; 
+import "jspdf-autotable";
+import Papa from "papaparse";
+import { toast } from "react-toastify";
+
+const csvData = `si,fname,email,lname,phone,dob,type,company
+1,john,user20@gmail.com,doe,9784561230,11-25-2024,free,seenit`;
 
 const User = () => {
   const [user, setUser] = useState([]);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [onDelete, setOnDelete] = useState("");
+  const [file, setFile] = useState(null);
+  const [buttonText, setButtonText] = useState("Bulk Upload");
+  const fileInputRef = useRef(null);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,16 +38,16 @@ const User = () => {
       const response = await axios.get(`${API}/api/getusers`);
       const responsedata = response.data.user;
       setUser(responsedata);
-      if (response === 200) {
-      }
     } catch (error) {
       console.log(error);
     }
   };
+
   const handleDeleteModal = (dataId) => {
     setOnDelete(`${API}/api/deleteuser/${dataId}`);
     setIsDeleteModal(true);
   };
+
   const handleCloseModal = () => {
     setIsDeleteModal(false);
   };
@@ -46,60 +55,111 @@ const User = () => {
   const handleAddUserModal = () => {
     navigate("/adduser");
   };
-    // Prepare table data for export (exclude unnecessary fields like IDs)
-    const getExportData = () => {
-      return user.map((data) => ({
-        "User Id": data._id,
-        "First Name": data.fname,
-        "Last Name": data.lname,
-        "Email": data.email,
-        "Phone": data.phone,
-        "DOB": formatDate2(data.dob),
-        "Plan": "Basic", // Or any other plan logic
-        "Courses": 2, // Or any dynamic value you want to show
-        "Subscription Date": "22-05-1990", // Adjust based on your needs
-      }));
-    };
 
-  
-// Export to Excel
-const exportToExcel = () => {
-  const ws = XLSX.utils.json_to_sheet(getExportData());
-   // Format the columns to ensure they have proper width
-   const wscols = [
-    { wpx: 100 },
-    { wpx: 100 }, // Column 1: First Name width
-    { wpx: 100 }, // Column 2: Last Name width
-    { wpx: 180 }, // Column 3: Email width
-    { wpx: 100 }, // Column 4: Phone width
-    { wpx: 80 }, // Column 5: DOB width
-    { wpx: 80 },  // Column 6: Plan width
-    { wpx: 80 },  // Column 7: Courses width
-    { wpx: 100 }, // Column 8: Subscription Date width
-  ];
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+    setButtonText("Upload");
+  };
 
-  ws["!cols"] = wscols;  // Set the column widths
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "Users");
-  XLSX.writeFile(wb, "users.xlsx");
-};
+  const handleButtonClick = () => {
+    if (buttonText === "Bulk Upload") {
+      if (fileInputRef.current) {
+        fileInputRef.current.click();
+      }
+    } else {
+      // Call your  here to upload the file
+      uploadFile(file);
+    }
+  };
+
+  const uploadFile = async (file) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await axios.post(`${API}/api/useruploadcsv`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log(response.data.data);
+
+      if (response.status === 200) {
+        console.log("File uploaded successfully");
+        setButtonText("Bulk Upload");
+        setFile(null);
+        fetchNewUser();
+        toast.success("Data Uploaded Successfully");
+      } else {
+        toast.error("Data failed to Upload");
+        console.log("File upload failed");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const downloadCSV = (csvData) => {
+    const blob = new Blob([csvData], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "bulkupload_template.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+  const handleDownload = () => {
+    downloadCSV(csvData);
+  };
+  // Prepare table data for export (exclude unnecessary fields like IDs)
+  const getExportData = () => {
+    return user.map((data) => ({
+      "User Id": data._id,
+      "First Name": data.fname,
+      "Last Name": data.lname,
+      Email: data.email,
+      Phone: data.phone,
+      DOB: formatDate2(data.dob),
+      Plan: "Basic", // Or any other plan logic
+      Courses: 2, // Or any dynamic value you want to show
+      "Subscription Date": "22-05-1990", // Adjust based on your needs
+    }));
+  };
+
+  // Export to Excel
+  const exportToExcel = () => {
+    const ws = XLSX.utils.json_to_sheet(getExportData());
+    const wscols = [
+      { wpx: 100 },
+      { wpx: 100 },
+      { wpx: 100 },
+      { wpx: 180 },
+      { wpx: 100 },
+      { wpx: 80 },
+      { wpx: 80 },
+      { wpx: 80 },
+      { wpx: 100 },
+    ];
+    ws["!cols"] = wscols;
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Users");
+    XLSX.writeFile(wb, "users.xlsx");
+  };
 
   // Export to PDF with Table Format
   const exportToPDF = () => {
     const doc = new jsPDF();
     const columns = [
       "User Id",
-      "First Name", 
-      "Last Name", 
-      "Email", 
-      "Phone", 
-      "DOB", 
-      "Plan", 
-      "Courses", 
-      "Subscription Date"
+      "First Name",
+      "Last Name",
+      "Email",
+      "Phone",
+      "DOB",
+      "Plan",
+      "Courses",
+      "Subscription Date",
     ];
 
-    // Prepare the rows data for the table
     const rows = getExportData().map((userData) => [
       userData["User Id"],
       userData["First Name"],
@@ -109,41 +169,40 @@ const exportToExcel = () => {
       userData["DOB"],
       userData["Plan"],
       userData["Courses"],
-      userData["Subscription Date"]
+      userData["Subscription Date"],
     ]);
 
-    // Add the table to the PDF
     doc.autoTable({
       head: [columns],
       body: rows,
-      startY: 20, // Start position for the table
-      theme: "grid", // Optional: to add grid lines
+      startY: 20,
+      theme: "grid",
       headStyles: {
-        fillColor: [97, 144, 213], // Header background color
-        textColor: [255, 255, 255], // Header text color
+        fillColor: [97, 144, 213],
+        textColor: [255, 255, 255],
         fontStyle: "bold",
-        halign: "center" ,
-
+        halign: "center",
       },
       bodyStyles: {
-        textColor: [0, 0, 0], // Body text color
-        halign: "center"  
-      }
+        textColor: [0, 0, 0],
+        halign: "center",
+      },
     });
 
     doc.save("users.pdf");
   };
+
   return (
     <>
       <div className="font-extralight">
         <div className="flex justify-between items-center my-2 ">
-          <p className=" mx-2 mt-6">User</p>
+          <p className="mx-2 mt-6">User</p>
           <div className="flex items-center gap-3 mt-4">
             <button onClick={exportToPDF}>
-              <img className=" size-8" src={Pdf} alt="Pdf image" />
+              <img className="size-8" src={Pdf} alt="Pdf image" />
             </button>
             <CSVLink
-              data={getExportData()} 
+              data={getExportData()}
               filename={"users.csv"}
               className="cursor-pointer"
               target="_blank"
@@ -151,15 +210,30 @@ const exportToExcel = () => {
               <img className="size-8" src={Csv} alt="csv image" />
             </CSVLink>
             <button onClick={exportToExcel}>
-              <img className=" size-8" src={Excel} alt="excel image" />
+              <img className="size-8" src={Excel} alt="excel image" />
             </button>
-            <div className=" flex mx-3 space-x-6">
-              <button className="bg-white text-nowrap text-black py-1 lg:px-4 md:px-4 px-1">
-                Bulk Upload
+            <div className="flex mx-3 space-x-6">
+              <button
+                onClick={handleDownload}
+                className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] text-nowrap py-1 lg:px-4 md:px-4 px-1"
+              >
+                CSV Template
+              </button>
+              <button
+                onClick={handleButtonClick}
+                className="bg-white text-nowrap text-black py-1 lg:px-4 md:px-4 px-1"
+              >
+                {buttonText}
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
               </button>
               <button
                 onClick={handleAddUserModal}
-                className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2]  text-nowrap py-1 lg:px-4 md:px-4 px-1  "
+                className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] text-nowrap py-1 lg:px-4 md:px-4 px-1"
               >
                 Add user
               </button>
@@ -167,8 +241,8 @@ const exportToExcel = () => {
           </div>
         </div>
         <div className="mx-1 overflow-auto no-scrollbar ">
-          <table className="   w-full">
-            <thead className=" text-nowrap text-slate-300">
+          <table className="w-full">
+            <thead className="text-nowrap text-slate-300">
               <tr>
                 <th className="p-2 font-extralight border border-slate-400">
                   User Id
@@ -200,29 +274,31 @@ const exportToExcel = () => {
                 </th>
               </tr>
             </thead>
-            <tbody className="text-slate-400  ">
+            <tbody className="text-slate-400 ">
               {user &&
                 user.map((data, index) => (
-                  <tr className=" text-nowrap text-center" key={index}>
-                    <td className="border border-slate-400  ">{data._id}</td>
-                    <td className="border border-slate-400 ">{data.fname}</td>
-                    <td className="border border-slate-400 ">{data.lname}</td>
+                  <tr className="text-nowrap text-center" key={index}>
+                    <td className="border border-slate-400">{data._id}</td>
+                    <td className="border border-slate-400">{data.fname}</td>
+                    <td className="border border-slate-400">{data.lname}</td>
                     <td className="border border-slate-400">{data.email}</td>
                     <td className="border border-slate-400">{data.phone}</td>
-                    <td className="border border-slate-400">{formatDate2(data.dob)}</td>
-                    <td className="border border-slate-400 "> Basic</td>
-                    <td className="border border-slate-400 ">2</td>
-                    <td className="border border-slate-400  ">22-05-1990</td>
-                    <td className=" border-b border-r border-slate-400 flex justify-around items-center  ">
+                    <td className="border border-slate-400">
+                      {formatDate2(data.dob)}
+                    </td>
+                    <td className="border border-slate-400">Basic</td>
+                    <td className="border border-slate-400">2</td>
+                    <td className="border border-slate-400">22-05-1990</td>
+                    <td className="border-b border-r border-slate-400 flex justify-around items-center">
                       <p
-                         onClick={() =>
+                        onClick={() =>
                           navigate(`/edituser`, {
                             state: {
-                               userId:data._id
+                              userId: data._id,
                             },
                           })
                         }
-                        className=" cursor-pointer mx-1 p-1 text-green-600 "
+                        className="cursor-pointer mx-1 p-1 text-green-600"
                       >
                         <img className="size-6" src={Edit} alt="edit image" />
                       </p>
@@ -230,7 +306,7 @@ const exportToExcel = () => {
                         onClick={() => {
                           handleDeleteModal(data._id);
                         }}
-                        className="cursor-pointer "
+                        className="cursor-pointer"
                       >
                         <img
                           className="size-6 my-1"

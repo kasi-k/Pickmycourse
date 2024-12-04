@@ -16,7 +16,7 @@ const AddRole = () => {
     { name: "Dashboard", icon: dashboard, value: "dashboard" },
     { name: "Packages", icon: Package, value: "packages" },
     { name: "Courses", icon: course, value: "courses" },
-    { name: "Generate course", icon: gc, value: "generate course" },
+    { name: "Generate course", icon: gc, value: "generate_course" },
     { name: "Subscriptions", icon: subscribe, value: "subscription" },
     { name: "Users", icon: user, value: "users" },
     { name: "Team", icon: team, value: "team" },
@@ -97,111 +97,158 @@ const AddRole = () => {
           className="py-1 mb-2 rounded-md text-center text-black"
         />
         {features.map((feature, index) => (
-          <div className="grid  mb-3 text-base" key={index}>
+          <div className="grid mb-3 text-base" key={index}>
             <div className="flex gap-3">
-              <label className="flex items-center gap-2 w-3/6"><img className="size-5" src={feature.icon} alt="icons" />{feature.name}</label>
+              <label className="flex items-center gap-2 w-3/6">
+                <img className="size-5" src={feature.icon} alt="icons" />
+                {feature.name}
+              </label>
               <input
                 type="checkbox"
                 checked={feature.checked || false}
                 onChange={() => handleFeatureChange(index)}
               />
-              
             </div>
             {feature.checked && (
               <div className="grid mx-6">
-                <div className="flex items-center gap-2">
-                  <label className="text-sm w-3/6">
-                    Total Courses Generated
-                  </label>
-                  <input
-                    type="checkbox"
-                    value="courses"
-                    checked={
-                      accessLevels
-                        .find((level) => level.feature === feature.value)
-                        ?.permissions.includes("courses") || false
-                    }
-                    onChange={() => handlePermissionChange(index, "courses")}
-                  />
-                </div>
-                <div className="flex items-center gap-2">
-                  <label className="text-sm w-3/6">Total No Of Users</label>
-                  <input
-                    type="checkbox"
-                    value="users"
-                    checked={
-                      accessLevels
-                        .find((level) => level.feature === feature.value)
-                        ?.permissions.includes("users") || false
-                    }
-                    onChange={() => handlePermissionChange(index, "users")}
-                  />
-                </div>
-                <div className="flex items-center gap-2">
-                  <label className="text-sm w-3/6">Revenue Generated</label>
-                  <input
-                    type="checkbox"
-                    value="revenues"
-                    checked={
-                      accessLevels
-                        .find((level) => level.feature === feature.value)
-                        ?.permissions.includes("revenues") || false
-                    }
-                    onChange={() => handlePermissionChange(index, "revenues")}
-                  />
-                </div>
-                <div className="flex items-center gap-2">
-                  <label className="text-sm w-3/6 ">Course Type</label>
-                  <input
-                    type="checkbox"
-                    value="course type"
-                    checked={
-                      accessLevels
-                        .find((level) => level.feature === feature.value)
-                        ?.permissions.includes("course type") || false
-                    }
-                    onChange={() => handlePermissionChange(index, "course type")}
-                  />
-                </div>
-                <div className="flex items-center gap-2">
-                  <label className="text-sm w-3/6 ">Recurring Revenue</label>
-                  <input
-                    type="checkbox"
-                    value="revenue"
-                    checked={
-                      accessLevels
-                        .find((level) => level.feature === feature.value)
-                        ?.permissions.includes("revenue") || false
-                    }
-                    onChange={() => handlePermissionChange(index, "revenue")}
-                  />
-                </div>
-                <div className="flex items-center gap-2">
-                  <label className="text-sm w-3/6 ">Ticket Status</label>
-                  <input
-                    type="checkbox"
-                    value="status"
-                    checked={
-                      accessLevels
-                        .find((level) => level.feature === feature.value)
-                        ?.permissions.includes("status") || false
-                    }
-                    onChange={() => handlePermissionChange(index, "status")}
-                  />
-                </div>
-                <div className="flex items-center gap-2">
-                  <label className="text-sm w-3/6 ">TMonthly Activity Progress</label>
-                  <input
-                    type="checkbox"
-                    value="activity"
-                    checked={
-                      accessLevels
-                        .find((level) => level.feature === feature.value)
-                        ?.permissions.includes("status") || false
-                    }
-                    onChange={() => handlePermissionChange(index, "status")}
-                  />
-                </div>
+                {feature.name === "Dashboard" && (
+                  <>
+                    {[
+                      {
+                        label: "Total Courses Generated",
+                        value: "coursegenerated",
+                      },
+                      { label: "Total No Of Users", value: "noOfUsers" },
+                      { label: "Revenue Generated", value: "generatedRevenue" },
+                      { label: "Course Type", value: "coursetype" },
+                      { label: "Recurring Revenue", value: "recurringRevenue" },
+                      { label: "Ticket Status", value: "ticketStatus" },
+                      {
+                        label: "Monthly Activity Progress",
+                        value: "monthlyProgress",
+                      },
+                      { label: "Revenue", value: "revenue" },
+                    ].map((permission, index) => (
+                      <div className="flex items-center gap-2" key={index}>
+                        <label className="text-sm w-4/6">
+                          {permission.label}
+                        </label>
+                        <input
+                          type="checkbox"
+                          value={permission.value}
+                          checked={
+                            accessLevels
+                              .find((level) => level.feature === feature.value)
+                              ?.permissions.includes(permission.value) || false
+                          }
+                          onChange={() =>
+                            handlePermissionChange(index, permission.value)
+                          }
+                        />
+                      </div>
+                    ))}
+                  </>
+                )}
+
+                {feature.name === "Packages" && (
+                    <>
+                    {[
+                      {
+                        label: "Can view Packages",
+                        value: "viewPackages",
+                      },
+                      { label: "Can add Packages", value: "addPackages" },
+                      { label: "Can edit Packages", value: "editPackages" },
+                      { label: "Can delete Packages", value: "deletePackages" },
+                    ].map((permission, index) => (
+                      <div className="flex items-center gap-2" key={index}>
+                        <label className="text-sm w-4/6">
+                          {permission.label}
+                        </label>
+                        <input
+                          type="checkbox"
+                          value={permission.value}
+                          checked={
+                            accessLevels
+                              .find((level) => level.feature === feature.value)
+                              ?.permissions.includes(permission.value) || false
+                          }
+                          onChange={() =>
+                            handlePermissionChange(index, permission.value)
+                          }
+                        />
+                      </div>
+                    ))}
+                  </>
+                )}
+
+                {feature.name === "Courses" && (
+                      <>
+                      {[
+                        {
+                          label: "Can view Courses",
+                          value: "viewCourses",
+                        },
+                        { label: "Can Generate Courses", value: "generatecourses" },
+                        { label: "Can delete Courses", value: "deleteCourses" },
+                      ].map((permission, index) => (
+                        <div className="flex items-center gap-2" key={index}>
+                          <label className="text-sm w-4/6">
+                            {permission.label}
+                          </label>
+                          <input
+                            type="checkbox"
+                            value={permission.value}
+                            checked={
+                              accessLevels
+                                .find((level) => level.feature === feature.value)
+                                ?.permissions.includes(permission.value) || false
+                            }
+                            onChange={() =>
+                              handlePermissionChange(index, permission.value)
+                            }
+                          />
+                        </div>
+                      ))}
+                    </>
+                  )}
+
+                {feature.name === "Users" && (
+                  <>
+                    <div className="flex items-center gap-2">
+                      <label className="text-sm w-3/6">Total No Of Users</label>
+                      <input
+                        type="checkbox"
+                        value="users"
+                        checked={
+                          accessLevels
+                            .find((level) => level.feature === feature.value)
+                            ?.permissions.includes("users") || false
+                        }
+                        onChange={() => handlePermissionChange(index, "users")}
+                      />
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <label className="text-sm w-3/6">User Roles</label>
+                      <input
+                        type="checkbox"
+                        value="user_roles"
+                        checked={
+                          accessLevels
+                            .find((level) => level.feature === feature.value)
+                            ?.permissions.includes("user_roles") || false
+                        }
+                        onChange={() =>
+                          handlePermissionChange(index, "user_roles")
+                        }
+                      />
+                    </div>
+                  </>
+                )}
+
+                {/* You can add other features' checkboxes here similarly */}
+                {/* Continue with other features (Team, Reports, Settings, etc.) */}
+
                 <div className="flex items-center gap-2 text-sm">
                   <input
                     type="checkbox"

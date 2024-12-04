@@ -132,7 +132,7 @@ const AddPackage = () => {
                 </option>
               {optionsTax && optionsTax.map((tax, index) => (
                    <option key={index} value={tax.percentage}>
-                           {tax.percentage}
+                           {tax.percentage}%
                           </option>
                  ))}
               </select>
