@@ -6,8 +6,21 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
-import { API, formatDate2 } from "../../Host";
+import { API, formatDate1, formatDate2 } from "../../Host";
 import { toast } from "react-toastify";
+
+const Modal = ({ isOpen, onClose, imageUrl }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+      <div className=" relative w-[550px]  h-[350px]">
+        <p onClick={onClose} className=" text-red-500 font-extrabold text-2xl absolute right-2 ">x</p>
+        <img src={imageUrl} alt="Modal" className="w-full h-full" />
+      </div>
+    </div>
+  );
+};
 
 const Schema = yup.object().shape({
   desc2: yup.string().required("Please add reply"),
@@ -19,12 +32,14 @@ const ViewTicket = () => {
   const [userData, setUserData] = useState({});
   const location = useLocation();
   const ticketId = location.state?.ticketId;
+
   const navigate = useNavigate();
-  const [attachments, setAttachments] = useState([]);
+  const [attachment, setAttachment] = useState([]);
   const [userImages, setUserImages] = useState([]);
   const [adminImages, setAdminImages] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
+  const [selectedFiles, setSelectedFiles] = useState([]);
   useEffect(() => {
     fetchTicket();
     fetchAttachments();
@@ -58,8 +73,10 @@ const ViewTicket = () => {
       const response = await axios.get(
         `${API}/api/getattachments?ticketId=${ticketId}`
       );
+
       const responseData = await response.data.attachments;
-      setAttachments(responseData);
+
+      setAttachment(responseData);
       await loadAttachmentFiles(responseData);
     } catch (error) {
       console.log(error);
@@ -69,15 +86,20 @@ const ViewTicket = () => {
   const loadAttachmentFiles = async (attachments) => {
     const userImagesTemp = [];
     const adminImagesTemp = [];
-  
+
     for (const attachment of attachments) {
       try {
-        const response = await axios.get(`${API}/api/file/${attachment.attachment}`, {
-          responseType: 'blob'
+        const response = await axios.get(
+          `${API}/api/file/${attachment.attachment}`,
+          {
+            responseType: "blob",
+          }
+        );
+
+        const blob = new Blob([response.data], {
+          type: response.headers["content-type"],
         });
-  
-        const blob = new Blob([response.data], { type: response.headers['content-type'] });
-        const url = URL.createObjectURL(blob); 
+        const url = URL.createObjectURL(blob);
         if (attachment.createdby === "user") {
           userImagesTemp.push(url);
         } else if (attachment.createdby === "admin") {
@@ -87,8 +109,8 @@ const ViewTicket = () => {
         console.log(error);
       }
     }
-  
-    setUserImages(userImagesTemp); 
+
+    setUserImages(userImagesTemp);
     setAdminImages(adminImagesTemp);
   };
 
@@ -114,6 +136,28 @@ const ViewTicket = () => {
 
       if (response.status === 200) {
         toast.success("Ticket Updated Successfully");
+        if (selectedFiles.length > 0) {
+          const uploadData = new FormData();
+          uploadData.append("user", localStorage.getItem("user"));
+          uploadData.append("ticketId", ticketId);
+          uploadData.append("createdby", "admin");
+
+          selectedFiles.forEach((file) => {
+            uploadData.append("files", file);
+          });
+
+          const uploadResponse = await axios.post(`${API}/post`, uploadData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
+
+          if (uploadResponse.status === 200) {
+            toast.success("Files uploaded successfully");
+          } else {
+            toast.error("Failed to upload files");
+          }
+        }
         navigate("/helpsupport");
       }
     } catch (error) {
@@ -137,12 +181,15 @@ const ViewTicket = () => {
                 </span>
                 <p className="flex gap-2 items-center">
                   <p>Attachments :</p>{" "}
-
-                {userImages.map((img, index) => (
-            <span key={index} onClick={() => openModal(img)}>
-              <img src={img} alt="User  Attachment" className="w-10 h-10 cursor-pointer rounded-md" />
-            </span>
-          ))}
+                  {userImages.map((img, index) => (
+                    <span key={index} onClick={() => openModal(img)}>
+                      <img
+                        src={img}
+                        alt="User  Attachment"
+                        className="w-10 h-10 cursor-pointer rounded-md"
+                      />
+                    </span>
+                  ))}
                 </p>
               </div>
             )}
@@ -151,93 +198,135 @@ const ViewTicket = () => {
           <p>Description:</p>
           {userData && <p>{userData.desc1}</p>}
           <hr />
-          <div className="flex justify-end">
-              <form className="grid mx-2 my-2 ">
-                <label>
-                  Team Member <span className="text-red-600">*</span>
-                </label>
-                <div className="relative inline-block  ">
-                  <select
-                    defaultValue=""
-                    className="  text-black lg:w-72 md:w-72 w-64 px-2 py-1.5 outline-none rounded-md "
-                    {...register("team")}
-                  >
-                    <option value="" disabled>
-                      Select team member
-                    </option>
-                    <option value="john">John</option>
-                    <option value="david">David</option>
-                    <option value="doe">Doe</option>
-                  </select>
-                  <div className="absolute inset-y-0 right-0  flex items-center pr-5 bg-gray-300 px-4 rounded-lg pointer-events-none outline-none">
-                    <FaCaretDown className="text-black text-2xl" />
-                  </div>
-                  {errors.team && (
-                    <p className="text-red-700">{errors.team?.message}</p>
-                  )}
-                </div>
-              </form>
-            </div>
-            
-          <div className="mt-2">
-            <form className="flex flex-col ">
-              <label className="mx-6">Add Reply</label>
-              <textarea
-                rows={9}
-                placeholder="write Reply"
-                className="rounded-3xl text-center place-content-center outline-none text-black "
-                {...register("desc2")}
-              ></textarea>
-              <p className="text-red-700">{errors.desc2?.message}</p>
-              <div className="lg:flex  justify-between my-2">
-                <div className="relative">
-                  <label htmlFor="">
-                    Attachments (you can select multiple files)
-                  </label>
-                  <div className="absolute inset-y-1 top-7 left-0 rounded-lg px-1 py-2  flex items-center  bg-gray-300  pointer-events-none outline-none text-black">
-                    Choose Files
-                  </div>
-                  <input
-                    type="file"
-                    className="border bg-white text-black w-96 rounded-lg py-1.5 my-1 flex items-center "
-                  />
-                </div>
-                <div className="grid mx-2">
-                  <label htmlFor="">
-                    Ticket staus<span className="text-red-600">*</span>
+          {userData?.desc2 === null ? (
+            <div>
+              <div className="flex justify-end">
+                <form className="grid mx-2 my-2 ">
+                  <label>
+                    Team Member <span className="text-red-600">*</span>
                   </label>
                   <div className="relative inline-block  ">
                     <select
                       defaultValue=""
-                      className="  text-black w-72 px-2 py-1.5  outline-none rounded-md "
-                      {...register("status")}
+                      className="  text-black lg:w-72 md:w-72 w-64 px-2 py-1.5 outline-none rounded-md "
+                      {...register("team")}
                     >
                       <option value="" disabled>
-                        Select Status
+                        Select team member
                       </option>
-                      <option value="pending">Pending</option>
-                      <option value="open">Open</option>
-                      <option value="closed">Closed</option>
+                      <option value="john">John</option>
+                      <option value="david">David</option>
+                      <option value="doe">Doe</option>
                     </select>
-
-                    <div className="absolute inset-y-0 bottom-2 right-0  flex items-center pr-5 bg-gray-300 px-4 rounded-lg pointer-events-none outline-none">
+                    <div className="absolute inset-y-0 right-0  flex items-center pr-5 bg-gray-300 px-4 rounded-lg pointer-events-none outline-none">
                       <FaCaretDown className="text-black text-2xl" />
                     </div>
-                    {errors.status && (
-                      <p className="text-red-700">{errors.status?.message}</p>
+                    {errors.team && (
+                      <p className="text-red-700">{errors.team?.message}</p>
                     )}
                   </div>
-                </div>
+                </form>
               </div>
-            </form>
-            <button
-              type="submit"
-              className="mx-2 bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-10 py-2 my-4"
-            >
-              Submit
-            </button>
-          </div>
+
+              <div className="mt-2">
+                <form className="flex flex-col ">
+                  <label className="mx-6">Add Reply</label>
+                  <textarea
+                    rows={9}
+                    placeholder="write Reply"
+                    className="rounded-3xl text-center place-content-center outline-none text-black "
+                    {...register("desc2")}
+                  ></textarea>
+                  <p className="text-red-700">{errors.desc2?.message}</p>
+                  <div className="lg:flex  justify-between my-2">
+                    <div className="relative">
+                      <label htmlFor="">
+                        Attachments (you can select multiple files)
+                      </label>
+                      <div className="absolute inset-y-1 top-7 left-0 rounded-lg px-1 py-2  flex items-center  bg-gray-300  pointer-events-none outline-none text-black">
+                        Choose Files
+                      </div>
+                      <input
+                        type="file"
+                        // className="hidden"
+                        id="file-input"
+                        multiple
+                        onChange={(e) =>
+                          setSelectedFiles(Array.from(e.target.files))
+                        }
+                      />
+                    </div>
+                    <span
+                      className="absolute top-1/2 -translate-y-1/2 lg:right-4 md:right-4 right-16 text-normal text-black"
+                      id="file-name"
+                    >
+                      {selectedFiles.length > 0
+                        ? `${selectedFiles.length} Files Selected`
+                        : "No Files Chosen"}
+                    </span>
+                    <div className="grid mx-2">
+                      <label htmlFor="">
+                        Ticket staus<span className="text-red-600">*</span>
+                      </label>
+                      <div className="relative inline-block  ">
+                        <select
+                          defaultValue=""
+                          className="  text-black w-72 px-2 py-1.5  outline-none rounded-md "
+                          {...register("status")}
+                        >
+                          <option value="" disabled>
+                            Select Status
+                          </option>
+                          <option value="pending">Pending</option>
+                          <option value="open">Open</option>
+                          <option value="closed">Closed</option>
+                        </select>
+
+                        <div className="absolute inset-y-0 bottom-2 right-0  flex items-center pr-5 bg-gray-300 px-4 rounded-lg pointer-events-none outline-none">
+                          <FaCaretDown className="text-black text-2xl" />
+                        </div>
+                        {errors.status && (
+                          <p className="text-red-700">
+                            {errors.status?.message}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </form>
+                <button
+                  type="submit"
+                  className="mx-2 bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-10 py-2 my-4"
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="mx-5">
+              <p className="text-lg mt-3 mb-2 ">Support</p>
+              <p className="text-normal font-normal my-4">
+                Date : {formatDate1(userData?.updatedAt)}
+              </p>
+              <span className="flex items-center gap-2 my-3 flex-wrap">
+                <p className="text-normal font-normal ">Attachments :</p>
+                {adminImages.map((img, index) => (
+                  <span key={index} onClick={() => openModal(img)}>
+                    <img
+                      src={img}
+                      alt="Admin Attachment"
+                      className="w-10 h-10 cursor-pointer rounded-md"
+                    />
+                  </span>
+                ))}
+              </span>
+              <p className="text-normal font-normal my-2">Description :</p>
+              <p className="text-normal mb-5">{userData?.desc2}</p>
+              <hr className="my-3 mb-12" />
+            </div>
+          )}
         </div>
+        <Modal isOpen={isModalOpen} onClose={closeModal} imageUrl={selectedImage} />
       </form>
     </>
   );
