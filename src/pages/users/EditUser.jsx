@@ -29,13 +29,20 @@ const EditUser = () => {
   const [isProfileModal, setIsProfileModal] = useState(false);
   const location = useLocation();
   const userId = location.state?.userId;
+  const useremail = localStorage.getItem("useremail")
+  const userphone = localStorage.getItem("userphone")
   const [userData, setUserData] = useState({});
   const [userImage, setUserImage] = useState({});
+  
 
   useEffect(() => {
+    // const userEmailFromStorage = localStorage.getItem("useremail");
+    // if (userEmailFromStorage) {
+    //   setValue("email", userEmailFromStorage);
+    // }
     fetchUser();
     fetchImage();
-  }, [isProfileModal]);
+  }, [isProfileModal,useremail,userphone]);
   const {
     register,
     handleSubmit,
@@ -50,7 +57,8 @@ const EditUser = () => {
       const response = await axios.get(`${API}/api/getusersbyid/${userId}`);
       const responseData = response.data.user;
       setUserData(responseData);
-
+      localStorage.setItem("userphone",response.data.user.phone)
+      localStorage.setItem("useremail",response.data.user.email)
       const data = response.data.user;
       setValue("fname", data.fname);
       setValue("lname", data.lname);
@@ -90,6 +98,12 @@ const EditUser = () => {
 
   const ClosePhoneModal = () => {
     setIsPhoneModal(!isPhoneModal);
+  };
+
+  const handleUpdateClick = () => {
+   setIsModal(true)
+   
+   
   };
   return (
     <>
@@ -175,13 +189,7 @@ const EditUser = () => {
                 </div>
                 <hr className="lg:w-54 md:w-54 w-48 mb-6" />
                 <button
-                  onClick={() =>
-                    setIsModal(true, {
-                      // state: {
-                      //   userData.email,
-                      // },
-                    })
-                  }
+                   onClick={() => handleUpdateClick()}
                   className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-5 py-2"
                 >
                   Update
@@ -206,13 +214,18 @@ const EditUser = () => {
                 >
                   Update
                 </button>
+                <button type="submit"
+                  className=" bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-5 py-2 "
+                >
+                  Update Changes
+                </button>
               </div>
             </div>
           </form>
         </div>
       </div>
       {isProfileModal && <UpdateImage CloseProfileModal={CloseProfileModal} />}
-      {isModal && <UpdateEmail CloseEmailModal={CloseEmailModal} />}
+      {isModal && <UpdateEmail CloseEmailModal={CloseEmailModal}  />}
       {isPhoneModal && <UpdatePhone ClosePhoneModal={ClosePhoneModal} />}
     </>
   );

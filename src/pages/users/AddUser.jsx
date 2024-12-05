@@ -64,14 +64,16 @@ const AddUser = () => {
     };
     try {
       const response = await axios.post(`${API}/api/usersignup`, formData);
-      const resuserid = response.data.userId._id;
-      console.log(resuserid);
+      console.log(response);
+      
+      const responseData = response.data;
+      console.log(responseData.userId);
 
       if (response.status === 200 && selectedFile !== null) {
-        localStorage.setItem("user", resuserid);
+        localStorage.setItem("userid", responseData.userId._id);
         const payload = {
           name: selectedFile.name,
-          user: resuserid,
+          user: userid,
           image: base64Image,
         };
 
