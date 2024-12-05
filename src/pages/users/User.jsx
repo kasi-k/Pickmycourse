@@ -19,7 +19,12 @@ import { toast } from "react-toastify";
 const csvData = `si,fname,email,lname,phone,dob,type,company
 1,john,user20@gmail.com,doe,9784561230,11-25-2024,free,seenit`;
 
-const User = () => {
+const User = ({ permissions }) => {
+  const hasCreatePermission = permissions?.includes('create');
+  const hasEditPermission = permissions?.includes('edit');
+  const hasDeletePermission = permissions?.includes('delete');
+  const hasDownloadPermission = permissions?.includes('download');
+  const hasViewPermission = permissions?.includes('view');
   const [user, setUser] = useState([]);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [onDelete, setOnDelete] = useState("");
@@ -231,12 +236,14 @@ const User = () => {
                   className="hidden"
                 />
               </button>
+              {hasCreatePermission && (
               <button
                 onClick={handleAddUserModal}
                 className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] text-nowrap py-1 lg:px-4 md:px-4 px-1"
               >
                 Add user
               </button>
+              )}
             </div>
           </div>
         </div>
@@ -269,9 +276,11 @@ const User = () => {
                 <th className="font-extralight border border-slate-400">
                   Subscription Date
                 </th>
+               
                 <th className="font-extralight border border-slate-400">
                   Action
                 </th>
+              
               </tr>
             </thead>
             <tbody className="text-slate-400 ">
@@ -289,7 +298,9 @@ const User = () => {
                     <td className="border border-slate-400">Basic</td>
                     <td className="border border-slate-400">2</td>
                     <td className="border border-slate-400">22-05-1990</td>
+                   
                     <td className="border-b border-r border-slate-400 flex justify-around items-center">
+                     {hasEditPermission && (
                       <p
                         onClick={() =>
                           navigate(`/edituser`, {
@@ -302,6 +313,8 @@ const User = () => {
                       >
                         <img className="size-6" src={Edit} alt="edit image" />
                       </p>
+                      )}
+                      {hasDeletePermission && (
                       <p
                         onClick={() => {
                           handleDeleteModal(data._id);
@@ -314,7 +327,9 @@ const User = () => {
                           alt="delete image"
                         />
                       </p>
+                      )}
                     </td>
+              
                   </tr>
                 ))}
             </tbody>

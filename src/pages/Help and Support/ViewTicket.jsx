@@ -18,10 +18,16 @@ const Schema = yup.object().shape({
 const ViewTicket = () => {
   const [userData, setUserData] = useState({});
   const location = useLocation();
-  const userId = location.state?.userId;
+  const ticketId = location.state?.ticketId;
   const navigate = useNavigate();
+  const [attachments, setAttachments] = useState([]);
+  const [userImages, setUserImages] = useState([]);
+  const [adminImages, setAdminImages] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState("");
   useEffect(() => {
     fetchTicket();
+    fetchAttachments();
   }, []);
   const {
     register,
@@ -35,7 +41,7 @@ const ViewTicket = () => {
   const fetchTicket = async () => {
     try {
       const response = await axios.get(
-        `${API}/api/getticketbyid?ticketId=${userId}`
+        `${API}/api/getticketbyid?ticketId=${ticketId}`
       );
       const responseData = response.data.ticket;
       setUserData(responseData);
@@ -47,6 +53,54 @@ const ViewTicket = () => {
       console.log(error);
     }
   };
+  const fetchAttachments = async () => {
+    try {
+      const response = await axios.get(
+        `${API}/api/getattachments?ticketId=${ticketId}`
+      );
+      const responseData = await response.data.attachments;
+      setAttachments(responseData);
+      await loadAttachmentFiles(responseData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const loadAttachmentFiles = async (attachments) => {
+    const userImagesTemp = [];
+    const adminImagesTemp = [];
+  
+    for (const attachment of attachments) {
+      try {
+        const response = await axios.get(`${API}/api/file/${attachment.attachment}`, {
+          responseType: 'blob'
+        });
+  
+        const blob = new Blob([response.data], { type: response.headers['content-type'] });
+        const url = URL.createObjectURL(blob); 
+        if (attachment.createdby === "user") {
+          userImagesTemp.push(url);
+        } else if (attachment.createdby === "admin") {
+          adminImagesTemp.push(url);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  
+    setUserImages(userImagesTemp); 
+    setAdminImages(adminImagesTemp);
+  };
+
+  const openModal = (imageUrl) => {
+    setSelectedImage(imageUrl);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedImage("");
+  };
 
   const onSubmit = async (data) => {
     const formData = {
@@ -54,7 +108,7 @@ const ViewTicket = () => {
     };
     try {
       const response = await axios.put(
-        `${API}/api/ticketupdate?ticketId=${userId}`,
+        `${API}/api/ticketupdate?ticketId=${ticketId}`,
         formData
       );
 
@@ -83,15 +137,21 @@ const ViewTicket = () => {
                 </span>
                 <p className="flex gap-2 items-center">
                   <p>Attachments :</p>{" "}
-                  <span className="flex gap-2 ">
-                    <img src={Gallery} alt="gallery image" className="size-8" />
-                    <img src={Gallery} alt="gallery image" className="size-8" />
-                    <img src={Gallery} alt="gallery image" className="size-8" />
-                  </span>
+
+                {userImages.map((img, index) => (
+            <span key={index} onClick={() => openModal(img)}>
+              <img src={img} alt="User  Attachment" className="w-10 h-10 cursor-pointer rounded-md" />
+            </span>
+          ))}
                 </p>
               </div>
             )}
-            <div>
+          </div>
+
+          <p>Description:</p>
+          {userData && <p>{userData.desc1}</p>}
+          <hr />
+          <div className="flex justify-end">
               <form className="grid mx-2 my-2 ">
                 <label>
                   Team Member <span className="text-red-600">*</span>
@@ -118,12 +178,8 @@ const ViewTicket = () => {
                 </div>
               </form>
             </div>
-          </div>
-
-          <p>Description:</p>
-          {userData && <p>{userData.desc1}</p>}
-          <hr />
-          <div className="mt-10">
+            
+          <div className="mt-2">
             <form className="flex flex-col ">
               <label className="mx-6">Add Reply</label>
               <textarea

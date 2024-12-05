@@ -227,7 +227,7 @@ const exportToPDF = () => {
                         onClick={() =>
                           navigate(`/viewticket`, {
                             state: {
-                               userId:data.ticketId
+                               ticketId:data.ticketId
                             },
                           })
                         }

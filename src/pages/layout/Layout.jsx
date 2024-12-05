@@ -15,7 +15,7 @@ import report from "../../assets/report.png"
 import setting from "../../assets/settings.png"
 import logout from "../../assets/logout.png";
 import LogOut from "../auth/LogOut";
-const Layout = () => {
+const Layout = ({ permissions }) => {
   const location = useLocation();
   const [isLogOutModalOpen, setLogOutModalOpen] = useState(false);
   const fname=localStorage.getItem("fname")
@@ -26,7 +26,7 @@ const Layout = () => {
      { title: "Courses", icon:course, to: "/courses" },
      { title: "Generate course", icon:gc, to: "/create" },
      { title: "Subscriptions", icon:subscribe, to: "/subscription" }, 
-     { title: "Users", icon:user, to: "/users" },
+     permissions["users"] && { title: "Users", icon: user, to: "/users" },
      { title: "Team", icon:team, to: "/team" },
      { title: "Help & Support", icon:help, to: "/helpsupport" },
      { title: "Reports", icon:report, to: "/report" },
@@ -39,7 +39,7 @@ const Layout = () => {
     },
     
      
-  ];
+  ].filter(Boolean);;
   const handleCloseModal = () => {
     setLogOutModalOpen(false);
   };

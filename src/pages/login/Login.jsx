@@ -63,6 +63,7 @@ const Login = () => {
         localStorage.setItem("lname", responseData.adminData.lname);
         localStorage.setItem("phone", responseData.adminData.phone);
         localStorage.setItem("user", responseData.adminData._id);
+        localStorage.setItem('role',responseData.adminData.designation)
         navigate("/dashboard");
       }
     } catch (error) {

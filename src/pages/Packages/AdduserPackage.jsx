@@ -13,13 +13,13 @@ const schema = yup.object().shape({
   email: yup.string().email().required("Email is required"),
 });
 const AdduserPackage = () => {
-  const[userPackage,setUserPackage] = useState([])
-  const [selectedCourse, setSelectedCourse] = useState(""); 
+  const [userPackage, setUserPackage] = useState([]);
+  const [selectedPackage, setSelectedPackage] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchPackages();
-  },[])
+  }, []);
   const {
     register,
     handleSubmit,
@@ -29,21 +29,28 @@ const AdduserPackage = () => {
   });
   const onSubmit = async (data) => {
     console.log(data);
-    const formData = {
-      ...data,
-    };
-    try {
-      const response = await axios.post(
-        `${API}/api/addusertoplan`,
-        formData
-      );
+    const selectedPackage = userPackage.find(
+      (plan) => plan.packagename === data.packagename
+    );
+    if (selectedPackage) {
+      const formData = {
+        ...data,
+        course: selectedPackage.course,
+      };
 
-      if (response.status === 200) {
-        toast.success(" User added to Package Successfully");
-        navigate("/packages");
+      console.log(formData);
+
+      try {
+        const response = await axios.post(`${API}/api/addusertoplan`,formData);
+        console.log(response);
+        
+          navigate("/packages");
+     
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
+    } else {
+      console.error("Package not found.");
     }
   };
   const fetchPackages = async () => {
@@ -52,12 +59,25 @@ const AdduserPackage = () => {
       if (Array.isArray(response.data.plans)) {
         setUserPackage(response.data.plans);
       } else {
-        console.error("Expected an array of package options, but got:", response.data);
-        setUserPackage([]);  // Fallback to an empty array if the structure is unexpected
+        console.error(
+          "Expected an array of package options, but got:",
+          response.data
+        );
+        setUserPackage([]); // Fallback to an empty array if the structure is unexpected
       }
     } catch (error) {
       console.error("Error fetching taxes:", error);
     }
+  };
+  const handlePackageChange = (event) => {
+    const selectedPackageName = event.target.value;
+
+    // Find the selected package object
+    const selectedPackage = userPackage.find(
+      (plan) => plan.packagename === selectedPackageName
+    );
+
+    setSelectedPackage(selectedPackage); // Update the state with the selected package details
   };
   return (
     <>
@@ -71,18 +91,20 @@ const AdduserPackage = () => {
             </label>
             <div className="relative inline-block col-span-2 ">
               <select
-              {...register("packagename")}
+                {...register("packagename")}
                 defaultValue="select"
                 className=" w-full text-black px-2 py-1.5 outline-none rounded-md "
+                onChange={handlePackageChange}
               >
                 <option value="select" disabled>
                   Select Package
                 </option>
-                {userPackage && userPackage.map((plan, index) => (
-                   <option key={index} value={plan.packagename}>
-                           {plan.packagename}
-                          </option>
-                 ))}
+                {userPackage &&
+                  userPackage.map((plan, index) => (
+                    <option key={index} value={plan.packagename}>
+                      {plan.packagename}
+                    </option>
+                  ))}
               </select>
               <div className="absolute inset-y-0 right-0 flex items-center pr-5 bg-gray-300 px-4 rounded-lg pointer-events-none outline-none">
                 <FaCaretDown className="text-black text-2xl" />
@@ -92,13 +114,14 @@ const AdduserPackage = () => {
               User <span className=" text-red-600">*</span>
             </label>
             <input
-            {...register("email")}
+              {...register("email")}
               type="email"
               placeholder="Enter user Email-Id"
               className=" col-span-2  text-black px-2 py-1 outline-none rounded-md "
             />
           </div>
           <button
+            type="submit"
             className="my-12 text-white bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-14 py-2 "
           >
             Save

@@ -8,6 +8,7 @@ import axios from "axios";
 import { API } from "../../Host";
 import { toast } from "react-toastify";
 import { AiOutlineLoading } from "react-icons/ai";
+import { useEffect } from "react";
 
 const schema = yup.object().shape({
   fname: yup.string().trim().required("First name is required"),
@@ -26,7 +27,12 @@ const AddTeam = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [base64Image, setBase64Image] = useState("");
   const [preview, setPreview] = useState(null);
+  const [designation,setDesignation] =useState([])
   const navigate = useNavigate();
+
+  useEffect(()=>{
+    fetchDesignation();
+  },[])
   const {
     register,
     handleSubmit,
@@ -89,6 +95,20 @@ const AddTeam = () => {
       );
     }
   };
+  const fetchDesignation = async () => {
+    try {
+      const response = await axios.get(`${API}/api/getroles`);
+      if (Array.isArray(response.data.role)) {
+        setDesignation(response.data.role);
+      } else {
+        console.error("Expected an array of tax options, but got:", response.data);
+        setDesignation([]);  // Fallback to an empty array if the structure is unexpected
+      }
+    } catch (error) {
+      console.error("Error fetching taxes:", error);
+    }
+  };
+
 
   return (
     <>
@@ -182,8 +202,11 @@ const AddTeam = () => {
                 <option value="select" disabled>
                   Select Designation
                 </option>
-                <option value="1">1</option>
-                <option value="2">2</option>
+                {designation && designation.map((role, index) => (
+                   <option key={index} value={role.designation}>
+                           {role.role_name}
+                          </option>
+                 ))}
               </select>
               <p className="text-red-700">{errors.designation?.message}</p>
             </div>

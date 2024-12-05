@@ -1,12 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddRole from "./AddRole";
 import SettingImage from "../../assets/setting.png";
 import EditImage from "../../assets/edit.png";
 import BinImage from "../../assets/bin.png";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { API } from "../../Host";
 
 const RolesPermission = () => {
   const [activeTab, setActiveTab] = useState("tab1");
+  const [role,setRole] = useState([]);
+
+  useEffect(() => {
+    fetchNewRole();
+  }, []);
+
+  const fetchNewRole = async () => {
+    try {
+      const response = await axios.get(`${API}/api/getroles`);
+      const responseRoles = response.data.role;
+      setRole(responseRoles);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  
+
   return (
     <>
       <div className="font-extralight grid grid-cols-9  ">
@@ -17,6 +37,7 @@ const RolesPermission = () => {
               Add Role
             </p>
           </div>
+          {role && role.map((data,index)=>(
           <div
             className={` cursor-pointer flex justify-between items-center text-md  pl-1 p-2 transition-all duration-700 hover:bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] font-extralight   ${
               activeTab === "tab1"
@@ -24,30 +45,18 @@ const RolesPermission = () => {
                 : " "
             }`}
           >
-            <p>Team Leader</p>
+          
+            <p className="mx-3">{data.role_name}</p>
             <div className="flex mr-12 size-4 gap-2">
               <img src={SettingImage} alt="Settings image" />
               <img src={EditImage} alt="Edit image" />
               <img src={BinImage} alt="Delete image" />
             </div>
           </div>
-          <div
-            className={` cursor-pointer flex justify-between items-center text-md  pl-1 p-2 transition-all duration-700 hover:bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] font-extralight   ${
-              activeTab === "tab2"
-                ? "text-white bg-gradient-to-r from-[#3D03FA] to-[#A71CD2]  transition-all duration-500"
-                : " "
-            }`}
-          >
-            <p>Support Executive</p>
-            <div className="flex mr-12 size-4 gap-2">
-              <img src={SettingImage} alt="Settings image" />
-              <img src={EditImage} alt="Edit image" />
-              <img src={BinImage} alt="Delete image" />
-            </div>
-          </div>
-          <hr />
+          ))}
+        
         </div>
-        <div className="col-span-5">{activeTab === "tab3" && <AddRole />}</div>
+        <div className="col-span-5">{activeTab === "tab3" && <AddRole onClose={()=>setActiveTab(!activeTab)} />}</div>
       </div>
     </>
   );

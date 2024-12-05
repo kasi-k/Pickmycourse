@@ -9,20 +9,74 @@ import team from "../../assets/team.png";
 import help from "../../assets/services.png";
 import report from "../../assets/report.png";
 import setting from "../../assets/settings.png";
+import axios from "axios";
+import { toast } from "react-toastify";
+import {API} from '../../Host'
 
-const AddRole = () => {
+const AddRole = ({onClose}) => {
   const [roleName, setRoleName] = useState("");
   const [features, setFeatures] = useState([
-    { name: "Dashboard", icon: dashboard, value: "dashboard" },
-    { name: "Packages", icon: Package, value: "packages" },
-    { name: "Courses", icon: course, value: "courses" },
-    { name: "Generate course", icon: gc, value: "generate_course" },
-    { name: "Subscriptions", icon: subscribe, value: "subscription" },
-    { name: "Users", icon: user, value: "users" },
-    { name: "Team", icon: team, value: "team" },
-    { name: "Help & Support", icon: help, value: "help_support" },
-    { name: "Reports", icon: report, value: "report" },
-    { name: "Settings", icon: setting, value: "setting" },
+    { name: "Dashboard", icon: dashboard, value: "dashboard", permissions: [
+        { label: "Total Courses Generated", value: "totalcourse" },
+        { label: "Total No Of Users", value: "totalusers" },
+        { label: "Revenue Generated", value: "totalrevenue" },
+        { label: "Course Type", value: "coursetype" },
+        { label: "Subscriptions", value: "subscription" },
+        { label: "Recurring Revenue", value: "recurringrevenue" },
+        { label: "Ticket Status", value: "ticketstatus" },
+        { label: "Monthly Activity Progress", value: "monthlyProgress" },
+        { label: "Revenue", value: "revenue" },
+      ] 
+    },
+    { name: "Packages", icon: Package, value: "packages", permissions: [
+        { label: "Can view Packages", value: "view" },
+        { label: "Can add Packages", value: "add" },
+        { label: "Can edit Packages", value: "edit" },
+        { label: "Can delete Packages", value: "delete" },
+      ] 
+    },
+    { name: "Courses", icon: course, value: "courses", permissions: [
+        { label: "Can view Courses", value: "view" },
+        { label: "Can Generate Courses", value: "create" },
+        { label: "Can delete Courses", value: "delete" },
+      ] 
+    },
+    { name: "Subscriptions", icon: subscribe, value: "subscription" , permissions: [
+      { label: "Can view Subscriptions", value: "view" },
+    ] 
+  },
+    { name: "Users", icon: user, value: "users", permissions: [
+        { label: "Can View Users", value: "view" },
+        { label: "Can add Users", value: "create" },
+        { label: "Can Edit Users", value: "edit" },
+        { label: "Can Delete Users", value: "delete" },
+      ] 
+    },
+    { name: "Team", icon: team, value: "team", permissions: [
+        { label: "Can View Team", value: "view" },
+        { label: "Can add Team", value: "create" },
+        { label: "Can Edit Team", value: "edit" },
+        { label: "Can Delete Team", value: "delete" },
+      ] 
+    },
+    { name: "Help & Support", icon: help, value: "support", permissions: [
+        { label: "Can view Tickets", value: "view" },
+        { label: "Can assign Tickets", value: "assign" },
+        { label: "Can reply to all tickets", value: "reply" },
+        { label: "Can reply to self tickets", value: "self" },
+      ] 
+    },
+    { name: "Reports", icon: report, value: "report", permissions: [
+        { label: "Can view Reports", value: "view" },
+        { label: "Can Download Reports", value: "download" },
+      ] 
+    },
+    { name: "Settings", icon: setting, value: "setting", permissions: [
+        { label: "Roles & permission", value: "roles" },
+        { label: "Taxes", value: "tax" },
+        { label: "Help & Support", value: "support" },
+      ] 
+    },
   ]);
   const [accessLevels, setAccessLevels] = useState([]);
 
@@ -32,18 +86,45 @@ const AddRole = () => {
     setFeatures(newFeatures);
 
     if (newFeatures[index].checked) {
-      setAccessLevels([
-        ...accessLevels,
-        { feature: newFeatures[index].value, permissions: [] },
-      ]);
+      // Add feature and all permissions
+      setAccessLevels((prevAccessLevels) => {
+        const newAccessLevel = {
+          feature: newFeatures[index].value,
+          permissions: newFeatures[index].permissions.map(p => p.value),
+        };
+        return [...prevAccessLevels, newAccessLevel];
+      });
     } else {
+      // Remove feature and all permissions
       setAccessLevels(
-        accessLevels.filter(
-          (level) => level.feature !== newFeatures[index].value
+        accessLevels.filter( (level) => level.feature !== newFeatures[index].value
         )
       );
     }
   };
+
+ 
+  // const handleFeatureChange = (index) => {
+  //   const newFeatures = [...features];
+  //   newFeatures[index].checked = !newFeatures[index].checked;
+  //   setFeatures(newFeatures);
+  
+  //   if (newFeatures[index].checked) {
+  //     // Add feature and all permissions
+  //     setAccessLevels((prevAccessLevels) => {
+  //       const newAccessLevel = {
+  //         feature: newFeatures[index].value,
+  //         permissions: [], // Start with an empty permissions array
+  //       };
+  //       return [...prevAccessLevels, newAccessLevel];
+  //     });
+  //   } else {
+  //     // Remove feature and all permissions
+  //     setAccessLevels(
+  //       accessLevels.filter((level) => level.feature !== newFeatures[index].value)
+  //     );
+  //   }
+  // };
 
   const handlePermissionChange = (index, permission) => {
     const newAccessLevels = [...accessLevels];
@@ -51,50 +132,53 @@ const AddRole = () => {
       (level) => level.feature === features[index].value
     );
 
-    if (newAccessLevels[featureIndex].permissions.includes(permission)) {
-      newAccessLevels[featureIndex].permissions = newAccessLevels[
-        featureIndex
-      ].permissions.filter((p) => p !== permission);
-    } else {
-      newAccessLevels[featureIndex].permissions.push(permission);
+    if (featureIndex !== -1) {
+      if (newAccessLevels[featureIndex].permissions.includes(permission)) {
+        newAccessLevels[featureIndex].permissions = newAccessLevels[
+          featureIndex
+        ].permissions.filter((p) => p !== permission);
+      } else {
+        newAccessLevels[featureIndex].permissions.push(permission);
+      }
+      setAccessLevels(newAccessLevels);
     }
-    setAccessLevels(newAccessLevels);
   };
 
-  const handleAllPermissionChange = (index) => {
-    const newAccessLevels = [...accessLevels];
-    const featureValue = features[index].value;
-    const totalPermissions = ["courses", "users", "revenues"];
+  const handleSave = async() => {
+    const roleAccessLevel = {
+      role_name: roleName,
+      accessLevels: accessLevels,
+      status: "active", // or any other status you want to set
+    };
+    console.log(roleAccessLevel);
+    // Here you can send roleAccessLevel to your backend API
 
-    const permissions =
-      newAccessLevels.find((level) => level.feature === featureValue)
-        ?.permissions || [];
-    if (permissions.length === totalPermissions.length) {
-      newAccessLevels.forEach((level) => {
-        if (level.feature === featureValue) {
-          level.permissions = [];
-        }
+    try {
+      const response = await axios.post(`${API}/api/roleaccesslevel`, roleAccessLevel, {
       });
-    } else {
-      newAccessLevels.forEach((level) => {
-        if (level.feature === featureValue) {
-          level.permissions = totalPermissions;
-        }
-      });
+      console.log(response);
+      
+      if (response.status === 200) {
+        toast.success("Role created Successfully");
+        onClose()
+      } else {
+        console.error("Error in posting data", response);
+        toast.error("Failed to Upload");
+      }
+    } catch (error) {
+      console.error("Error in posting data", error);
     }
-
-    setAccessLevels(newAccessLevels);
   };
 
   return (
-    <div className="bg-[#000928]">
+    <div className="bg-[#000928] py-3">
       <div className="mb-2 mx-6">
         <h3 className="my-2 text-base text-white">Role Name:</h3>
         <input
           type="text"
           value={roleName}
           onChange={(e) => setRoleName(e.target.value)}
-          className="py-1 mb-2 rounded-md text-center text-black"
+          className="py-1 mb-5 rounded-md text-center text-black w-3/4 "
         />
         {features.map((feature, index) => (
           <div className="grid mb-3 text-base" key={index}>
@@ -111,161 +195,37 @@ const AddRole = () => {
             </div>
             {feature.checked && (
               <div className="grid mx-6">
-                {feature.name === "Dashboard" && (
-                  <>
-                    {[
-                      {
-                        label: "Total Courses Generated",
-                        value: "coursegenerated",
-                      },
-                      { label: "Total No Of Users", value: "noOfUsers" },
-                      { label: "Revenue Generated", value: "generatedRevenue" },
-                      { label: "Course Type", value: "coursetype" },
-                      { label: "Recurring Revenue", value: "recurringRevenue" },
-                      { label: "Ticket Status", value: "ticketStatus" },
-                      {
-                        label: "Monthly Activity Progress",
-                        value: "monthlyProgress",
-                      },
-                      { label: "Revenue", value: "revenue" },
-                    ].map((permission, index) => (
-                      <div className="flex items-center gap-2" key={index}>
-                        <label className="text-sm w-4/6">
-                          {permission.label}
-                        </label>
-                        <input
-                          type="checkbox"
-                          value={permission.value}
-                          checked={
-                            accessLevels
-                              .find((level) => level.feature === feature.value)
-                              ?.permissions.includes(permission.value) || false
-                          }
-                          onChange={() =>
-                            handlePermissionChange(index, permission.value)
-                          }
-                        />
-                      </div>
-                    ))}
-                  </>
-                )}
-
-                {feature.name === "Packages" && (
-                    <>
-                    {[
-                      {
-                        label: "Can view Packages",
-                        value: "viewPackages",
-                      },
-                      { label: "Can add Packages", value: "addPackages" },
-                      { label: "Can edit Packages", value: "editPackages" },
-                      { label: "Can delete Packages", value: "deletePackages" },
-                    ].map((permission, index) => (
-                      <div className="flex items-center gap-2" key={index}>
-                        <label className="text-sm w-4/6">
-                          {permission.label}
-                        </label>
-                        <input
-                          type="checkbox"
-                          value={permission.value}
-                          checked={
-                            accessLevels
-                              .find((level) => level.feature === feature.value)
-                              ?.permissions.includes(permission.value) || false
-                          }
-                          onChange={() =>
-                            handlePermissionChange(index, permission.value)
-                          }
-                        />
-                      </div>
-                    ))}
-                  </>
-                )}
-
-                {feature.name === "Courses" && (
-                      <>
-                      {[
-                        {
-                          label: "Can view Courses",
-                          value: "viewCourses",
-                        },
-                        { label: "Can Generate Courses", value: "generatecourses" },
-                        { label: "Can delete Courses", value: "deleteCourses" },
-                      ].map((permission, index) => (
-                        <div className="flex items-center gap-2" key={index}>
-                          <label className="text-sm w-4/6">
-                            {permission.label}
-                          </label>
-                          <input
-                            type="checkbox"
-                            value={permission.value}
-                            checked={
-                              accessLevels
-                                .find((level) => level.feature === feature.value)
-                                ?.permissions.includes(permission.value) || false
-                            }
-                            onChange={() =>
-                              handlePermissionChange(index, permission.value)
-                            }
-                          />
-                        </div>
-                      ))}
-                    </>
-                  )}
-
-                {feature.name === "Users" && (
-                  <>
-                    <div className="flex items-center gap-2">
-                      <label className="text-sm w-3/6">Total No Of Users</label>
-                      <input
-                        type="checkbox"
-                        value="users"
-                        checked={
-                          accessLevels
-                            .find((level) => level.feature === feature.value)
-                            ?.permissions.includes("users") || false
-                        }
-                        onChange={() => handlePermissionChange(index, "users")}
-                      />
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <label className="text-sm w-3/6">User Roles</label>
-                      <input
-                        type="checkbox"
-                        value="user_roles"
-                        checked={
-                          accessLevels
-                            .find((level) => level.feature === feature.value)
-                            ?.permissions.includes("user_roles") || false
-                        }
-                        onChange={() =>
-                          handlePermissionChange(index, "user_roles")
-                        }
-                      />
-                    </div>
-                  </>
-                )}
-
-                {/* You can add other features' checkboxes here similarly */}
-                {/* Continue with other features (Team, Reports, Settings, etc.) */}
-
-                <div className="flex items-center gap-2 text-sm">
-                  <input
-                    type="checkbox"
-                    value="all"
-                    checked={
-                      accessLevels.find(
-                        (level) => level.feature === feature.value
-                      )?.permissions.length === 3
-                    }
-                    onChange={() => handleAllPermissionChange(index)}
-                  />
-                  <label>All</label>
-                </div>
+                {feature.permissions.map((permission, permIndex) => (
+                  <div className="flex items-center gap-2" key={permIndex}>
+                    <label className="text-sm w-4/6">
+                      {permission.label}
+                    </label>
+                    <input
+                      type="checkbox"
+                      value={permission.value}
+                      checked={
+                        accessLevels
+                          .find((level) => level.feature === feature.value)
+                          ?.permissions.includes(permission.value) || false
+                      }
+                      onChange={() =>
+                        handlePermissionChange(index, permission.value)
+                      }
+                    />
+                  </div>
+                ))}
               </div>
             )}
           </div>
         ))}
+      </div>
+      <div className="flex justify-center my-8">
+        <button
+          className="text-lg bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-1/2 py-1.5"
+          onClick={handleSave}
+        >
+          Save
+        </button>
       </div>
     </div>
   );
