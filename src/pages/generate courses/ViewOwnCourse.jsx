@@ -9,6 +9,7 @@ const ViewOnCourse = () => {
   const [activeTab, setActiveTab] = useState("tab1");
   const [courses, setCourses] = useState([]);
   const [processing, setProcessing] = useState(true);
+  const [searchQuery, setSearchQuery] = useState(""); 
   const userId = localStorage.getItem('user');
   const navigate = useNavigate();
   
@@ -46,12 +47,12 @@ const handleCertificate = (mainTopic, end) => {
   const ending = new Date(end).toLocaleDateString()
   navigate('/viewcertificate', { state: { courseTitle: mainTopic, end: ending } });
 }
-  const completed = courses.filter((course)=>course.completed === true);
+const completed = courses.filter((course) => course.completed === true);
+const active = courses.filter((course) => course.completed !== true);
 
-  
-  const active = courses.filter((course)=>course.completed !== true);
- 
-  
+const filteredCourses = courses.filter(course => 
+  course.mainTopic.toLowerCase().includes(searchQuery.toLowerCase())
+);
 
   return (
     <div className="overflow-auto my-6 -z-10 " >
@@ -105,14 +106,16 @@ const handleCertificate = (mainTopic, end) => {
             type="text"
             placeholder="Search By Course Name"
             className="bg-transparent w-full outline-none text-center font-extralight text-black"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)} 
           />
         </div>
       </div>
       <hr className="border-2 my-1 border-white mx-1"/>
       
-      <div className="mx-1 overflow-auto">{activeTab === "tab1" && <AllCourse  courses={courses} handleCourse={handleCourse} handleCertificate={handleCertificate}/>}</div>
-      <div className="mx-1 ">{activeTab === "tab2" && <AllCourse courses={completed} handleCourse={handleCourse} handleCertificate={handleCertificate}/>}</div>
-      <div className="mx-1 ">{activeTab === "tab3" &&<AllCourse  courses={active} handleCourse={handleCourse} handleCertificate={handleCertificate}/>}</div>
+      <div className="mx-1 overflow-auto">{activeTab === "tab1" && <AllCourse  courses={filteredCourses}  handleCourse={handleCourse} handleCertificate={handleCertificate}/>}</div>
+      <div className="mx-1 ">{activeTab === "tab2" && <AllCourse courses= {completed.filter(course => course.mainTopic.toLowerCase().includes(searchQuery.toLowerCase()))} handleCourse={handleCourse} handleCertificate={handleCertificate}/>}</div>
+      <div className="mx-1 ">{activeTab === "tab3" &&<AllCourse courses={active.filter(course => course.mainTopic.toLowerCase().includes(searchQuery.toLowerCase()))} handleCourse={handleCourse} handleCertificate={handleCertificate}/>}</div>
     </div>
   );
 };

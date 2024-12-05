@@ -28,17 +28,16 @@ const schema = yup.object().shape({
 });
 
 const EditPackage = () => {
-  const[Packages,setPackages] = useState([]);
+  const [Packages, setPackages] = useState([]);
   const [isSaving, setIsSaving] = useState(false);
-  const[optionsTax,setOptionsTax]= useState([]);
+  const [optionsTax, setOptionsTax] = useState([]);
   const location = useLocation();
   const userId = location.state?.userId;
   const navigate = useNavigate();
- 
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchTaxOptions();
-  },[])
+  }, []);
   const {
     register,
     handleSubmit,
@@ -50,58 +49,67 @@ const EditPackage = () => {
   });
   const watchSubtopics = watch("subtopic");
   const watchCourseType = watch("coursetype");
-   
-    useEffect(() => {
-        fetchPackages();
-      }, []);
-    
-      const fetchPackages = async () => {
-        try {
-          const response = await axios.get(`${API}/api/getsubscriptionplanbyid/${userId}`);
-          const responseData = response.data.plan;
-          setPackages(responseData);
-          const plan = response.data.plan;
-          setValue("packagename", plan.packagename);
-          setValue("price", plan.price);
-          setValue("course", plan.course );
-          setValue("tax", plan.tax);
-          setValue("subtopic", plan.subtopic);
-          setValue("coursetype", plan.coursetype);
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      const onSubmit = async (data) => {
-        const formData = {
-          ...data,
-        };
-        try {
-          const response = await axios.put(
-            `${API}/api/subscriptionplan/${userId}`,
-            formData
-          );
-          console.log(response);
-    
-          if (response.status === 200) {
-            toast.success("Package Updated Successfully")
-            navigate("/packages")
-          }
-        } catch (error) {
-          console.error("Error updating package:", error);
-        }
-      };
+
+  useEffect(() => {
+    fetchPackages();
+  }, []);
+
+  const fetchPackages = async () => {
+    try {
+      const response = await axios.get(
+        `${API}/api/getsubscriptionplanbyid/${userId}`
+      );
+      const responseData = response.data.plan;
+      setPackages(responseData);
+      const plan = response.data.plan;
+      setValue("packagename", plan.packagename);
+      setValue("price", plan.price);
+      setValue("course", plan.course);
+      setValue("tax", plan.tax);
+      setValue("subtopic", plan.subtopic);
+      setValue("coursetype", plan.coursetype);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const onSubmit = async (data) => {
+    const formData = {
+      ...data,
+    };
+    try {
+      const response = await axios.put(
+        `${API}/api/subscriptionplan/${userId}`,
+        formData
+      );
+      console.log(response);
+
+      if (response.status === 200) {
+        toast.success("Package Updated Successfully");
+        navigate("/packages");
+      }
+    } catch (error) {
+      console.error("Error updating package:", error);
+    }
+  };
   const fetchTaxOptions = async () => {
     try {
       const response = await axios.get(`${API}/api/gettax`);
       if (Array.isArray(response.data.tax)) {
         setOptionsTax(response.data.tax);
       } else {
-        console.error("Expected an array of tax options, but got:", response.data);
-        setOptionsTax([]);  // Fallback to an empty array if the structure is unexpected
+        console.error(
+          "Expected an array of tax options, but got:",
+          response.data
+        );
+        setOptionsTax([]); // Fallback to an empty array if the structure is unexpected
       }
     } catch (error) {
       console.error("Error fetching taxes:", error);
     }
+  };
+
+  const handleCancelModal = () => {
+    navigate("/packages");
   };
 
   return (
@@ -154,11 +162,12 @@ const EditPackage = () => {
                 <option value="select" disabled>
                   Select Tax
                 </option>
-              {optionsTax && optionsTax.map((tax, index) => (
-                   <option key={index} value={tax.percentage}>
-                           {tax.percentage}%
-                          </option>
-                 ))}
+                {optionsTax &&
+                  optionsTax.map((tax, index) => (
+                    <option key={index} value={tax.percentage}>
+                      {tax.percentage}%
+                    </option>
+                  ))}
               </select>
               <p className="text-red-700">{errors.tax?.message}</p>
               <div className="absolute inset-y-0 right-0 flex items-center pr-5 bg-gray-300 px-4 rounded-lg pointer-events-none outline-none">
@@ -274,7 +283,7 @@ const EditPackage = () => {
           </div>
           <button
             type="submit"
-            className={`my-6 text-white bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-14 py-2 ${
+            className={`my-6 text-white bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-12 py-2 ${
               isSaving ? "opacity-50 cursor-not-allowed" : ""
             } `}
             disabled={isSaving}
@@ -282,11 +291,17 @@ const EditPackage = () => {
             {isSaving ? (
               <div className="flex  text-xl gap-2">
                 <AiOutlineLoading className="h-6 w-6 animate-spin" />
-                <p>Saving....</p>
+                <p>Updating....</p>
               </div>
             ) : (
-              "Save"
+              "Update"
             )}
+          </button>
+          <button
+            onClick={handleCancelModal}
+            className="my-6 mx-6 text-white bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-12 py-2"
+          >
+            Cancel
           </button>
         </form>
       </div>

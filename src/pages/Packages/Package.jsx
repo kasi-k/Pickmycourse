@@ -9,7 +9,6 @@ import axios from "axios";
 import { API } from "../../Host";
 import DeleteModal from "../../components/DeleteModal";
 import { toast } from "react-toastify";
-import AddPackage from "./AddPackage";
 
 const Package = () => {
   const [data, setData] = useState([]);
@@ -20,7 +19,7 @@ const Package = () => {
   useEffect(() => {
     fetchSubscriptionPlan();
 
-  }, []);
+  }, [isDeleteModal]);
 
   const fetchSubscriptionPlan = async () => {
     try {
@@ -46,14 +45,12 @@ const Package = () => {
   const handleUserPackage = () => {
     navigate("/adduserPackage");
   };
-  const handleEdit = (planId) => {
-    navigate(`/editpackage/${planId}`); 
-  };
+
   const handleCopy = (plan) => {
     const packageDetails = `
       Package Name: ${plan.packagename}
-      Price: $${plan.price} / Month
-      Generate: ${plan.course} ${plan.course === "1" ? "free" : "Courses"} /month
+      Price: $${plan.price}/Month
+      Generate course: ${plan.course} ${plan.course === "1" ? "free" : "Courses"}/month
       Subtopics: ${plan.subtopic}
       AI Teacher: Yes
       Theory & Image course

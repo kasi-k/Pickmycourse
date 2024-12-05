@@ -228,7 +228,7 @@ const Courses = () => {
                         <FaEye size={24} />
                       </p>
                       <p
-                        onClick={handleDeleteModal}
+                        onClick={()=>handleDeleteModal(data._id)}
                         className="cursor-pointer size-6"
                       >
                         <img src={Delete} alt="delete image" />
