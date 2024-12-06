@@ -158,21 +158,6 @@ console.log(roleId);
     };
     console.log(roleAccessLevel);
     // Here you can send roleAccessLevel to your backend API
-
-    try {
-      const response = await axios.post(`${API}/api/getrolebyid?rolename=${roleId}`);
-      console.log(response);
-      
-      if (response.status === 200) {
-        toast.success("Role updated Successfully");
-        onClose()
-      } else {
-        console.error("Error in posting data", response);
-        toast.error("Failed to Upload");
-      }
-    } catch (error) {
-      console.error("Error in posting data", error);
-    }
   };
 
   return (
