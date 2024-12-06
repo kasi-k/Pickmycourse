@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
-import { API } from "../../Host";
+import { API,formatDate2 } from "../../Host";
 import { toast } from "react-toastify";
 import UpdateImage from "../users/UpdateImage";
 
@@ -28,9 +28,11 @@ const EditTeam = () => {
   const userId = location.state?.userId;
   const [userData, setUserData] = useState({});
   const [userImage, setUserImage] = useState({});
+  const [designation,setDesignation] =useState([])
   const navigate = useNavigate();
 
   useEffect(() => {
+    fetchDesignation();
     fetchTeam();
     fetchImage();
   }, [isProfileModal]);
@@ -93,6 +95,19 @@ const EditTeam = () => {
       }
     } catch (error) {
       console.error("Error updating category:", error);
+    }
+  };
+  const fetchDesignation = async () => {
+    try {
+      const response = await axios.get(`${API}/api/getroles`);
+      if (Array.isArray(response.data.role)) {
+        setDesignation(response.data.role);
+      } else {
+        console.error("Expected an array of tax options, but got:", response.data);
+        setDesignation([]);  // Fallback to an empty array if the structure is unexpected
+      }
+    } catch (error) {
+      console.error("Error fetching taxes:", error);
     }
   };
   return (
@@ -175,8 +190,11 @@ const EditTeam = () => {
                     <option value="select" disabled>
                       Select Designation
                     </option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
+                {designation && designation.map((role, index) => (
+                   <option key={index} value={role.designation}>
+                           {role.role_name}
+                          </option>
+                 ))}
                   </select>
                   <p className="text-red-700">{errors.designation?.message}</p>
                 </div>
@@ -192,12 +210,12 @@ const EditTeam = () => {
                   <input
                     type="email"
                     id="email"
-                    className=" bg-transparent outline-none lg:w-54 md:w-54 w-48 px-2"
+                    className=" bg-transparent outline-none lg:w-54 md:w-56 w-48 px-2"
                     {...register("email")}
                   />
                   <p className="text-red-700">{errors.email?.message}</p>
                 </div>
-                <hr className="lg:w-54 md:w-54 w-48 mb-6" />
+                <hr className="lg:w-54 md:w-56 w-48 mb-6" />
               </div>
               <div>
                 <div className="flex flex-col">
@@ -206,12 +224,12 @@ const EditTeam = () => {
                     type="tel"
                     name="phone"
                     id="phone"
-                    className="bg-transparent  outline-none lg:w-1/2 md:w-54 w-48 px-2"
+                    className="bg-transparent  outline-none lg:w-1/2 md:w-56 w-48 px-2"
                     {...register("phone")}
                   />
                   <p className="text-red-700">{errors.phone?.message}</p>
                 </div>
-                <hr className="lg:w-1/2 md:w-54 w-48 mb-6" />
+                <hr className="lg:w-1/2 md:w-56 w-48 mb-6" />
               </div>
             </div>
             <button

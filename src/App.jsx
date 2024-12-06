@@ -33,6 +33,7 @@ import ViewCertificate from "./pages/generate courses/ViewCertificate";
 import EditPackage from "./pages/Packages/EditPackage";
 import axios from "axios";
 import { API } from "./Host";
+import UpdateRole from "./pages/settings/UpdateRole";
 const App = () => {
   const [features, setFeatures] = useState({});
   const role = localStorage.getItem("role");
@@ -71,28 +72,32 @@ const App = () => {
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/resetpassword" element={<ResetPassword />} />
           <Route path="/content" element={<Content />} />
-          <Route path="/" element={<Layout  permissions={memoizedFeatures} />}>
+          <Route path="/" element={<Layout permissions={memoizedFeatures} />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/packages" element={<Package />} />
             <Route path="/addpackage" element={<AddPackage />} />
             <Route path="/editpackage" element={<EditPackage />} />
             <Route path="/adduserPackage" element={<AdduserPackage />} />
-            <Route path="/courses" element={<Courses />} />
             <Route path="/create" element={<GenerateCourse />} />
             <Route path="/topics" element={<ListTopics />} />
             <Route path="/viewcourse" element={<ViewOwnCourse />} />
             <Route path="/viewcertificate" element={<ViewCertificate />} />
             <Route path="/subscription" element={<Subscription />} />
-
-            <Route path="/team" element={<Team />} />
-            <Route path="/editteam" element={<EditTeam />} />
-            <Route path="/addteam" element={<AddTeam />} />
             <Route path="/helpsupport" element={<Tickets />} />
             <Route path="/viewticket" element={<ViewTicket />} />
             <Route path="/report" element={<Report />} />
             <Route path="/setting" element={<Setting />} />
             <Route path="/addrole" element={<AddRole />} />
+            <Route path="/updaterole" element={<UpdateRole/>} />
             <Route path="/category" element={<Category />} />
+            {memoizedFeatures["courses"] && (
+              <>
+                <Route
+                  path="/courses"
+                  element={<Courses permissions={memoizedFeatures["courses"]} />}
+                />
+              </>
+            )}
             {memoizedFeatures["users"] && (
               <>
                 <Route
@@ -101,6 +106,16 @@ const App = () => {
                 />
                 <Route path="/adduser" element={<AddUser />} />
                 <Route path="/edituser" element={<EditUser />} />
+              </>
+            )}
+            {memoizedFeatures["team"] && (
+              <>
+                <Route
+                  path="/team"
+                  element={<Team permissions={memoizedFeatures["team"]} />}
+                />
+                <Route path="/editteam" element={<EditTeam />} />
+                <Route path="/addteam" element={<AddTeam />} />
               </>
             )}
           </Route>

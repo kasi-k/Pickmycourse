@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import Headers from "./Headers";
 import profile from "../../assets/profile.png";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
@@ -15,19 +15,29 @@ import report from "../../assets/report.png"
 import setting from "../../assets/settings.png"
 import logout from "../../assets/logout.png";
 import LogOut from "../auth/LogOut";
+import axios from "axios";
+import { API } from "../../Host";
 const Layout = ({ permissions }) => {
   const location = useLocation();
   const [isLogOutModalOpen, setLogOutModalOpen] = useState(false);
   const fname=localStorage.getItem("fname")
   const lname = localStorage.getItem("lname")
+  const admin = localStorage.getItem("user")
+  const [userImage, setUserImage] = useState({});
+
+
+  useEffect(() => {
+    fetchImage();
+  }, []);
+
   const Menus = [
     { title: "Dashboard", icon: dashboard, to: "/dashboard" },
      { title: "Packages", icon: Package, to: "/packages"},
-     { title: "Courses", icon:course, to: "/courses" },
+     permissions["courses"] && { title: "Courses", icon: course, to: "/courses" },
      { title: "Generate course", icon:gc, to: "/create" },
      { title: "Subscriptions", icon:subscribe, to: "/subscription" }, 
      permissions["users"] && { title: "Users", icon: user, to: "/users" },
-     { title: "Team", icon:team, to: "/team" },
+     permissions["team"] && { title: "Team", icon: team, to: "/team" },
      { title: "Help & Support", icon:help, to: "/helpsupport" },
      { title: "Reports", icon:report, to: "/report" },
      { title: "Settings", icon:setting, to: "/setting" },
@@ -44,13 +54,25 @@ const Layout = ({ permissions }) => {
     setLogOutModalOpen(false);
   };
 
+  const fetchImage = async () => {
+    try {
+      const response = await axios.get(`${API}/api/getimagebyid?user=${admin}`);
+      const responseData = response.data.user;
+      setUserImage(responseData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="">
       <Headers Menus={Menus} />
       <div className="flex w-full h-screen pt-14 font-poppins  ">
         <div className="w-2/12   bg-[#200098] text-white lg:block md:hidden hidden overflow-auto no-scrollbar ">
           <div className="flex gap-2 items-center pt-3 flex-wrap justify-center ">
-            <img src={profile} alt="User" className="w-14 h-14 " />
+            <img   src={userImage?.image ? userImage.image : profile}
+            alt="Profile"
+            className={`w-14 h-14 ${userImage?.image ? ' rounded-xl object-cover' : ''}`}  />
             <div>
               <p className="text-xl font-extralight">Hello ! {fname} {lname}</p>
               <p className="text-xs font-extralight pt-1">

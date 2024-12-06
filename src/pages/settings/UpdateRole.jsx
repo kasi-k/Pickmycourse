@@ -12,8 +12,9 @@ import setting from "../../assets/settings.png";
 import axios from "axios";
 import { toast } from "react-toastify";
 import {API} from '../../Host'
+import { useLocation } from "react-router-dom";
 
-const AddRole = ({onClose}) => {
+const UpdateRole = ({onClose}) => {
   const [roleName, setRoleName] = useState("");
   const [features, setFeatures] = useState([
     { name: "Dashboard", icon: dashboard, value: "dashboard", permissions: [
@@ -80,6 +81,9 @@ const AddRole = ({onClose}) => {
   ]);
   const [accessLevels, setAccessLevels] = useState([]);
   const [newRole,setNewRole] = useState([]);
+const location = useLocation();
+const roleId = location.state?.roleId;
+console.log(roleId);
 
 
   const handleFeatureChange = (index) => {
@@ -156,12 +160,11 @@ const AddRole = ({onClose}) => {
     // Here you can send roleAccessLevel to your backend API
 
     try {
-      const response = await axios.post(`${API}/api/roleaccesslevel`, roleAccessLevel, {
-      });
+      const response = await axios.post(`${API}/api/getrolebyid?rolename=${roleId}`);
       console.log(response);
       
       if (response.status === 200) {
-        toast.success("Role created Successfully");
+        toast.success("Role updated Successfully");
         onClose()
       } else {
         console.error("Error in posting data", response);
@@ -169,15 +172,6 @@ const AddRole = ({onClose}) => {
       }
     } catch (error) {
       console.error("Error in posting data", error);
-    }
-  };
-  const fetchNewRoles = async () => {
-    try {
-      const response = await axios.get(`${API}/api/getrolebyid?`);
-      const responseData = response.data;
-      setNewroles(responseData);
-    } catch (error) {
-      console.log(error);
     }
   };
 
@@ -242,4 +236,4 @@ const AddRole = ({onClose}) => {
   );
 };
 
-export default AddRole;
+export default UpdateRole;

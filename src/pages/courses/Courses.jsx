@@ -14,7 +14,10 @@ import { CSVLink } from "react-csv"; // For CSV export
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 
-const Courses = () => {
+const Courses = ({permissions}) => {
+  const hasCreatePermission = permissions?.includes('create');
+  const hasViewPermission = permissions?.includes('view');
+  const hasDeletePermission = permissions?.includes('delete');
   const [courses, setCourses] = useState([]);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [onDelete, setOnDelete] = useState("");
@@ -212,6 +215,7 @@ const Courses = () => {
                       {formatDate2(data.date)}
                     </td>
                     <td className=" border-b border-r border-slate-400 flex items-center justify-evenly  ">
+                    {hasViewPermission && (
                       <p
                         onClick={() =>
                           handleCourse(
@@ -227,12 +231,15 @@ const Courses = () => {
                       >
                         <FaEye size={24} />
                       </p>
+                       )}
+                        {hasDeletePermission && (
                       <p
                         onClick={()=>handleDeleteModal(data._id)}
                         className="cursor-pointer size-6"
                       >
                         <img src={Delete} alt="delete image" />
                       </p>
+                      )}
                     </td>
                   </tr>
                 ))}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef } from "react";
 import { FaCaretDown } from "react-icons/fa";
 import Gallery from "../../assets/gallery.png";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -8,15 +8,43 @@ import * as yup from "yup";
 import axios from "axios";
 import { API, formatDate1, formatDate2 } from "../../Host";
 import { toast } from "react-toastify";
+import {toPng} from 'html-to-image'
+import { AiOutlineLoading } from "react-icons/ai";
+
 
 const Modal = ({ isOpen, onClose, imageUrl }) => {
   if (!isOpen) return null;
+  const [processing, setProcessing] = useState(false);
+  const pdfRef = useRef(null);
+
+  const handleDownload = async () => {
+    setProcessing(true);
+      toPng(pdfRef.current, { cacheBust: false })
+          .then((dataUrl) => {
+              const link = document.createElement("a");
+              link.download = `Image.png`;
+              link.href = dataUrl;
+              link.click();
+              toast.success("Downloaded")
+              setProcessing(false);
+          })
+          .catch((err) => {
+              //DO NOTHING
+          });
+  };
+
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className=" relative w-[550px]  h-[350px]">
         <p onClick={onClose} className=" text-red-500 font-extrabold text-2xl absolute right-2 ">x</p>
-        <img src={imageUrl} alt="Modal" className="w-full h-full" />
+        <img src={imageUrl} alt="Modal" className="w-full h-full" ref={pdfRef}/>
+        <div className="flex justify-center my-3 ">
+          <button  className={`text-lg bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-40 py-2.5 ${processing ? 'opacity-15' : ''}`}  disabled={processing} onClick={handleDownload}>
+          {processing ?  <span className="flex justify-center gap-3"> <AiOutlineLoading className="h-6 w-6 animate-spin" /> <p>Downloading ....</p></span> : "Download" }
+          </button>
+    </div>
+
       </div>
     </div>
   );
@@ -201,7 +229,7 @@ const ViewTicket = () => {
           {userData?.desc2 === null ? (
             <div>
               <div className="flex justify-end">
-                <form className="grid mx-2 my-2 ">
+                <div className="grid mx-2 my-2 ">
                   <label>
                     Team Member <span className="text-red-600">*</span>
                   </label>
@@ -225,11 +253,11 @@ const ViewTicket = () => {
                       <p className="text-red-700">{errors.team?.message}</p>
                     )}
                   </div>
-                </form>
+                </div>
               </div>
 
               <div className="mt-2">
-                <form className="flex flex-col ">
+                <div className="flex flex-col ">
                   <label className="mx-6">Add Reply</label>
                   <textarea
                     rows={9}
@@ -243,27 +271,30 @@ const ViewTicket = () => {
                       <label htmlFor="">
                         Attachments (you can select multiple files)
                       </label>
-                      <div className="absolute inset-y-1 top-7 left-0 rounded-lg px-1 py-2  flex items-center  bg-gray-300  pointer-events-none outline-none text-black">
+                      <div className="border bg-white rounded-lg py-1.5 my-1 flex items-center ">
+                      <div className="absolute inset-y-1 top-7 left-0 rounded-lg px-2 py-2  flex items-center  bg-gray-300  pointer-events-none outline-none text-black">
                         Choose Files
-                      </div>
+                      </div> 
                       <input
                         type="file"
-                        // className="hidden"
+                        className="opacity-0  text-black "
                         id="file-input"
                         multiple
                         onChange={(e) =>
                           setSelectedFiles(Array.from(e.target.files))
                         }
                       />
-                    </div>
-                    <span
-                      className="absolute top-1/2 -translate-y-1/2 lg:right-4 md:right-4 right-16 text-normal text-black"
+                         <span
+                      className="absolute  top-12 -translate-y-1/2 lg:right-2 md:right-4 right-16 text-normal text-black"
                       id="file-name"
                     >
                       {selectedFiles.length > 0
                         ? `${selectedFiles.length} Files Selected`
                         : "No Files Chosen"}
                     </span>
+                    </div>
+                    </div>
+                 
                     <div className="grid mx-2">
                       <label htmlFor="">
                         Ticket staus<span className="text-red-600">*</span>
@@ -293,7 +324,7 @@ const ViewTicket = () => {
                       </div>
                     </div>
                   </div>
-                </form>
+                </div>
                 <button
                   type="submit"
                   className="mx-2 bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-10 py-2 my-4"
@@ -303,7 +334,7 @@ const ViewTicket = () => {
               </div>
             </div>
           ) : (
-            <div className="mx-5">
+            <div className="">
               <p className="text-lg mt-3 mb-2 ">Support</p>
               <p className="text-normal font-normal my-4">
                 Date : {formatDate1(userData?.updatedAt)}

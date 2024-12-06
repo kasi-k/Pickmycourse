@@ -61,7 +61,9 @@ const AddUser = () => {
     console.log(data);
     const formData = {
       ...data,
+      type:"free"
     };
+
     try {
       const response = await axios.post(`${API}/api/usersignup`, formData);
       console.log(response);

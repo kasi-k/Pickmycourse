@@ -18,7 +18,12 @@ import { toast } from "react-toastify";
 const csvData = `si,fname,email,lname,phone,dob,designation,type
 1,john,admin12@gmail.com,doe,9784561230,11-25-2024,1,free`
 
-const Team = () => {
+const Team = ({permissions}) => {
+  const hasCreatePermission = permissions?.includes('create');
+  const hasEditPermission = permissions?.includes('edit');
+  const hasDeletePermission = permissions?.includes('delete');
+  const hasDownloadPermission = permissions?.includes('download');
+  const hasViewPermission = permissions?.includes('view');
   const [team, setTeam] = useState([]);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [onDelete, setOnDelete] = useState("");
@@ -98,7 +103,7 @@ const Team = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download =  "bulkupload_template.csv";
+    a.download =  "PMC bulkupload_template Team.csv";
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -135,7 +140,7 @@ const Team = () => {
     ws["!cols"] = wscols; // Set the column widths
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Teams");
-    XLSX.writeFile(wb, "teams.xlsx");
+    XLSX.writeFile(wb, "PMC_teams.xlsx");
   };
 
   // Export to PDF with Table Format
@@ -180,7 +185,7 @@ const Team = () => {
       },
     });
 
-    doc.save("teams.pdf");
+    doc.save("PMC_teams.pdf");
   };
   return (
     <>
@@ -193,7 +198,7 @@ const Team = () => {
             </button>
             <CSVLink
               data={getExportData()}
-              filename={"teams.csv"}
+              filename={"PMC_teams.csv"}
               className="cursor-pointer"
               target="_blank"
             >
@@ -220,12 +225,14 @@ const Team = () => {
                   className="hidden"
                 />
               </button>
+              {hasCreatePermission && (
               <button
                 onClick={handleAddTeamModal}
                 className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2]  text-nowrap py-1 lg:px-4 md:px-4 px-1  "
               >
                 Add team
               </button>
+               )}
             </div>
           </div>
         </div>
@@ -273,6 +280,7 @@ const Team = () => {
                       {data.designation}
                     </td>
                     <td className=" border-b border-r border-slate-400 flex justify-around items-center  ">
+                    {hasEditPermission && (
                       <p
                         onClick={() =>
                           navigate(`/editteam`, {
@@ -285,6 +293,8 @@ const Team = () => {
                       >
                         <img className="size-6" src={Edit} alt="edit image" />
                       </p>
+                      )}
+                       {hasDeletePermission && (
                       <p
                         onClick={() => {
                           handleDeleteModal(data._id);
@@ -293,6 +303,7 @@ const Team = () => {
                       >
                         <img src={Delete} alt="delete image" />
                       </p>
+                      )}
                     </td>
                   </tr>
                 ))}

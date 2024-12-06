@@ -8,7 +8,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
 import { API } from "../../Host";
-import { useLocation } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const EditSchema = yup.object().shape({
@@ -33,13 +33,9 @@ const EditUser = () => {
   const userphone = localStorage.getItem("userphone")
   const [userData, setUserData] = useState({});
   const [userImage, setUserImage] = useState({});
-  
+  const navigate = useNavigate()
 
   useEffect(() => {
-    // const userEmailFromStorage = localStorage.getItem("useremail");
-    // if (userEmailFromStorage) {
-    //   setValue("email", userEmailFromStorage);
-    // }
     fetchUser();
     fetchImage();
   }, [isProfileModal,useremail,userphone]);
@@ -85,7 +81,8 @@ const EditUser = () => {
     const formData = {
       ...data,
     };
-    
+    toast.success("User updated successfully")
+    navigate("/users")
   };
 
   const CloseProfileModal = () => {
@@ -105,6 +102,9 @@ const EditUser = () => {
    
    
   };
+  const handleCancelClick = ()=>{
+    navigate("/users")
+  }
   return (
     <>
       <div className="font-extralight my-4">
@@ -214,13 +214,20 @@ const EditUser = () => {
                 >
                   Update
                 </button>
-                <button type="submit"
-                  className=" bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-5 py-2 "
+              </div>
+            </div>
+            <div className="flex space-x-2">
+              <button type="submit"
+                  className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-5 py-2 "
                 >
                   Update Changes
                 </button>
-              </div>
-            </div>
+                <p onClick={handleCancelClick}
+                  className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-5 py-2 "
+                >
+                  Cancel
+                </p>
+                </div>
           </form>
         </div>
       </div>

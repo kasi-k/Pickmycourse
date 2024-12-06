@@ -13,7 +13,6 @@ import * as XLSX from "xlsx"; // For Excel export
 import { CSVLink } from "react-csv"; // For CSV export
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
-import Papa from "papaparse";
 import { toast } from "react-toastify";
 
 const csvData = `si,fname,email,lname,phone,dob,type,company
@@ -31,7 +30,8 @@ const User = ({ permissions }) => {
   const [file, setFile] = useState(null);
   const [buttonText, setButtonText] = useState("Bulk Upload");
   const fileInputRef = useRef(null);
-
+ const plan = localStorage.getItem("plan")
+ const courses = localStorage.getItem("courses")
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -147,7 +147,7 @@ const User = ({ permissions }) => {
     ws["!cols"] = wscols;
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Users");
-    XLSX.writeFile(wb, "users.xlsx");
+    XLSX.writeFile(wb, "PMC_users.xlsx");
   };
 
   // Export to PDF with Table Format
@@ -194,7 +194,7 @@ const User = ({ permissions }) => {
       },
     });
 
-    doc.save("users.pdf");
+    doc.save("PMC_users.pdf");
   };
 
   return (
@@ -208,7 +208,7 @@ const User = ({ permissions }) => {
             </button>
             <CSVLink
               data={getExportData()}
-              filename={"users.csv"}
+              filename={"PMC_users.csv"}
               className="cursor-pointer"
               target="_blank"
             >
@@ -270,12 +270,12 @@ const User = ({ permissions }) => {
                 <th className="font-extralight border border-slate-400">
                   Plan
                 </th>
-                <th className="font-extralight border border-slate-400">
+                {/* <th className="font-extralight border border-slate-400">
                   Courses
                 </th>
                 <th className="font-extralight border border-slate-400">
                   Subscription Date
-                </th>
+                </th> */}
                
                 <th className="font-extralight border border-slate-400">
                   Action
@@ -295,9 +295,9 @@ const User = ({ permissions }) => {
                     <td className="border border-slate-400">
                       {formatDate2(data.dob)}
                     </td>
-                    <td className="border border-slate-400">Basic</td>
-                    <td className="border border-slate-400">2</td>
-                    <td className="border border-slate-400">22-05-1990</td>
+                    <td className="border border-slate-400">{data.type}</td>
+                    {/* <td className="border border-slate-400">{courses}</td>
+                    <td className="border border-slate-400">22-05-1990</td> */}
                    
                     <td className="border-b border-r border-slate-400 flex justify-around items-center">
                      {hasEditPermission && (

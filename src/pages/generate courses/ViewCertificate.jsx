@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import certificate from "../../assets/certificate.png";
+import certificate from "../../assets/certificate.jpg";
 import Logo from "../../assets/PMC_Logo.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import {toPng} from 'html-to-image'
 import { toast } from "react-toastify";
-import { formatDate1 } from "../../Host";
+import { formatDate2 } from "../../Host";
 import { AiOutlineLoading } from "react-icons/ai";
 
 const ViewCertificate = () => {
@@ -21,7 +21,7 @@ const ViewCertificate = () => {
       toPng(pdfRef.current, { cacheBust: false })
           .then((dataUrl) => {
               const link = document.createElement("a");
-              link.download = "certificate.png";
+              link.download = "PMC Certificate.png";
               link.href = dataUrl;
               link.click();
               toast.success("Downloaded")
@@ -66,7 +66,7 @@ const ViewCertificate = () => {
         <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold mb-4">
         {courseTitle}
         </h3>
-        <p className="text-sm sm:text-base md:text-lg mb-4">on {formatDate1(end)}</p>
+        <p className="text-sm sm:text-base md:text-lg mb-4">on {formatDate2(end)}</p>
       </div>
       
     </div>

@@ -37,13 +37,13 @@ const AdduserPackage = () => {
         ...data,
         course: selectedPackage.course,
       };
-
+      localStorage.setItem("plan",data.packagename);
+      localStorage.setItem("courses",selectedPackage.course);
       console.log(formData);
+   
 
       try {
         const response = await axios.post(`${API}/api/addusertoplan`,formData);
-        console.log(response);
-        
           navigate("/packages");
      
       } catch (error) {
