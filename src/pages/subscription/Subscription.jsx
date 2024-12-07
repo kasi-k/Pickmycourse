@@ -13,7 +13,7 @@ import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 
 const Subscription = () => {
-  const[invoiceModal,setInvoiceModal]=useState(false)
+  const[invoiceModal,setInvoiceModal]=useState(null)
   const [sub, setSub] = useState([]);
 
   useEffect(() => {
@@ -118,11 +118,17 @@ const Subscription = () => {
       },
     });
 
-    doc.save("PMC Subscription.pdf");
+    doc.save("PMC_Subscription.pdf");
   };
-  const handleInvoiceModal=()=>{
-    setInvoiceModal(true)
-  }
+  const handleInvoiceModal = (amount, subscriberId, plan, method, date) => {
+    setInvoiceModal({
+      amount: amount,
+      subscriberId: subscriberId,
+      plan: plan,
+      method: method,
+      date: date,
+    });
+  };
   return (
     <>
     <div className=" font-extralight">
@@ -134,7 +140,7 @@ const Subscription = () => {
         </button>
         <CSVLink
               data={getExportData()}
-              filename={"PMC Subscription.csv"}
+              filename={"PMC_Subscription.csv"}
               className="cursor-pointer"
               target="_blank"
             >
@@ -199,7 +205,9 @@ const Subscription = () => {
             <td className="border border-slate-400 ">{data.subscriberId}</td>
             <td className="border border-slate-400 ">{data.method}</td>
             <td className=" border-b border-r border-slate-400 flex  justify-center items-center  ">
-              <p onClick={handleInvoiceModal} className=" cursor-pointer p-2  text-green-600 ">
+              <p  onClick={() =>
+                          handleInvoiceModal(data.amount, data.subscriberId, data.plan, data.method, data.date)
+                        } className=" cursor-pointer p-2  text-green-600 ">
                 <FaEye size={24} />
               </p>
             </td>
@@ -209,7 +217,12 @@ const Subscription = () => {
       </table>
     </div>
   </div>
-  {invoiceModal&&<Invoice onClose={()=>setInvoiceModal(!invoiceModal)}/>}
+  {invoiceModal && (
+  <Invoice 
+    onClose={() => setInvoiceModal(null)} 
+    invoiceData={invoiceModal}  // Pass the invoice data
+  />
+)}
 </>
   )
 }

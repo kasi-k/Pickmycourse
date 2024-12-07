@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import dashboard from "../../assets/dashboard.png";
 import Package from "../../assets/money.png";
 import course from "../../assets/course.png";
@@ -10,14 +10,17 @@ import help from "../../assets/services.png";
 import report from "../../assets/report.png";
 import setting from "../../assets/settings.png";
 import axios from "axios";
-import { toast } from "react-toastify";
-import {API} from '../../Host'
-import { useLocation } from "react-router-dom";
+import { API } from "../../Host";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
-const UpdateRole = ({onClose}) => {
-  const [roleName, setRoleName] = useState("");
+const UpdateRole = ({ onClose }) => {
+  const [roleName, setRoleName] = useState("");  // role name state
   const [features, setFeatures] = useState([
-    { name: "Dashboard", icon: dashboard, value: "dashboard", permissions: [
+    {
+      name: "Dashboard",
+      icon: dashboard,
+      value: "dashboard",
+      permissions: [
         { label: "Total Courses Generated", value: "totalcourse" },
         { label: "Total No Of Users", value: "totalusers" },
         { label: "Revenue Generated", value: "totalrevenue" },
@@ -27,64 +30,113 @@ const UpdateRole = ({onClose}) => {
         { label: "Ticket Status", value: "ticketstatus" },
         { label: "Monthly Activity Progress", value: "monthlyProgress" },
         { label: "Revenue", value: "revenue" },
-      ] 
+      ],
     },
-    { name: "Packages", icon: Package, value: "packages", permissions: [
+    {
+      name: "Packages",
+      icon: Package,
+      value: "packages",
+      permissions: [
         { label: "Can view Packages", value: "view" },
         { label: "Can add Packages", value: "add" },
         { label: "Can edit Packages", value: "edit" },
         { label: "Can delete Packages", value: "delete" },
-      ] 
+      ],
     },
-    { name: "Courses", icon: course, value: "courses", permissions: [
+    {
+      name: "Courses",
+      icon: course,
+      value: "courses",
+      permissions: [
         { label: "Can view Courses", value: "view" },
         { label: "Can Generate Courses", value: "create" },
         { label: "Can delete Courses", value: "delete" },
-      ] 
+      ],
     },
-    { name: "Subscriptions", icon: subscribe, value: "subscription" , permissions: [
-      { label: "Can view Subscriptions", value: "view" },
-    ] 
-  },
-    { name: "Users", icon: user, value: "users", permissions: [
+    {
+      name: "Subscriptions",
+      icon: subscribe,
+      value: "subscription",
+      permissions: [{ label: "Can view Subscriptions", value: "view" }],
+    },
+    {
+      name: "Users",
+      icon: user,
+      value: "users",
+      permissions: [
         { label: "Can View Users", value: "view" },
         { label: "Can add Users", value: "create" },
         { label: "Can Edit Users", value: "edit" },
         { label: "Can Delete Users", value: "delete" },
-      ] 
+      ],
     },
-    { name: "Team", icon: team, value: "team", permissions: [
+    {
+      name: "Team",
+      icon: team,
+      value: "team",
+      permissions: [
         { label: "Can View Team", value: "view" },
         { label: "Can add Team", value: "create" },
         { label: "Can Edit Team", value: "edit" },
         { label: "Can Delete Team", value: "delete" },
-      ] 
+      ],
     },
-    { name: "Help & Support", icon: help, value: "support", permissions: [
+    {
+      name: "Help & Support",
+      icon: help,
+      value: "support",
+      permissions: [
         { label: "Can view Tickets", value: "view" },
         { label: "Can assign Tickets", value: "assign" },
         { label: "Can reply to all tickets", value: "reply" },
         { label: "Can reply to self tickets", value: "self" },
-      ] 
+      ],
     },
-    { name: "Reports", icon: report, value: "report", permissions: [
+    {
+      name: "Reports",
+      icon: report,
+      value: "report",
+      permissions: [
         { label: "Can view Reports", value: "view" },
         { label: "Can Download Reports", value: "download" },
-      ] 
+      ],
     },
-    { name: "Settings", icon: setting, value: "setting", permissions: [
+    {
+      name: "Settings",
+      icon: setting,
+      value: "setting",
+      permissions: [
         { label: "Roles & permission", value: "roles" },
         { label: "Taxes", value: "tax" },
         { label: "Help & Support", value: "support" },
-      ] 
+      ],
     },
   ]);
-  const [accessLevels, setAccessLevels] = useState([]);
-  const [newRole,setNewRole] = useState([]);
-const location = useLocation();
-const roleId = location.state?.roleId;
-console.log(roleId);
 
+  const [accessLevels, setAccessLevels] = useState([]);
+  const [newRole, setNewRole] = useState([]);
+  const location = useLocation();
+  const roleId = location.state?.roleId;
+ const navigate =useNavigate()
+  useEffect(() => {
+    if (roleId) {
+      fetchExistingRoles();
+    }
+  }, [roleId]);
+
+  const fetchExistingRoles = async () => {
+    try {
+      const response = await axios.get(
+        `${API}/api/getrolebyid?role_name=${roleId}`
+      );
+      const responseData = response.data.role;
+      setRoleName(responseData.role_name);  // Set the existing role name
+      setNewRole(responseData.accessLevels);  // Set the access levels from the backend
+      setAccessLevels(responseData.accessLevels);  // Initial access levels
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleFeatureChange = (index) => {
     const newFeatures = [...features];
@@ -92,45 +144,19 @@ console.log(roleId);
     setFeatures(newFeatures);
 
     if (newFeatures[index].checked) {
-      // Add feature and all permissions
       setAccessLevels((prevAccessLevels) => {
         const newAccessLevel = {
           feature: newFeatures[index].value,
-          permissions: newFeatures[index].permissions.map(p => p.value),
+          permissions: newFeatures[index].permissions.map((p) => p.value),
         };
         return [...prevAccessLevels, newAccessLevel];
       });
     } else {
-      // Remove feature and all permissions
       setAccessLevels(
-        accessLevels.filter( (level) => level.feature !== newFeatures[index].value
-        )
+        accessLevels.filter((level) => level.feature !== newFeatures[index].value)
       );
     }
   };
-
- 
-  // const handleFeatureChange = (index) => {
-  //   const newFeatures = [...features];
-  //   newFeatures[index].checked = !newFeatures[index].checked;
-  //   setFeatures(newFeatures);
-  
-  //   if (newFeatures[index].checked) {
-  //     // Add feature and all permissions
-  //     setAccessLevels((prevAccessLevels) => {
-  //       const newAccessLevel = {
-  //         feature: newFeatures[index].value,
-  //         permissions: [], // Start with an empty permissions array
-  //       };
-  //       return [...prevAccessLevels, newAccessLevel];
-  //     });
-  //   } else {
-  //     // Remove feature and all permissions
-  //     setAccessLevels(
-  //       accessLevels.filter((level) => level.feature !== newFeatures[index].value)
-  //     );
-  //   }
-  // };
 
   const handlePermissionChange = (index, permission) => {
     const newAccessLevels = [...accessLevels];
@@ -140,9 +166,9 @@ console.log(roleId);
 
     if (featureIndex !== -1) {
       if (newAccessLevels[featureIndex].permissions.includes(permission)) {
-        newAccessLevels[featureIndex].permissions = newAccessLevels[
-          featureIndex
-        ].permissions.filter((p) => p !== permission);
+        newAccessLevels[featureIndex].permissions = newAccessLevels[featureIndex].permissions.filter(
+          (p) => p !== permission
+        );
       } else {
         newAccessLevels[featureIndex].permissions.push(permission);
       }
@@ -150,64 +176,65 @@ console.log(roleId);
     }
   };
 
-  const handleSave = async() => {
+  const handleSave = async () => {
     const roleAccessLevel = {
       role_name: roleName,
       accessLevels: accessLevels,
       status: "active", // or any other status you want to set
     };
+    navigate("/setting")
     console.log(roleAccessLevel);
-    // Here you can send roleAccessLevel to your backend API
+    // Send roleAccessLevel to your backend API to update the role
   };
 
   return (
-    <div className="bg-[#000928] py-3">
-      <div className="mb-2 mx-6">
-        <h3 className="my-2 text-base text-white">Role Name:</h3>
-        <input
-          type="text"
-          value={roleName}
-          onChange={(e) => setRoleName(e.target.value)}
-          className="py-1 mb-5 rounded-md text-center text-black w-3/4 "
-        />
-        {features.map((feature, index) => (
-          <div className="grid mb-3 text-base" key={index}>
-            <div className="flex gap-3">
-              <label className="flex items-center gap-2 w-3/6">
-                <img className="size-5" src={feature.icon} alt="icons" />
-                {feature.name}
-              </label>
-              <input
-                type="checkbox"
-                checked={feature.checked || false}
-                onChange={() => handleFeatureChange(index)}
-              />
-            </div>
-            {feature.checked && (
-              <div className="grid mx-6">
-                {feature.permissions.map((permission, permIndex) => (
-                  <div className="flex items-center gap-2" key={permIndex}>
-                    <label className="text-sm w-4/6">
-                      {permission.label}
-                    </label>
-                    <input
-                      type="checkbox"
-                      value={permission.value}
-                      checked={
-                        accessLevels
-                          .find((level) => level.feature === feature.value)
-                          ?.permissions.includes(permission.value) || false
-                      }
-                      onChange={() =>
-                        handlePermissionChange(index, permission.value)
-                      }
-                    />
-                  </div>
-                ))}
+    <>
+      <div className="bg-[#000928] py-3">
+        <div className=" mb-2 mx-6">
+          <h3 className="my-2 text-base text-white">Role Name:</h3>
+          <input
+            type="text"
+            value={roleName}
+            onChange={(e) => setRoleName(e.target.value)}
+            className="py-1 mb-5 rounded-md text-center text-black w-3/4"
+          />
+          {features.map((feature, featureIndex) => (
+            <div className="grid mb-3 text-base" key={featureIndex}>
+              <div className="flex gap-3">
+                <label className="flex items-center gap-2 w-3/6">
+                  <img className="size-5" src={feature.icon} alt="icons" />
+                  {feature.name}
+                </label>
+                <input
+                  type="checkbox"
+                  checked={newRole.some((role) => role.feature === feature.value)}
+                  onChange={() => handleFeatureChange(featureIndex)}
+                />
               </div>
-            )}
-          </div>
-        ))}
+              {newRole.some((role) => role.feature === feature.value) && (
+                <div className="grid mx-6">
+                  {feature.permissions.map((permission, permIndex) => (
+                    <div className="flex items-center gap-2" key={permIndex}>
+                      <label className="text-sm w-4/6">{permission.label}</label>
+                      <input
+                        type="checkbox"
+                        value={permission.value}
+                        checked={
+                          accessLevels
+                            .find((level) => level.feature === feature.value)
+                            ?.permissions.includes(permission.value) || false
+                        }
+                        onChange={() =>
+                          handlePermissionChange(featureIndex, permission.value)
+                        }
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
       <div className="flex justify-center my-8">
         <button
@@ -217,7 +244,7 @@ console.log(roleId);
           Save
         </button>
       </div>
-    </div>
+    </>
   );
 };
 

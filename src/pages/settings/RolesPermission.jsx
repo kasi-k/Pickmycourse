@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API } from "../../Host";
 import DeleteModal from "../../components/DeleteModal";
+import UpdateRole from "./UpdateRole";
 
 const RolesPermission = () => {
   const [activeTab, setActiveTab] = useState("tab0");
@@ -36,11 +37,7 @@ const RolesPermission = () => {
   const handleCloseModal = () => {
     setIsDeleteModal(false);
   };
-  const handleRoleClick = (dataId) => {
-    setSelectedRole(dataId); // Set the selected role data
-    setActiveTab("tab1"); // Switch to the tab where role is editable
-  };
-  
+
 
   return (
     <>
@@ -86,6 +83,7 @@ const RolesPermission = () => {
             />
           )}
         </div>
+        <div className="col-span-5">{activeTab === "tab3" && <UpdateRole onClose={()=>setActiveTab(!activeTab)} />}</div>
       </div>
 
       {isDeleteModal && (

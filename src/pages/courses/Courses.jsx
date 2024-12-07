@@ -75,7 +75,7 @@ const Courses = ({permissions}) => {
     ws["!cols"] = wscols; // Set the column widths
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "courses");
-    XLSX.writeFile(wb, "courses.xlsx");
+    XLSX.writeFile(wb, "PMC_courses.xlsx");
   };
 
   // Export to PDF with Table Format
@@ -122,7 +122,7 @@ const Courses = ({permissions}) => {
       },
     });
 
-    doc.save("courses.pdf");
+    doc.save("PMC_courses.pdf");
   };
   const handleCourse = (content, mainTopic, type, courseId, completed, end) => {
     const jsonData = JSON.parse(content);
@@ -154,7 +154,7 @@ const Courses = ({permissions}) => {
             </button>
             <CSVLink
               data={getExportData()}
-              filename={"courses.csv"}
+              filename={"PMC_courses.csv"}
               className="cursor-pointer"
               target="_blank"
             >

@@ -79,7 +79,6 @@ const AddRole = ({onClose}) => {
     },
   ]);
   const [accessLevels, setAccessLevels] = useState([]);
-  const [newRole,setNewRole] = useState([]);
 
 
   const handleFeatureChange = (index) => {
@@ -171,15 +170,7 @@ const AddRole = ({onClose}) => {
       console.error("Error in posting data", error);
     }
   };
-  const fetchNewRoles = async () => {
-    try {
-      const response = await axios.get(`${API}/api/getrolebyid?`);
-      const responseData = response.data;
-      setNewroles(responseData);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  
 
   return (
     <div className="bg-[#000928] py-3">
