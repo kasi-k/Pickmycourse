@@ -14,7 +14,8 @@ import "jspdf-autotable";
 
 const Subscription = ({permissions}) => {
   const hasViewPermission = permissions?.includes('view');
-  const[invoiceModal,setInvoiceModal]=useState(null)
+  const[invoiceModal,setInvoiceModal]=useState(false)
+  const [invoiceId,setInvoiceId] = useState({})
   const [sub, setSub] = useState([]);
 
   useEffect(() => {
@@ -25,8 +26,6 @@ const Subscription = ({permissions}) => {
     try {
       const response = await axios.get(`${API}/api/getallsubs`);
       const responseData = response.data.sub;
-      console.log(response.data.sub.fname);
-      
       setSub(responseData);
     } catch (error) {
       console.log(error);
@@ -123,14 +122,9 @@ const Subscription = ({permissions}) => {
 
     doc.save("PMC_Subscription.pdf");
   };
-  const handleInvoiceModal = (amount, subscriberId, plan, method, date) => {
-    setInvoiceModal({
-      amount: amount,
-      subscriberId: subscriberId,
-      plan: plan,
-      method: method,
-      date: date,
-    });
+  const handleInvoiceModal = (dataId) => {
+    setInvoiceId(`${API}/api/getsubonid/${dataId}`)
+    setInvoiceModal(true);
   };
   return (
     <>
@@ -212,7 +206,7 @@ const Subscription = ({permissions}) => {
             <td className=" border-b border-r border-slate-400 flex  justify-center items-center  ">
             {hasViewPermission && (
               <p  onClick={() =>
-                          handleInvoiceModal(data.amount, data.subscriberId, data.plan, data.method, data.date)
+                          handleInvoiceModal(data._id)
                         } className=" cursor-pointer p-2  text-green-600 ">
                 <FaEye size={24} />
               </p>
@@ -226,7 +220,8 @@ const Subscription = ({permissions}) => {
   </div>
   {invoiceModal && (
   <Invoice 
-    onClose={() => setInvoiceModal(null)} 
+    onClose={() => setInvoiceModal()} 
+    invoiceData={invoiceId}  // Pass the invoice data
   />
 )}
 </>

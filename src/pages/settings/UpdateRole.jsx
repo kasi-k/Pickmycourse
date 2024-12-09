@@ -117,6 +117,8 @@ const UpdateRole = ({ onClose }) => {
   const [newRole, setNewRole] = useState([]);
   const location = useLocation();
   const roleId = location.state?.roleId;
+  const role = location.state?.role;
+  
  const navigate =useNavigate()
   useEffect(() => {
     if (roleId) {
@@ -182,6 +184,13 @@ const UpdateRole = ({ onClose }) => {
       accessLevels: accessLevels,
       status: "active", // or any other status you want to set
     };
+    try {
+      const response = await axios.put(`${API}/api/update/${role}`);
+      console.log(response);
+      
+    } catch (error) {
+      console.log(error);
+    }
     navigate("/setting")
     console.log(roleAccessLevel);
     // Send roleAccessLevel to your backend API to update the role

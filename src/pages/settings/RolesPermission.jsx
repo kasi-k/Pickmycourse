@@ -62,6 +62,7 @@ const RolesPermission = () => {
             navigate(`/updaterole`, {
               state: {
                 roleId: data.role_name,
+                role:data._id,
               },
             })
           }>{data.role_name}</p>

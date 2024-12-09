@@ -21,16 +21,13 @@ const Invoice = ({onClose,invoiceData}) => {
 
   const fetchInvoice = async () => {
     try {
-      const response = await axios.get(`${API}/api/getsubonid`);
+      const response = await axios.get(invoiceData);
       const responseData = response.data.sub;
-      setInvoiceSub(responseData);
+      setInvoiceSub(responseData)
     } catch (error) {
       console.log(error);
     }
   };
-  const selectedInvoice = invoiceSub.find(
-    (selectedInvoice) => selectedInvoice.subscriberId === invoiceData.subscriberId
-  );
   const handleDownload = async () => {
     setProcessing(true);
     try {
@@ -56,7 +53,7 @@ const Invoice = ({onClose,invoiceData}) => {
     <Modal>
             
               <div className="bg-white">
-              {selectedInvoice && (
+              {invoiceSub && (
       <div className="max-w-xl h-auto bg-white py-1 px-2 font-poppins font-extralight"ref={pdfRef} >
         <span className="flex justify-center my-3">
           <img src={Logo} alt="Image" className="w-48 " />
@@ -70,11 +67,11 @@ const Invoice = ({onClose,invoiceData}) => {
             <p>Amount:</p>
           </div>
           <div className="col-span-6  ">
-            <p>{selectedInvoice.method}</p>
-            <p>{selectedInvoice.plan}</p>
-            <p>{selectedInvoice.subscriberId}</p>
+            <p>{invoiceSub.method}</p>
+            <p>{invoiceSub.plan}</p>
+            <p>{invoiceSub.subscriberId}</p>
             <p>cus_QXoP8hrt4tOqIh</p>
-            <p>{(selectedInvoice.amount)/100}</p>
+            <p>{parseInt((Number(invoiceSub.amount) || 0) / 100)}</p>
           </div>
         </div>
         <hr className="my-2 mx-5" />
@@ -85,7 +82,7 @@ const Invoice = ({onClose,invoiceData}) => {
           </div>
           <div className="col-span-6 ">
             <p>256746746444</p>
-            <p>{formatDate2(selectedInvoice.date)}</p>
+            <p>{formatDate2(invoiceSub.date)}</p>
           </div>
         </div>
         <hr className="my-2 mx-5" />
@@ -95,7 +92,7 @@ const Invoice = ({onClose,invoiceData}) => {
             <p>Qty 1</p>
           </div>
           <div className="col-span-6 ">
-            <p>{selectedInvoice.amount}</p>
+            <p>{parseInt((Number(invoiceSub.amount) || 0) / 100)}</p>
           </div>
         </div>
         <hr className="my-2 mx-5" />
