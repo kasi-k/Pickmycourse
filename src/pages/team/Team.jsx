@@ -193,9 +193,12 @@ const Team = ({permissions}) => {
         <div className="flex justify-between items-center my-2 ">
           <p className=" mx-2 mt-6">Team</p>
           <div className="flex items-center gap-3 mt-4">
+            {hasDownloadPermission && (
             <button onClick={exportToPDF}>
               <img className=" size-8" src={Pdf} alt="Pdf image" />
             </button>
+          )}
+          {hasDownloadPermission && (
             <CSVLink
               data={getExportData()}
               filename={"PMC_teams.csv"}
@@ -204,9 +207,12 @@ const Team = ({permissions}) => {
             >
               <img className="size-8" src={Csv} alt="csv image" />
             </CSVLink>
+            )}
+            {hasDownloadPermission && (
             <button onClick={exportToExcel}>
               <img className=" size-8" src={Excel} alt="excel image" />
             </button>
+            )}
             <div className=" flex mx-3 space-x-6">
             <button
                 onClick={handleDownload}

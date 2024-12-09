@@ -12,7 +12,8 @@ import { CSVLink } from "react-csv"; // For CSV export
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 
-const Subscription = () => {
+const Subscription = ({permissions}) => {
+  const hasViewPermission = permissions?.includes('view');
   const[invoiceModal,setInvoiceModal]=useState(null)
   const [sub, setSub] = useState([]);
 
@@ -24,6 +25,8 @@ const Subscription = () => {
     try {
       const response = await axios.get(`${API}/api/getallsubs`);
       const responseData = response.data.sub;
+      console.log(response.data.sub.fname);
+      
       setSub(responseData);
     } catch (error) {
       console.log(error);
@@ -185,9 +188,11 @@ const Subscription = () => {
             <th className="font-extralight border border-slate-400 text-nowrap">
               Payment Mode
             </th>
+            {hasViewPermission && (
             <th className="font-extralight border border-slate-400">
               Action
             </th>
+            )}
           </tr>
         </thead>
         <tbody className="text-slate-400  ">
@@ -205,11 +210,13 @@ const Subscription = () => {
             <td className="border border-slate-400 ">{data.subscriberId}</td>
             <td className="border border-slate-400 ">{data.method}</td>
             <td className=" border-b border-r border-slate-400 flex  justify-center items-center  ">
+            {hasViewPermission && (
               <p  onClick={() =>
                           handleInvoiceModal(data.amount, data.subscriberId, data.plan, data.method, data.date)
                         } className=" cursor-pointer p-2  text-green-600 ">
                 <FaEye size={24} />
               </p>
+             )}
             </td>
           </tr>
            ))}
@@ -220,7 +227,6 @@ const Subscription = () => {
   {invoiceModal && (
   <Invoice 
     onClose={() => setInvoiceModal(null)} 
-    invoiceData={invoiceModal}  // Pass the invoice data
   />
 )}
 </>

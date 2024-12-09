@@ -10,7 +10,11 @@ import { API } from "../../Host";
 import DeleteModal from "../../components/DeleteModal";
 import { toast } from "react-toastify";
 
-const Package = () => {
+const Package = ({permissions}) => {
+  const hasCreatePermission = permissions?.includes('create');
+  const hasEditPermission = permissions?.includes('edit');
+  const hasDeletePermission = permissions?.includes('delete');
+  const hasViewPermission = permissions?.includes('view');
   const [data, setData] = useState([]);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [onDelete, setOnDelete] = useState("");
@@ -69,12 +73,14 @@ const Package = () => {
   return (
     <>
       <div className=" font-poppins flex justify-end mx-4 gap-4 my-3 ">
+        {hasCreatePermission && (
         <button
           onClick={handlePackage}
           className="  text-blue-950  bg-white px-4 py-1"
         >
           Add package
         </button>
+      )}
         <button
           onClick={handleUserPackage}
           className=" bg-gradient-to-r from-blue-900 to-fuchsia-600 px-4 py-1"
@@ -112,6 +118,7 @@ const Package = () => {
                 <button onClick={()=>handleCopy(plan)} className=" bg-slate-500 py-1 px-1 mx-2 rounded-sm">
                   <FiCopy />
                 </button>
+                {hasEditPermission &&(
                 <button    onClick={() =>
                           navigate(`/editpackage`, {
                             state: {
@@ -121,6 +128,8 @@ const Package = () => {
                         } className="bg-indigo-400 py-1 px-1 mx-2 rounded-sm">
                   <FiEdit />
                 </button>
+              )}
+              {hasDeletePermission && (
                 <button
                   onClick={() => {
                     handleDeleteModal(plan._id);
@@ -129,6 +138,7 @@ const Package = () => {
                 >
                   <RiDeleteBinLine />
                 </button>
+              )}
               </p>
             </div>
           ))}

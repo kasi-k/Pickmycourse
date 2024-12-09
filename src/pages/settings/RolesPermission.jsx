@@ -19,7 +19,7 @@ const RolesPermission = () => {
 
   useEffect(() => {
     fetchNewRole();
-  }, [isDeleteModal]);
+  }, [isDeleteModal,role]);
 
   const fetchNewRole = async () => {
     try {
@@ -51,21 +51,20 @@ const RolesPermission = () => {
           </div>
           {role && role.map((data,index)=>(
           <div key={index}
-          onClick={() =>
-            navigate(`/updaterole`, {
-              state: {
-                roleId: data.role_name,
-              },
-            })
-          }
-            className={` cursor-pointer flex justify-between items-center text-md  pl-1 p-2 transition-all duration-700 hover:bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] font-extralight   ${
+            className={` cursor-pointer flex justify-between items-center gap-1 text-md  pl-1 p-2 transition-all duration-700 hover:bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] font-extralight   ${
               activeTab === "tab1"
                 ? "text-white bg-gradient-to-r from-[#3D03FA] to-[#A71CD2]  transition-all duration-500"
                 : " "
             }`}
           >
           
-            <p className="mx-3">{data.role_name}</p>
+            <p className="mx-3  w-80"onClick={() =>
+            navigate(`/updaterole`, {
+              state: {
+                roleId: data.role_name,
+              },
+            })
+          }>{data.role_name}</p>
             <div className="flex mr-1 size-4 ">
               {/* <img src={SettingImage} alt="Settings image" />
               <img src={EditImage} alt="Edit image" /> */}

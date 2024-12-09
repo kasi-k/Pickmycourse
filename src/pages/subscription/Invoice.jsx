@@ -21,7 +21,7 @@ const Invoice = ({onClose,invoiceData}) => {
 
   const fetchInvoice = async () => {
     try {
-      const response = await axios.get(`${API}/api/getallsubs`);
+      const response = await axios.get(`${API}/api/getsubonid`);
       const responseData = response.data.sub;
       setInvoiceSub(responseData);
     } catch (error) {
@@ -74,7 +74,7 @@ const Invoice = ({onClose,invoiceData}) => {
             <p>{selectedInvoice.plan}</p>
             <p>{selectedInvoice.subscriberId}</p>
             <p>cus_QXoP8hrt4tOqIh</p>
-            <p>{selectedInvoice.amount}</p>
+            <p>{(selectedInvoice.amount)/100}</p>
           </div>
         </div>
         <hr className="my-2 mx-5" />

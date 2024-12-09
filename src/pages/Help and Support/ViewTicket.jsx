@@ -14,6 +14,7 @@ import { AiOutlineLoading } from "react-icons/ai";
 
 const Modal = ({ isOpen, onClose, imageUrl }) => {
   if (!isOpen) return null;
+ 
   const [processing, setProcessing] = useState(false);
   const pdfRef = useRef(null);
 
@@ -56,7 +57,8 @@ const Schema = yup.object().shape({
   team: yup.string().required("Please add team"),
 });
 
-const ViewTicket = () => {
+const ViewTicket = ({permissions}) => {
+  const hasReplyPermission = permissions?.includes('reply');
   const [userData, setUserData] = useState({});
   const location = useLocation();
   const ticketId = location.state?.ticketId;
@@ -228,6 +230,7 @@ const ViewTicket = () => {
           <hr />
           {userData?.desc2 === null ? (
             <div>
+              {hasReplyPermission && (
               <div className="flex justify-end">
                 <div className="grid mx-2 my-2 ">
                   <label>
@@ -254,8 +257,8 @@ const ViewTicket = () => {
                     )}
                   </div>
                 </div>
-              </div>
-
+              </div>)}
+            {hasReplyPermission && (
               <div className="mt-2">
                 <div className="flex flex-col ">
                   <label className="mx-6">Add Reply</label>
@@ -332,6 +335,7 @@ const ViewTicket = () => {
                   Submit
                 </button>
               </div>
+              )}
             </div>
           ) : (
             <div className="">

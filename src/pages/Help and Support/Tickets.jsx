@@ -14,7 +14,8 @@ import { CSVLink } from "react-csv";  // For CSV export
 import { jsPDF } from "jspdf";
 import "jspdf-autotable"; 
 
-const Tickets = () => {
+const Tickets = ({permissions}) => {
+  const hasViewPermission = permissions?.includes('view');
   const [ticket, setTicket] = useState([]);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [onDelete, setOnDelete] = useState("");
@@ -82,7 +83,7 @@ const ws = XLSX.utils.json_to_sheet(getExportData());
 ws["!cols"] = wscols;  // Set the column widths
 const wb = XLSX.utils.book_new();
 XLSX.utils.book_append_sheet(wb, ws, "Tickets");
-XLSX.writeFile(wb, "Tickets.xlsx");
+XLSX.writeFile(wb, "PMC_Tickets.xlsx");
 };
 
 // Export to PDF with Table Format
@@ -139,7 +140,7 @@ const exportToPDF = () => {
 
   });
 
-  doc.save("Tickets.pdf");
+  doc.save("PMC_Tickets.pdf");
 };
  
   
@@ -154,7 +155,7 @@ const exportToPDF = () => {
             </button>
             <CSVLink
               data={getExportData()} 
-              filename={"tickets.csv"}
+              filename={"PMC_tickets.csv"}
               className="cursor-pointer"
               target="_blank"
             >
@@ -222,7 +223,8 @@ const exportToPDF = () => {
                     <td className="border border-slate-400 text-slate-500 ">{formatDate2(data.createdAt)}</td>
                     <td className="border border-slate-400">{data.team}</td>
                     <td className="border border-slate-400">{data.priority} </td>
-                    <td className="flex items-center justify-evenly border-b border-r border-slate-400 ">
+                    <td className="flex items-center justify-evenly border-b border-r border-slate-400 p-2 ">
+                      {hasViewPermission && (
                       <p
                         onClick={() =>
                           navigate(`/viewticket`, {
@@ -239,6 +241,7 @@ const exportToPDF = () => {
                           alt="edit image"
                         />
                       </p>
+                    )}
                       <p
                           onClick={() => {
                           handleDeleteModal(data.ticketId);

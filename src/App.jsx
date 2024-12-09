@@ -74,27 +74,47 @@ const App = () => {
           <Route path="/content" element={<Content />} />
           <Route path="/" element={<Layout permissions={memoizedFeatures} />}>
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/packages" element={<Package />} />
-            <Route path="/addpackage" element={<AddPackage />} />
-            <Route path="/editpackage" element={<EditPackage />} />
             <Route path="/adduserPackage" element={<AdduserPackage />} />
             <Route path="/create" element={<GenerateCourse />} />
             <Route path="/topics" element={<ListTopics />} />
             <Route path="/viewcourse" element={<ViewOwnCourse />} />
             <Route path="/viewcertificate" element={<ViewCertificate />} />
-            <Route path="/subscription" element={<Subscription />} />
-            <Route path="/helpsupport" element={<Tickets />} />
-            <Route path="/viewticket" element={<ViewTicket />} />
+           
+         
             <Route path="/report" element={<Report />} />
-            <Route path="/setting" element={<Setting />} />
             <Route path="/addrole" element={<AddRole />} />
-            <Route path="/updaterole" element={<UpdateRole/>} />
+            <Route path="/updaterole" element={<UpdateRole />} />
             <Route path="/category" element={<Category />} />
+
+            {memoizedFeatures["packages"] && (
+              <>
+                <Route
+                  path="/packages"
+                  element={<Package permissions={memoizedFeatures["packages"]} />}
+                />
+                <Route path="/addpackage" element={<AddPackage />} />
+                <Route path="/editpackage" element={<EditPackage />} />
+              </>
+            )}
             {memoizedFeatures["courses"] && (
               <>
                 <Route
                   path="/courses"
-                  element={<Courses permissions={memoizedFeatures["courses"]} />}
+                  element={
+                    <Courses permissions={memoizedFeatures["courses"]} />
+                  }
+                />
+              </>
+            )}
+            {memoizedFeatures["subscription"] && (
+              <>
+                <Route
+                  path="/subscription"
+                  element={
+                    <Subscription
+                      permissions={memoizedFeatures["subscription"]}
+                    />
+                  }
                 />
               </>
             )}
@@ -116,6 +136,27 @@ const App = () => {
                 />
                 <Route path="/editteam" element={<EditTeam />} />
                 <Route path="/addteam" element={<AddTeam />} />
+              </>
+            )}
+                {memoizedFeatures["support"] && (
+              <>
+                <Route
+                  path="helpsupport"
+                  element={
+                    <Tickets permissions={memoizedFeatures["support"]} />
+                  }
+                />
+                   <Route path="/viewticket" element={<ViewTicket />} />
+              </>
+            )}
+               {memoizedFeatures["setting"] && (
+              <>
+                <Route
+                  path="/setting"
+                  element={
+                    <Setting permissions={memoizedFeatures["setting"]} />
+                  }
+                />
               </>
             )}
           </Route>

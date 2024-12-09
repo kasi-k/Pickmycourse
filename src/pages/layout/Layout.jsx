@@ -7,12 +7,12 @@ import dashboard from "../../assets/dashboard.png";
 import Package from "../../assets/money.png";
 import course from "../../assets/course.png";
 import gc from "../../assets/book.png";
-import subscribe from "../../assets/subscription.png"
-import user from "../../assets/user.png"
-import team from "../../assets/team.png"
-import help from "../../assets/services.png"
-import report from "../../assets/report.png"
-import setting from "../../assets/settings.png"
+import subscribe from "../../assets/subscription.png";
+import user from "../../assets/user.png";
+import team from "../../assets/team.png";
+import help from "../../assets/services.png";
+import report from "../../assets/report.png";
+import setting from "../../assets/settings.png";
 import logout from "../../assets/logout.png";
 import LogOut from "../auth/LogOut";
 import axios from "axios";
@@ -20,11 +20,10 @@ import { API } from "../../Host";
 const Layout = ({ permissions }) => {
   const location = useLocation();
   const [isLogOutModalOpen, setLogOutModalOpen] = useState(false);
-  const fname=localStorage.getItem("fname")
-  const lname = localStorage.getItem("lname")
-  const admin = localStorage.getItem("user")
+  const fname = localStorage.getItem("fname");
+  const lname = localStorage.getItem("lname");
+  const admin = localStorage.getItem("user");
   const [userImage, setUserImage] = useState({});
-
 
   useEffect(() => {
     fetchImage();
@@ -32,24 +31,42 @@ const Layout = ({ permissions }) => {
 
   const Menus = [
     { title: "Dashboard", icon: dashboard, to: "/dashboard" },
-     { title: "Packages", icon: Package, to: "/packages"},
-     permissions["courses"] && { title: "Courses", icon: course, to: "/courses" },
-     { title: "Generate course", icon:gc, to: "/create" },
-     { title: "Subscriptions", icon:subscribe, to: "/subscription" }, 
-     permissions["users"] && { title: "Users", icon: user, to: "/users" },
-     permissions["team"] && { title: "Team", icon: team, to: "/team" },
-     { title: "Help & Support", icon:help, to: "/helpsupport" },
-     { title: "Reports", icon:report, to: "/report" },
-     { title: "Settings", icon:setting, to: "/setting" },
-     {
+    permissions["packages"] && {
+      title: "Packages",
+      icon: Package,
+      to: "/packages",
+    },
+    permissions["courses"] && {
+      title: "Courses",
+      icon: course,
+      to: "/courses",
+    },
+    { title: "Generate course", icon: gc, to: "/create" },
+    permissions["subscription"] && {
+      title: "Subscriptions",
+      icon: subscribe,
+      to: "/subscription",
+    },
+    permissions["users"] && { title: "Users", icon: user, to: "/users" },
+    permissions["team"] && { title: "Team", icon: team, to: "/team" },
+    permissions["support"] && {
+      title: "Help & Support",
+      icon: help,
+      to: "/helpsupport",
+    },
+    { title: "Reports", icon: report, to: "/report" },
+    permissions["setting"] && {
+      title: "Settings",
+      icon: setting,
+      to: "/setting",
+    },
+    {
       title: "Logout",
       icon: logout,
       to: "#",
       onClick: () => setLogOutModalOpen(true),
     },
-    
-     
-  ].filter(Boolean);;
+  ].filter(Boolean);
   const handleCloseModal = () => {
     setLogOutModalOpen(false);
   };
@@ -64,20 +81,23 @@ const Layout = ({ permissions }) => {
     }
   };
 
-  
- 
-
   return (
     <div className="">
       <Headers Menus={Menus} />
       <div className="flex w-full h-screen pt-14 font-poppins  ">
         <div className="w-2/12   bg-[#200098] text-white lg:block md:hidden hidden overflow-auto no-scrollbar ">
           <div className="flex gap-2 items-center pt-3 flex-wrap justify-center ">
-            <img   src={userImage?.image ? userImage.image : profile}
-            alt="Profile"
-            className={`w-14 h-14 ${userImage?.image ? ' rounded-xl object-cover' : ''}`}  />
+            <img
+              src={userImage?.image ? userImage.image : profile}
+              alt="Profile"
+              className={`w-14 h-14 ${
+                userImage?.image ? " rounded-xl object-cover" : ""
+              }`}
+            />
             <div>
-              <p className="text-xl font-extralight">Hello ! {fname} {lname}</p>
+              <p className="text-xl font-extralight">
+                Hello ! {fname} {lname}
+              </p>
               <p className="text-xs font-extralight pt-1">
                 Subscription : Gold
               </p>
@@ -115,7 +135,10 @@ const Layout = ({ permissions }) => {
           </div>
         </div>
         <div className="lg:w-10/12 md:w-full w-full bg-gradient-to-b from-[#110038] via-[#150243] to-[#300080] text-white  overflow-auto no-scrollbar">
-        <p className=" absolute bottom-2 right-4 text-sm text-white font-extralight  ">&#169; PickMyCourse Developed with <span className="text-red-500">&#x2764;</span> by SeenIT Pty Ltd</p>
+          <p className=" absolute bottom-2 right-4 text-sm text-white font-extralight  ">
+            &#169; PickMyCourse Developed with{" "}
+            <span className="text-red-500">&#x2764;</span> by SeenIT Pty Ltd
+          </p>
           <Suspense fallback={<Loading />}>
             <Outlet />
           </Suspense>
