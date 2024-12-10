@@ -94,6 +94,10 @@ const AdduserPackage = () => {
                 {...register("packagename")}
                 defaultValue="select"
                 className=" w-full text-black px-2 py-1.5 outline-none rounded-md "
+                onInput={(e) => {
+                  const value = e.target.value;
+                  e.target.value = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+                }}
                 onChange={handlePackageChange}
               >
                 <option value="select" disabled>

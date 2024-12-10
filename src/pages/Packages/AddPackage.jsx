@@ -94,6 +94,10 @@ const AddPackage = () => {
               {...register("packagename")}
               placeholder="Enter Package name"
               className="col-span-2 text-black rounded-md py-1.5 px-2"
+              onInput={(e) => {
+                const value = e.target.value;
+                e.target.value = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+              }}
               required
             />
             <p className="text-red-700">{errors.packagename?.message}</p>
@@ -117,7 +121,7 @@ const AddPackage = () => {
               className="col-span-2 text-black rounded-md py-1.5 px-2"
               required
             />
-            <p className="text-red-700">{errors.courses?.message}</p>
+            <p className="text-red-700">{errors.course?.message}</p>
             <label className="text-lg col-span-12">
               Tax <span className=" text-red-600">*</span>
             </label>

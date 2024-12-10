@@ -16,14 +16,14 @@ import "jspdf-autotable";
 import { toast } from "react-toastify";
 
 const csvData = `si,fname,email,lname,phone,dob,designation,type
-1,john,admin12@gmail.com,doe,9784561230,11-25-2024,1,free`
+1,john,admin12@gmail.com,doe,9784561230,11-25-2024,1,free`;
 
-const Team = ({permissions}) => {
-  const hasCreatePermission = permissions?.includes('create');
-  const hasEditPermission = permissions?.includes('edit');
-  const hasDeletePermission = permissions?.includes('delete');
-  const hasDownloadPermission = permissions?.includes('download');
-  const hasViewPermission = permissions?.includes('view');
+const Team = ({ permissions }) => {
+  const hasCreatePermission = permissions?.includes("create");
+  const hasEditPermission = permissions?.includes("edit");
+  const hasDeletePermission = permissions?.includes("delete");
+  const hasDownloadPermission = permissions?.includes("download");
+  const hasViewPermission = permissions?.includes("view");
   const [team, setTeam] = useState([]);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [onDelete, setOnDelete] = useState("");
@@ -65,14 +65,13 @@ const Team = ({permissions}) => {
   const handleButtonClick = () => {
     if (buttonText === "Bulk Upload") {
       if (fileInputRef.current) {
-        fileInputRef.current.click(); 
+        fileInputRef.current.click();
       }
     } else {
       // Call your  here to upload the file
       uploadFile(file);
     }
   };
-  
 
   const uploadFile = async (file) => {
     try {
@@ -85,7 +84,7 @@ const Team = ({permissions}) => {
         },
       });
       if (response.status === 200) {
-         console.log("File uploaded successfully");
+        console.log("File uploaded successfully");
         setButtonText("Bulk Upload");
         setFile(null);
         fetchNewAdmin();
@@ -103,23 +102,23 @@ const Team = ({permissions}) => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download =  "PMC bulkupload_template Team.csv";
+    a.download = "PMC bulkupload_template Team.csv";
     a.click();
     URL.revokeObjectURL(url);
   };
- const handleDownload = ()=>{
-  downloadCSV(csvData)
- }
+  const handleDownload = () => {
+    downloadCSV(csvData);
+  };
   // Prepare table data for export (exclude unnecessary fields like IDs)
   const getExportData = () => {
     return team.map((data) => ({
       "User Id": data._id,
       "First Name": data.fname,
       "Last Name": data.lname,
-      "Email": data.email,
-      "Phone": data.phone,
-      "DOB": formatDate2(data.dob),
-      "Designation": data.designation,
+      Email: data.email,
+      Phone: data.phone,
+      DOB: formatDate2(data.dob),
+      Designation: data.designation,
     }));
   };
 
@@ -193,12 +192,10 @@ const Team = ({permissions}) => {
         <div className="flex justify-between items-center my-2 ">
           <p className=" mx-2 mt-6">Team</p>
           <div className="flex items-center gap-3 mt-4">
-            {hasDownloadPermission && (
             <button onClick={exportToPDF}>
               <img className=" size-8" src={Pdf} alt="Pdf image" />
             </button>
-          )}
-          {hasDownloadPermission && (
+
             <CSVLink
               data={getExportData()}
               filename={"PMC_teams.csv"}
@@ -207,14 +204,13 @@ const Team = ({permissions}) => {
             >
               <img className="size-8" src={Csv} alt="csv image" />
             </CSVLink>
-            )}
-            {hasDownloadPermission && (
+
             <button onClick={exportToExcel}>
               <img className=" size-8" src={Excel} alt="excel image" />
             </button>
-            )}
+
             <div className=" flex mx-3 space-x-6">
-            <button
+              <button
                 onClick={handleDownload}
                 className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] text-nowrap py-1 lg:px-4 md:px-4 px-1"
               >
@@ -223,22 +219,23 @@ const Team = ({permissions}) => {
               <button
                 onClick={handleButtonClick}
                 className="bg-white text-nowrap text-black py-1 lg:px-4 md:px-4 px-1"
-                >{buttonText}
+              >
+                {buttonText}
                 <input
                   type="file"
-                  ref={fileInputRef}  
+                  ref={fileInputRef}
                   onChange={handleFileChange}
                   className="hidden"
                 />
               </button>
               {hasCreatePermission && (
-              <button
-                onClick={handleAddTeamModal}
-                className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2]  text-nowrap py-1 lg:px-4 md:px-4 px-1  "
-              >
-                Add team
-              </button>
-               )}
+                <button
+                  onClick={handleAddTeamModal}
+                  className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2]  text-nowrap py-1 lg:px-4 md:px-4 px-1  "
+                >
+                  Add team
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -286,29 +283,29 @@ const Team = ({permissions}) => {
                       {data.designation}
                     </td>
                     <td className=" border-b border-r border-slate-400 flex justify-around items-center  ">
-                    {hasEditPermission && (
-                      <p
-                        onClick={() =>
-                          navigate(`/editteam`, {
-                            state: {
-                              userId: data._id,
-                            },
-                          })
-                        }
-                        className=" cursor-pointer p-1  text-green-600 "
-                      >
-                        <img className="size-6" src={Edit} alt="edit image" />
-                      </p>
+                      {hasEditPermission && (
+                        <p
+                          onClick={() =>
+                            navigate(`/editteam`, {
+                              state: {
+                                userId: data._id,
+                              },
+                            })
+                          }
+                          className=" cursor-pointer p-1  text-green-600 "
+                        >
+                          <img className="size-6" src={Edit} alt="edit image" />
+                        </p>
                       )}
-                       {hasDeletePermission && (
-                      <p
-                        onClick={() => {
-                          handleDeleteModal(data._id);
-                        }}
-                        className="cursor-pointer size-6"
-                      >
-                        <img src={Delete} alt="delete image" />
-                      </p>
+                      {hasDeletePermission && (
+                        <p
+                          onClick={() => {
+                            handleDeleteModal(data._id);
+                          }}
+                          className="cursor-pointer size-6"
+                        >
+                          <img src={Delete} alt="delete image" />
+                        </p>
                       )}
                     </td>
                   </tr>

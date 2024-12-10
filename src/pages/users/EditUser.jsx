@@ -138,6 +138,10 @@ const EditUser = () => {
                     type="text"
                     id="fname"
                     className=" outline-none bg-transparent lg:w-1/2 md:w-1/2 w-28 px-2"
+                    onInput={(e) => {
+                      const value = e.target.value;
+                      e.target.value = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+                    }}
                     {...register("fname")}
                   />
                   <p className="text-red-700">{errors.fname?.message}</p>
@@ -152,6 +156,10 @@ const EditUser = () => {
                     type="text"
                     id="lname"
                     className=" outline-none bg-transparent lg:w-1/2 md:w-1/2 w-28 px-2"
+                    onInput={(e) => {
+                      const value = e.target.value;
+                      e.target.value = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+                    }}
                     {...register("lname")}
                   />
                   <p className="text-red-700">{errors.lname?.message}</p>

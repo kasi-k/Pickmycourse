@@ -93,7 +93,6 @@ const ViewTicket = ({ permissions }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [optionsTeam, setOptionsTeam] = useState([]);
   const [optionsStatus, setOptionsStatus] = useState([]);
-  const [selectedStatus, setSelectedStatus] = useState("");
 
   useEffect(() => {
     fetchTicket();
@@ -201,10 +200,7 @@ const ViewTicket = ({ permissions }) => {
       console.error("Error fetching Team Member:", error);
     }
   };
-  const handleChange = (e) => {
-    setSelectedStatus(e.target.value);
-    console.log("Selected status:", e.target.value);
-  };
+ 
 
   const openModal = (imageUrl) => {
     setSelectedImage(imageUrl);
@@ -294,7 +290,7 @@ const ViewTicket = ({ permissions }) => {
             <div>
               {hasReplyPermission ? (
                 <div>
-                  <div className="flex justify-end">
+                  <div className="flex lg:justify-end md:justify-end">
                     <div className="grid mx-2 my-2 ">
                       <label>
                         Team Member <span className="text-red-600">*</span>
@@ -335,7 +331,7 @@ const ViewTicket = ({ permissions }) => {
                         {...register("desc2")}
                       ></textarea>
                       <p className="text-red-700">{errors.desc2?.message}</p>
-                      <div className="lg:flex md:flex  justify-between my-2">
+                      <div className="lg:flex md:flex grid  justify-between my-2">
                         <div className="relative">
                           <label htmlFor="">
                             Attachments (you can select multiple files)
@@ -371,7 +367,7 @@ const ViewTicket = ({ permissions }) => {
                           <div className="relative inline-block  ">
                             <select
                               defaultValue=""
-                              className="  text-black lg:w-72 md:w-72 w-64 px-2 py-1.5 outline-none rounded-md "
+                              className="  text-black lg:w-72 md:w-72 w-full px-2 py-1.5 outline-none rounded-md "
                               {...register("status")}
                             >
                               <option value="" disabled>

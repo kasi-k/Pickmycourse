@@ -19,19 +19,19 @@ const csvData = `si,fname,email,lname,phone,dob,type,company
 1,john,user20@gmail.com,doe,9784561230,11-25-2024,free,seenit`;
 
 const User = ({ permissions }) => {
-  const hasCreatePermission = permissions?.includes('create');
-  const hasEditPermission = permissions?.includes('edit');
-  const hasDeletePermission = permissions?.includes('delete');
-  const hasDownloadPermission = permissions?.includes('download');
-  const hasViewPermission = permissions?.includes('view');
+  const hasCreatePermission = permissions?.includes("create");
+  const hasEditPermission = permissions?.includes("edit");
+  const hasDeletePermission = permissions?.includes("delete");
+  const hasDownloadPermission = permissions?.includes("download");
+  const hasViewPermission = permissions?.includes("view");
   const [user, setUser] = useState([]);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [onDelete, setOnDelete] = useState("");
   const [file, setFile] = useState(null);
   const [buttonText, setButtonText] = useState("Bulk Upload");
   const fileInputRef = useRef(null);
- const plan = localStorage.getItem("plan")
- const courses = localStorage.getItem("courses")
+  const plan = localStorage.getItem("plan");
+  const courses = localStorage.getItem("courses");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -203,12 +203,10 @@ const User = ({ permissions }) => {
         <div className="flex justify-between items-center my-2 ">
           <p className="mx-2 mt-6">User</p>
           <div className="flex items-center gap-3 mt-4">
-           {hasDownloadPermission && (
             <button onClick={exportToPDF}>
               <img className="size-8" src={Pdf} alt="Pdf image" />
             </button>
-          )} 
-          {hasDownloadPermission && (
+
             <CSVLink
               data={getExportData()}
               filename={"PMC_users.csv"}
@@ -217,12 +215,11 @@ const User = ({ permissions }) => {
             >
               <img className="size-8" src={Csv} alt="csv image" />
             </CSVLink>
-          )}
-          {hasDownloadPermission && (
+
             <button onClick={exportToExcel}>
               <img className="size-8" src={Excel} alt="excel image" />
             </button>
-          )}
+
             <div className="flex mx-3 space-x-6">
               <button
                 onClick={handleDownload}
@@ -243,12 +240,12 @@ const User = ({ permissions }) => {
                 />
               </button>
               {hasCreatePermission && (
-              <button
-                onClick={handleAddUserModal}
-                className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] text-nowrap py-1 lg:px-4 md:px-4 px-1"
-              >
-                Add user
-              </button>
+                <button
+                  onClick={handleAddUserModal}
+                  className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] text-nowrap py-1 lg:px-4 md:px-4 px-1"
+                >
+                  Add user
+                </button>
               )}
             </div>
           </div>
@@ -282,11 +279,10 @@ const User = ({ permissions }) => {
                 <th className="font-extralight border border-slate-400">
                   Subscription Date
                 </th> */}
-               
+
                 <th className="font-extralight border border-slate-400">
                   Action
                 </th>
-              
               </tr>
             </thead>
             <tbody className="text-slate-400 ">
@@ -304,38 +300,37 @@ const User = ({ permissions }) => {
                     <td className="border border-slate-400">{data.type}</td>
                     {/* <td className="border border-slate-400">{courses}</td>
                     <td className="border border-slate-400">22-05-1990</td> */}
-                   
+
                     <td className="border-b border-r border-slate-400 flex justify-around items-center">
-                     {hasEditPermission && (
-                      <p
-                        onClick={() =>
-                          navigate(`/edituser`, {
-                            state: {
-                              userId: data._id,
-                            },
-                          })
-                        }
-                        className="cursor-pointer mx-1 p-1 text-green-600"
-                      >
-                        <img className="size-6" src={Edit} alt="edit image" />
-                      </p>
+                      {hasEditPermission && (
+                        <p
+                          onClick={() =>
+                            navigate(`/edituser`, {
+                              state: {
+                                userId: data._id,
+                              },
+                            })
+                          }
+                          className="cursor-pointer mx-1 p-1 text-green-600"
+                        >
+                          <img className="size-6" src={Edit} alt="edit image" />
+                        </p>
                       )}
                       {hasDeletePermission && (
-                      <p
-                        onClick={() => {
-                          handleDeleteModal(data._id);
-                        }}
-                        className="cursor-pointer"
-                      >
-                        <img
-                          className="size-6 my-1"
-                          src={Delete}
-                          alt="delete image"
-                        />
-                      </p>
+                        <p
+                          onClick={() => {
+                            handleDeleteModal(data._id);
+                          }}
+                          className="cursor-pointer"
+                        >
+                          <img
+                            className="size-6 my-1"
+                            src={Delete}
+                            alt="delete image"
+                          />
+                        </p>
                       )}
                     </td>
-              
                   </tr>
                 ))}
             </tbody>

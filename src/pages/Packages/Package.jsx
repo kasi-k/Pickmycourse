@@ -11,7 +11,7 @@ import DeleteModal from "../../components/DeleteModal";
 import { toast } from "react-toastify";
 
 const Package = ({permissions}) => {
-  const hasCreatePermission = permissions?.includes('create');
+  const hasCreatePermission = permissions?.includes('add');
   const hasEditPermission = permissions?.includes('edit');
   const hasDeletePermission = permissions?.includes('delete');
   const hasViewPermission = permissions?.includes('view');

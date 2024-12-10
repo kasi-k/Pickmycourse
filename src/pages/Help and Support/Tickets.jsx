@@ -26,7 +26,7 @@ const Tickets = ({ permissions }) => {
 
   useEffect(() => {
     fetchNewTicket();
-  }, [isDeleteModal]);
+  }, [isDeleteModal,ticket]);
 
   const fetchNewTicket = async () => {
     try {
@@ -164,7 +164,7 @@ const Tickets = ({ permissions }) => {
           <table className=" w-full">
             <thead className="text-slate-300">
               <tr>
-                <th className="p-2 font-extralight border border-slate-400">
+                <th className=" font-extralight border border-slate-400">
                   User Id
                 </th>
                 <th className="font-extralight border border-slate-400 text-nowrap">
@@ -191,7 +191,7 @@ const Tickets = ({ permissions }) => {
                 <th className="font-extralight border border-slate-400">
                   Date
                 </th>
-                <th className="font-extralight border border-slate-400">
+                <th className="text-nowrap font-extralight border border-slate-400">
                   Team Member
                 </th>
                 <th className="font-extralight border border-slate-400">
@@ -221,7 +221,7 @@ const Tickets = ({ permissions }) => {
                     <td className="border border-slate-400">
                       {data.priority}{" "}
                     </td>
-                    <td className="flex items-center justify-evenly border-b border-r border-slate-400 p-2 ">
+                    <td className="flex items-center justify-evenly border-b border-r border-slate-400  ">
                       {hasViewPermission && (
                         <p
                           onClick={() =>

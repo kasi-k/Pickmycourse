@@ -146,6 +146,10 @@ const AddTeam = () => {
                 type="text"
                 placeholder="Enter First name"
                 className="outline-none text-black rounded-md py-1.5 px-3 my-3 "
+                onInput={(e) => {
+                  const value = e.target.value;
+                  e.target.value = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+                }}
               />
               <p className="text-red-700">{errors.fname?.message}</p>
             </div>
@@ -156,6 +160,10 @@ const AddTeam = () => {
                 type="text"
                 placeholder="Enter Last name"
                 className="outline-none text-black rounded-md py-1.5 px-3 my-3"
+                onInput={(e) => {
+                  const value = e.target.value;
+                  e.target.value = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+                }}
               />
               <p className="text-red-700">{errors.lname?.message}</p>
             </div>
