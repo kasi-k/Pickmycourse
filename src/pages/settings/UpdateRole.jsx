@@ -118,6 +118,8 @@ const UpdateRole = ({ onClose }) => {
   const location = useLocation();
   const roleId = location.state?.roleId;
   const role = location.state?.role;
+  console.log(role);
+  
   
  const navigate =useNavigate()
   useEffect(() => {
@@ -178,6 +180,8 @@ const UpdateRole = ({ onClose }) => {
     }
   };
 
+  
+
   const handleSave = async () => {
     const roleAccessLevel = {
       role_name: roleName,
@@ -185,7 +189,7 @@ const UpdateRole = ({ onClose }) => {
       status: "active", // or any other status you want to set
     };
     try {
-      const response = await axios.put(`${API}/api/update/${role}`);
+      const response = await axios.put(`${API}/api/update/${role}`,roleAccessLevel);
       console.log(response);
       
     } catch (error) {

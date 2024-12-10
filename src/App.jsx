@@ -36,15 +36,17 @@ import { API } from "./Host";
 import UpdateRole from "./pages/settings/UpdateRole";
 const App = () => {
   const [features, setFeatures] = useState({});
-  const role = localStorage.getItem("role");
-  console.log(role, "role");
+  const rolename = localStorage.getItem("role");
+  console.log(rolename);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(
-          `${API}/api/getrolebyid?role_name=${role}`
+          `${API}/api/getrolebyid?role_name=${rolename}`
         );
+        console.log(response);
+        
         const responseData = response.data.role;
         console.log(responseData, "data");
 
@@ -59,7 +61,7 @@ const App = () => {
       } catch (error) {}
     };
     fetchUserData();
-  }, [role]);
+  }, [rolename]);
 
   const memoizedFeatures = useMemo(() => features, [features]);
   console.log(memoizedFeatures, "log");
@@ -145,8 +147,9 @@ const App = () => {
                   element={
                     <Tickets permissions={memoizedFeatures["support"]} />
                   }
+                  
                 />
-                   <Route path="/viewticket" element={<ViewTicket />} />
+                   <Route path="/viewticket" element={<ViewTicket permissions={memoizedFeatures["support"]}/>} />
               </>
             )}
                {memoizedFeatures["setting"] && (
