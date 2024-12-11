@@ -2,15 +2,14 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { API } from "../../Host";
 import { useNavigate } from "react-router-dom";
-import { PieChart, Pie, ResponsiveContainer, Cell } from 'recharts';
+import { PieChart, Pie, ResponsiveContainer, Cell } from "recharts";
 
 const data02 = [
-  { name: 'A1', value: 100 },
-  { name: 'A2', value: 300 },
+  { name: "A1", value: 100 },
+  { name: "A2", value: 300 },
 ];
 
-const COLORS = ['#ffffff'];
-
+const COLORS = ["#ffffff"];
 
 const Dashboard = () => {
   const userId = localStorage.getItem("user");
@@ -86,9 +85,11 @@ const Dashboard = () => {
   };
 
   return (
-    <div className=" font-extralight  space-y-4 mx-4 my-8">
-      <div className="grid grid-cols-12 gap-2  ">
-        <div className="bg-[#000928]  drop-shadow-2xl col-span-3">
+    <div className=" font-extralight  mx-4 my-8">
+      <div className="grid grid-cols-8  ">
+      <div className="col-span-4  space-y-4">
+      <div className="grid grid-cols-4 gap-2   ">
+        <div className="bg-[#000928]  drop-shadow-2xl col-span-2 ">
           <p className="mx-2 my-1 text-base">Total Courses Generated</p>
           <p className="text-end pt-8 text-3xl mx-2">
             {" "}
@@ -101,7 +102,7 @@ const Dashboard = () => {
             View
           </button>
         </div>
-        <div className="bg-[#000928] col-span-3 drop-shadow-2xl ">
+        <div className="bg-[#000928] col-span-2 drop-shadow-2xl ">
           <p className="mx-2 my-1 text-base">Total Number Of Users</p>
           <p className="text-end pt-8 text-3xl mx-2">{users && users.length}</p>
           <button
@@ -111,32 +112,29 @@ const Dashboard = () => {
             View
           </button>
         </div>
-        <div>
-      
-
-        </div>
       </div>
-      <div className="grid grid-cols-12 gap-2">
-        <div className="bg-[#000928] col-span-3 drop-shadow-2xl">
+      <div className="grid grid-cols-4 gap-2">
+        <div className="bg-[#000928] col-span-2 drop-shadow-2xl">
           <p className="mx-2 my-1 text-base">Revenue Generated</p>
           <p className="text-end pt-8 text-3xl mx-2">$3800000</p>
           <button className=" bg-gradient-to-r from-blue-900 to-fuchsia-600 w-full py-2.5">
             View
           </button>
         </div>
-        <div className="bg-[#000928] col-span-3 drop-shadow-2xl">
+        <div className="bg-[#000928] col-span-2 drop-shadow-2xl">
           <p className="mx-2 my-1 text-base">Recurring Revenue</p>
           <p className="text-end pt-8 text-3xl mx-2">$380000</p>
           <button className=" bg-gradient-to-r from-blue-900 to-fuchsia-600 w-full py-2.5">
             View
           </button>
         </div>
-        
-        <div className="col-span-6 " style={{ width: '100%', height: '400px' }}>
+      </div>
+      </div>
+      <div className="col-span-3 " style={{ width: '100%', height: '300px' }}>
       <ResponsiveContainer>
         <PieChart>
           <defs>
-            <linearGradient id="gradientColor" x1="0" y1="0" x2="1" y2="1">
+            <linearGradient id="gradientColor" x1="0" y1="0" x2="1" y2="1"  >
               <stop offset="0%" stopColor="#3D03FA" />
               <stop offset="100%" stopColor="#A71CD2" />
             </linearGradient>
@@ -146,9 +144,10 @@ const Dashboard = () => {
             dataKey="value"
             cx="50%"
             cy="50%"
-            innerRadius={70}
-            outerRadius={90}
+            innerRadius={105}
+            outerRadius={130}
             paddingAngle={1}
+            
             label
             stroke="none"
           >
@@ -162,9 +161,9 @@ const Dashboard = () => {
         </PieChart>
       </ResponsiveContainer>
     </div>
-        
+
       </div>
-      
+
       <div className="grid grid-cols-12 font-extralight">
         <div className="col-span-7">
           <p className="font-poppins my-4 text-sm">Monthly Activity Progress</p>
@@ -214,14 +213,14 @@ const Dashboard = () => {
               <span className="bg-[#4CAF50] py-2 px-2 rounded-full mx-2 my-2 "></span>
               <p>New</p>
             </div>
-            <p  className="w-11">100</p>
+            <p className="w-11">100</p>
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <span className="bg-yellow-400 py-2 px-2 rounded-full mx-2 my-2 "></span>
               <p>Opened</p>
             </div>
-            <p  className="w-10">1</p>
+            <p className="w-10">1</p>
           </div>
           <div className="flex items-center justify-between  ">
             <div className="flex items-center">
@@ -230,7 +229,12 @@ const Dashboard = () => {
             </div>
             <p className="w-10">3</p>
           </div>
-          <button onClick={redirectTotickets} className="w-full text-white bg-gradient-to-r from-[#3D03FA] to-[#A71CD2]  py-2.5 mt-4">View</button>
+          <button
+            onClick={redirectTotickets}
+            className="w-full text-white bg-gradient-to-r from-[#3D03FA] to-[#A71CD2]  py-2.5 mt-4"
+          >
+            View
+          </button>
         </div>
       </div>
     </div>

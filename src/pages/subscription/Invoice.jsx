@@ -116,10 +116,11 @@ const Invoice = ({onClose,invoiceData}) => {
         </div>
        </div>)}
         <div className="flex justify-evenly items-center my-8 ">
-        <button  className={`text-lg bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-52 py-2.5 ${processing ? 'opacity-15' : ''}`}  disabled={processing} onClick={handleDownload}>
+        <p onClick={onClose} className=" cursor-pointer text-lg  bg-white  border-2 border-black text-center text-black px-10 py-2.5  ">Cancel</p>
+        <button  className={`text-lg  bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-52 py-2.5 ${processing ? 'opacity-15' : ''}`}  disabled={processing} onClick={handleDownload}>
           {processing ?  <span className="flex justify-center gap-3"> <AiOutlineLoading className="h-6 w-6 animate-spin" /> <p>Downloading ....</p></span> : "Download Invoice" }
           </button>
-          <p onClick={onClose} className=" cursor-pointer text-lg bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] text-center px-10 py-2.5  ">Cancel</p>
+         
         </div>
       
      </div>
