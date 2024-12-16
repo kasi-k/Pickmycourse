@@ -16,10 +16,15 @@ const RolesPermission = () => {
   const [onDelete, setOnDelete] = useState("");
   const [selectedRole, setSelectedRole] = useState(null);
   const navigate = useNavigate();
+  const [addRole, setAddRole] = useState(false);
+
+  console.log('render ');
+  
 
   useEffect(() => {
     fetchNewRole();
-  }, [isDeleteModal,role]);
+
+  }, []);
 
   const fetchNewRole = async () => {
     try {
@@ -39,13 +44,23 @@ const RolesPermission = () => {
   };
 
 
+  const handleAdd = () =>{
+    setAddRole(!addRole)
+   
+  }
+
+  const handleAddCloseModal = () => {
+    setAddRole(false);
+  };
+
+
   return (
     <>
       <div className="font-extralight grid grid-cols-9  ">
-        <div className="  h-56 bg-[#000928] space-y-4 my-2 mx-4 col-span-4">
+        <div className="  h-56 bg-[#000928] space-y-4 my-2 mx-3 px-3 lg:col-span-4 md:col-span-9 col-span-9">
           <div className="flex justify-between ">
             <p className="mx-2 mt-4">Roles</p>
-            <p onClick={() => setActiveTab("tab2")} className="mx-2 mt-4">
+            <p onClick={() =>handleAdd()} className="mx-2 mt-4">
               Add Role
             </p>
           </div>
@@ -58,32 +73,28 @@ const RolesPermission = () => {
             }`}
           >
           
-            <p className="mx-3  w-80"onClick={() =>
+            <p className="mx-3  w-5/6">{data.role_name}</p>
+            <div className="flex mr-3 w-1/6 size-5 gap-3">
+              {/* <img src={SettingImage} alt="Settings image" /> */}
+              <img src={EditImage} alt="Edit image" onClick={() =>
             navigate(`/updaterole`, {
               state: {
                 roleId: data.role_name,
                 role:data._id,
               },
             })
-          }>{data.role_name}</p>
-            <div className="flex mr-1 size-4 ">
-              {/* <img src={SettingImage} alt="Settings image" />
-              <img src={EditImage} alt="Edit image" /> */}
+          }/>
               <img  onClick={()=>handleDeleteModal(data._id)}src={BinImage} alt="Delete image" />
             </div>
           </div>
           ))}
         
         </div>
-        <div className="col-span-5">{activeTab === "tab2" && <AddRole onClose={()=>setActiveTab(!activeTab)} />}
-        {activeTab === "tab1" && selectedRole && (
-            <AddRole
-              selectedRole={selectedRole} // Pass the selected role to the AddRole component for editing
-              onClose={() => setActiveTab(!activeTab)}
-            />
-          )}
+      
+        <div className="lg:col-span-5 md:col-span-9 col-span-9 mx-2">
+       {addRole && <AddRole  onClose={handleAddCloseModal} fetchNewRole={fetchNewRole}/> } 
+      
         </div>
-        <div className="col-span-5">{activeTab === "tab3" && <UpdateRole onClose={()=>setActiveTab(!activeTab)} />}</div>
       </div>
 
       {isDeleteModal && (
@@ -98,3 +109,5 @@ const RolesPermission = () => {
 };
 
 export default RolesPermission;
+
+

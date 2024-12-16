@@ -10,8 +10,8 @@ import { toast } from "react-toastify";
 import UpdateImage from "../users/UpdateImage";
 
 const EditSchema = yup.object().shape({
-  fname: yup.string().trim().required("First name is required"),
-  lname: yup.string().required("Last name is required"),
+  fname: yup.string().trim().required("First name is required").transform((value) => value.toLowerCase()),
+  lname: yup.string().required("Last name is required").transform((value) => value.toLowerCase()),
   email: yup
     .string()
     .email("Please Enter a valid Email")
@@ -148,10 +148,6 @@ const EditTeam = () => {
                     type="text"
                     id="fname"
                     className=" outline-none bg-transparent lg:w-2/3 md:w-1/2 w-28 px-2"
-                    onInput={(e) => {
-                      const value = e.target.value;
-                      e.target.value = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
-                    }}
                     {...register("fname")}
                   />
                   <p className="text-red-700">{errors.fname?.message}</p>
@@ -165,10 +161,6 @@ const EditTeam = () => {
                     type="text"
                     id="lname"
                     className=" outline-none bg-transparent lg:w-2/3 md:w-1/2 w-28 px-2 "
-                    onInput={(e) => {
-                      const value = e.target.value;
-                      e.target.value = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
-                    }}
                     {...register("lname")}
                   />
                   <p className="text-red-700">{errors.lname?.message}</p>

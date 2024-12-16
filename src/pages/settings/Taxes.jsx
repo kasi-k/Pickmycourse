@@ -18,7 +18,7 @@ const Taxes = () => {
 
   useEffect(() => {
     fetchTax();
-  }, [isDeleteModal, addTax]);
+  }, []);
 
   const fetchTax = async () => {
     try {
@@ -63,6 +63,9 @@ const Taxes = () => {
     setPercentage(taxPercentage);
   };
 
+  console.log('tax render');
+  
+
   return (
     <>
       <div className="font-extralight">
@@ -105,7 +108,7 @@ const Taxes = () => {
             ))}
             
         </div>
-        {addtaxmodal && <AddTax onClose={() => setAddTaxModal(false)} />}
+        {addtaxmodal && <AddTax onClose={() => setAddTaxModal(false)} fetchTax={fetchTax} />}
         {isDeleteModal && (
           <DeleteModal
             title="tax"

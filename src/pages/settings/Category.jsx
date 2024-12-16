@@ -12,10 +12,11 @@ const Category = () => {
   const [onDelete, setOnDelete] = useState("");
   const [onEdit, setOnEdit] = useState(null);
   const [editValue, setEditValue] = useState("");
+  const [addCategory, setAddCategory] = useState(false);
 
   useEffect(() => {
     fetchCategory();
-  }, [isDeleteModal,category]);
+  }, [isDeleteModal]);
 
   const fetchCategory = async () => {
     try {
@@ -52,9 +53,21 @@ const Category = () => {
   const handleEditModal = (categoryId, categoryName) => {
     setOnEdit(categoryId);
     setEditValue(categoryName);
+    setAddCategory(false)
   };
+
+  const handleAddModal = () => {
+    setAddCategory(!addCategory);
+    setOnEdit(null)
+   
+  };
+
+  console.log('cate');
+  
   return (
     <>
+    <div className="-mt-14 font-extralight bg-[#000928] h-fit  mx-2 lg:w-4/5 md:w-5/6 w-4/5 p-1.5 my-2">
+    <p className="text-end mx-3 mb-3" onClick={()=>handleAddModal()}>Add Category</p>
       {category &&
         category.map((data, index) => (
           <div key={index}>
@@ -87,30 +100,33 @@ const Category = () => {
           onDelete={onDelete}
         />
       )}
-      {onEdit &&(
-        <div className=" font-extralight my-12 mx-4 space-y-6">
-          <p>Edit Category</p>
-          <input
-            type="text"
-            value={editValue}
-            placeholder=" Enter Category Name"
-            className="rounded-md w-4/5 py-1.5 px-1 text-black"
-            onChange={(e) => setEditValue(e.target.value)}
-          />
-          <button
-            onClick={handleUpdateCategory}
-            className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-36 py-1.5 mx-2"
-          >
-            Update
-          </button>
-          <button
-            onClick={() => setOnEdit(null)}
-            className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-36 py-1.5"
-          >
-            Cancel
-          </button>
-        </div>
-      )}
+     
+    </div>
+     {onEdit !==null &&(
+      <div className=" font-extralight my-12 mx-4 space-y-6  lg:w-4/5 md:w-5/6 w-4/5 p-1.5 ">
+        <p>Edit Category</p>
+        <input
+          type="text"
+          value={editValue}
+          placeholder=" Enter Category Name"
+          className="rounded-md w-4/5 py-1.5 px-1 text-black"
+          onChange={(e) => setEditValue(e.target.value)}
+        />
+        <button
+          onClick={handleUpdateCategory}
+          className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-36 py-1.5 mx-2"
+        >
+          Update
+        </button>
+        <button
+          onClick={() => setOnEdit(null)}
+          className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-36 py-1.5"
+        >
+          Cancel
+        </button>
+      </div>
+    )}
+    {addCategory && (<AddCategory onClose={()=>setAddCategory(false)} fetchCategory={fetchCategory}/>)}
     </>
   );
 };

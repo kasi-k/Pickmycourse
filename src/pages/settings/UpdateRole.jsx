@@ -113,12 +113,14 @@ const UpdateRole = ({ onClose }) => {
     },
   ]);
 
+  
+
   const [accessLevels, setAccessLevels] = useState([]);
   const [newRole, setNewRole] = useState([]);
+
   const location = useLocation();
   const roleId = location.state?.roleId;
-  const role = location.state?.role;
-  console.log(role);
+  const role = location.state?.role; 
   
   
  const navigate =useNavigate()
@@ -130,10 +132,12 @@ const UpdateRole = ({ onClose }) => {
 
   const fetchExistingRoles = async () => {
     try {
+     
+      
       const response = await axios.get(
         `${API}/api/getrolebyid?role_name=${roleId}`
       );
-      const responseData = response.data.role;
+      const responseData = response.data.role; 
       setRoleName(responseData.role_name);  // Set the existing role name
       setNewRole(responseData.accessLevels);  // Set the access levels from the backend
       setAccessLevels(responseData.accessLevels);  // Initial access levels
@@ -202,7 +206,7 @@ const UpdateRole = ({ onClose }) => {
 
   return (
     <>
-      <div className="bg-[#000928] py-3">
+      <div className="bg-[#000928] mx-3 my-2 py-3">
         <div className=" mb-2 mx-6">
           <h3 className="my-2 text-base text-white">Role Name:</h3>
           <input

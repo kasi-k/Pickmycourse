@@ -203,14 +203,14 @@ const Courses = ({permissions}) => {
                 courses.map((data, index) => (
                   <tr className=" text-nowrap text-center" key={index}>
                     <td className="border border-slate-400">{data._id}</td>
-                    <td className="border border-slate-400 ">{data.fname}</td>
-                    <td className="border border-slate-400 ">{data.lname}</td>
+                    <td className="border border-slate-400 capitalize">{data.fname}</td>
+                    <td className="border border-slate-400 capitalize">{data.lname}</td>
                     <td className="border border-slate-400">{data.email}</td>
                     <td className="border border-slate-400">{data.phone}</td>
-                    <td className="border border-slate-400">
+                    <td className="border border-slate-400  capitalize">
                       {data.mainTopic}
                     </td>
-                    <td className="border border-slate-400"> {data.type}</td>
+                    <td className="border border-slate-400 capitalize"> {data.type}</td>
                     <td className="border border-slate-400 text-slate-500 ">
                       {formatDate2(data.date)}
                     </td>

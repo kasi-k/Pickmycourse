@@ -50,6 +50,7 @@ const AddPackage = () => {
     console.log(data);
     const formData = {
       ...data,
+      packagename: data.packagename.toLowerCase(),
     };
     try {
       const response = await axios.post(
@@ -94,10 +95,6 @@ const AddPackage = () => {
               {...register("packagename")}
               placeholder="Enter Package name"
               className="col-span-2 text-black rounded-md py-1.5 px-2"
-              onInput={(e) => {
-                const value = e.target.value;
-                e.target.value = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
-              }}
               required
             />
             <p className="text-red-700">{errors.packagename?.message}</p>

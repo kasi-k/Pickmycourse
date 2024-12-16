@@ -13,8 +13,10 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import {API} from '../../Host'
 
-const AddRole = ({onClose}) => {
+const AddRole = ({onClose,fetchNewRole}) => {
   const [roleName, setRoleName] = useState("");
+  console.log('render');
+  
   const [features, setFeatures] = useState([
     { name: "Dashboard", icon: dashboard, value: "dashboard", permissions: [
         { label: "Total Courses Generated", value: "totalcourse" },
@@ -163,6 +165,7 @@ const AddRole = ({onClose}) => {
       if (response.status === 200) {
         toast.success("Role created Successfully");
         onClose()
+        fetchNewRole()
       } else {
         console.error("Error in posting data", response);
         toast.error("Failed to Upload");
@@ -176,7 +179,7 @@ const AddRole = ({onClose}) => {
   return (
     <div className="bg-[#000928] py-3">
       <div className="mb-2 mx-6">
-        <h3 className="my-2 text-base text-white">Role Name:</h3>
+        <h3 className="my-2 text-base text-white">AAA Role Name:</h3>
         <input
           type="text"
           value={roleName}

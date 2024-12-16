@@ -9,7 +9,7 @@ import { API } from "../../Host";
 import { toast } from "react-toastify";
 
 const schema = yup.object().shape({
-  packagename: yup.string().trim().required("Package name is required"),
+  packagename: yup.string().trim().required("Package name is required").transform((value) => value.toLowerCase()),
   email: yup.string().email().required("Email is required"),
 });
 const AdduserPackage = () => {
@@ -94,10 +94,6 @@ const AdduserPackage = () => {
                 {...register("packagename")}
                 defaultValue="select"
                 className=" w-full text-black px-2 py-1.5 outline-none rounded-md "
-                onInput={(e) => {
-                  const value = e.target.value;
-                  e.target.value = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
-                }}
                 onChange={handlePackageChange}
               >
                 <option value="select" disabled>

@@ -134,7 +134,7 @@ const Layout = ({ permissions }) => {
             </ul>
           </div>
         </div>
-        <div className="lg:w-10/12 md:w-full w-full bg-gradient-to-b from-[#110038] via-[#150243] to-[#300080] text-white  overflow-auto no-scrollbar">
+        <div className="lg:w-10/12 md:w-full w-full bg-gradient-to-b from-[#110038] via-[#150243] to-[#300080] text-white  overflow-auto ">
           <p className=" absolute bottom-2 right-4 text-sm text-white font-extralight  ">
             &#169; PickMyCourse Developed with{" "}
             <span className="text-red-500">&#x2764;</span> by SeenIT Pty Ltd

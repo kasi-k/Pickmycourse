@@ -22,7 +22,7 @@ const Status = () => {
   ];
   useEffect(() => {
     fetchStatus();
-  }, [isDeleteModal,status]);
+  }, []);
 
   const fetchStatus = async () => {
     try {
@@ -63,6 +63,9 @@ const Status = () => {
     setEditValue(StatusName);
     setEditColor(StatusColor);
   };
+
+  console.log('status render');
+  
   return (
     <>
     {status &&

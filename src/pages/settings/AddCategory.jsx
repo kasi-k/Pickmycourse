@@ -13,7 +13,7 @@ const schema = yup
   })
   .required();
 
-const AddCategory = ({ onClose }) => {
+const AddCategory = ({ onClose,fetchCategory }) => {
   const {
     register,
     handleSubmit,
@@ -35,6 +35,7 @@ const AddCategory = ({ onClose }) => {
         toast.success("New Category added")
         if (onClose) {
           onClose();
+          fetchCategory();
         }
       }
     } catch (error) {

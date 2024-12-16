@@ -11,12 +11,12 @@ const Setting = ({ permissions }) => {
   return (
     <>
       <div className="grid grid-cols-12 h-screen my-2">
-        <div className="grid justify-center  col-span-3 border-r-[1px] ">
-          <div className="my-6 space-y-2">
+        <div className="lg:col-span-3 md:col-span-4 col-span-4    border-r-[1px] ">
+          <div className="my-6 space-y-2 ">
             <p>Setting</p>
             {hasRolesPermission && (
               <p
-                className={` cursor-pointer text-md w-60 pl-1 p-2 transition-all duration-700 hover:bg-gradient-to-r from-[#110038] to-[#08006B] font-extralight   ${
+                className={` cursor-pointer text-base  w-full  px-1 py-2 transition-all duration-700 hover:bg-gradient-to-r from-[#110038] to-[#08006B] font-extralight   ${
                   activeTab === "tab1"
                     ? "bg-gradient-to-r from-[#110038] to-[#08006B]  transition-all duration-500"
                     : " "
@@ -28,7 +28,7 @@ const Setting = ({ permissions }) => {
             )}
             {hasTaxPermission && (
             <p
-              className={` cursor-pointer text-md w-60 pl-1 p-2 transition-all duration-700 hover:bg-gradient-to-r from-[#110038] to-[#08006B] font-extralight   ${
+              className={` cursor-pointer text-md w-full pl-1 p-2 transition-all duration-700 hover:bg-gradient-to-r from-[#110038] to-[#08006B] font-extralight   ${
                 activeTab === "tab2"
                   ? "bg-gradient-to-r from-[#110038] to-[#08006B]  transition-all duration-500"
                   : " "
@@ -40,7 +40,7 @@ const Setting = ({ permissions }) => {
           )}
           {hasSupportPermission && (
             <p
-              className={` cursor-pointer text-md w-60 pl-1 p-2 transition-all duration-700 hover:bg-gradient-to-r from-[#110038] to-[#08006B] font-extralight   ${
+              className={` cursor-pointer text-md w-full pl-1 p-2 transition-all duration-700 hover:bg-gradient-to-r from-[#110038] to-[#08006B] font-extralight   ${
                 activeTab === "tab3"
                   ? "bg-gradient-to-r from-[#110038] to-[#08006B]  transition-all duration-500"
                   : " "
@@ -52,7 +52,7 @@ const Setting = ({ permissions }) => {
           )}
           </div>
         </div>
-        <div className=" col-span-9 ">
+        <div className=" lg:col-span-9 md:col-span-8 col-span-8 ">
           {activeTab === "tab1" && <RolesPermission />}
           {activeTab === "tab2" && <Taxes />}
           {activeTab === "tab3" && <HelpSupport />}

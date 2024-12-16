@@ -14,7 +14,7 @@ const schema = yup
   })
   .required();
 
-const AddTax = ({ onClose }) => {
+const AddTax = ({ onClose,fetchTax }) => {
   const {
     register,
     handleSubmit,
@@ -36,6 +36,7 @@ const AddTax = ({ onClose }) => {
         toast.success("Tax Added Successfully");
         if (onClose) {
           onClose();
+          fetchTax()
         }
       }
     } catch (error) {

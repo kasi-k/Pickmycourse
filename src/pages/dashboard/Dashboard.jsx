@@ -2,14 +2,51 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { API } from "../../Host";
 import { useNavigate } from "react-router-dom";
-import { PieChart, Pie, ResponsiveContainer, Cell } from "recharts";
+import { PieChart, Pie, Cell, Legend } from "recharts";
 
-const data02 = [
-  { name: "A1", value: 100 },
-  { name: "A2", value: 300 },
+const data = [
+  { name: "Video", value: 100 },
+  { name: "Image", value: 80 },
 ];
 
-const COLORS = ["#ffffff"];
+const COLORS = ["url(#gradientColor)", "#FFFFFF"]; // Custom colors: purple and white
+
+const renderCustomizedLegend = (props) => {
+  const { payload } = props;
+
+  return (
+    <div style={{ color: "white" }}>
+      {payload.map((entry, index) => (
+        <div
+          key={`legend-item-${index}`}
+          style={{ display: "flex", alignItems: "center", marginBottom: 8 }}
+        >
+          {/* Color Box */}
+          <span
+            style={{
+              display: "inline-block",
+              width: 18,
+              height: 18,
+              marginRight: 8,
+              background: entry.color.startsWith("url")
+                ? "linear-gradient(to bottom right, #3D03FA, #A71CD2)"
+                : entry.color,
+                
+            }}
+          ></span>
+
+          {/* Legend Text */}
+          <label
+            htmlFor={`${entry.value}`}
+            style={{ fontSize: "16px", cursor: "pointer" }}
+          >
+            {entry.value} - {entry.payload.value}
+          </label>
+        </div>
+      ))}
+    </div>
+  );
+};
 
 const Dashboard = () => {
   const userId = localStorage.getItem("user");
@@ -87,81 +124,85 @@ const Dashboard = () => {
   return (
     <div className=" font-extralight  mx-4 my-8">
       <div className="grid grid-cols-8  ">
-      <div className="col-span-4  space-y-4">
-      <div className="grid grid-cols-4 gap-2   ">
-        <div className="bg-[#000928]  drop-shadow-2xl col-span-2 ">
-          <p className="mx-2 my-1 text-base">Total Courses Generated</p>
-          <p className="text-end pt-8 text-3xl mx-2">
-            {" "}
-            {courses && courses.length}
-          </p>
-          <button
-            onClick={redirectToCourses}
-            className=" bg-gradient-to-r from-blue-900 to-fuchsia-600 w-full py-2.5"
-          >
-            View
-          </button>
+        <div className="col-span-4  space-y-4">
+          <div className="grid grid-cols-4 gap-2   ">
+            <div className="bg-[#000928]  drop-shadow-2xl col-span-2 ">
+              <p className="mx-2 my-1 text-base">Total Courses Generated</p>
+              <p className="text-end pt-8 text-3xl mx-2">
+                {" "}
+                {courses && courses.length}
+              </p>
+              <button
+                onClick={redirectToCourses}
+                className=" bg-gradient-to-r from-blue-900 to-fuchsia-600 w-full py-2.5"
+              >
+                View
+              </button>
+            </div>
+            <div className="bg-[#000928] col-span-2 drop-shadow-2xl ">
+              <p className="mx-2 my-1 text-base">Total Number Of Users</p>
+              <p className="text-end pt-8 text-3xl mx-2">
+                {users && users.length}
+              </p>
+              <button
+                onClick={redirectToUsers}
+                className=" bg-gradient-to-r from-blue-900 to-fuchsia-600 w-full py-2.5"
+              >
+                View
+              </button>
+            </div>
+          </div>
+          <div className="grid grid-cols-4 gap-2">
+            <div className="bg-[#000928] col-span-2 drop-shadow-2xl">
+              <p className="mx-2 my-1 text-base">Revenue Generated</p>
+              <p className="text-end pt-8 text-3xl mx-2">$3800000</p>
+              <button className=" bg-gradient-to-r from-blue-900 to-fuchsia-600 w-full py-2.5">
+                View
+              </button>
+            </div>
+            <div className="bg-[#000928] col-span-2 drop-shadow-2xl">
+              <p className="mx-2 my-1 text-base">Recurring Revenue</p>
+              <p className="text-end pt-8 text-3xl mx-2">$380000</p>
+              <button className=" bg-gradient-to-r from-blue-900 to-fuchsia-600 w-full py-2.5">
+                View
+              </button>
+            </div>
+          </div>
         </div>
-        <div className="bg-[#000928] col-span-2 drop-shadow-2xl ">
-          <p className="mx-2 my-1 text-base">Total Number Of Users</p>
-          <p className="text-end pt-8 text-3xl mx-2">{users && users.length}</p>
-          <button
-            onClick={redirectToUsers}
-            className=" bg-gradient-to-r from-blue-900 to-fuchsia-600 w-full py-2.5"
-          >
-            View
-          </button>
-        </div>
-      </div>
-      <div className="grid grid-cols-4 gap-2">
-        <div className="bg-[#000928] col-span-2 drop-shadow-2xl">
-          <p className="mx-2 my-1 text-base">Revenue Generated</p>
-          <p className="text-end pt-8 text-3xl mx-2">$3800000</p>
-          <button className=" bg-gradient-to-r from-blue-900 to-fuchsia-600 w-full py-2.5">
-            View
-          </button>
-        </div>
-        <div className="bg-[#000928] col-span-2 drop-shadow-2xl">
-          <p className="mx-2 my-1 text-base">Recurring Revenue</p>
-          <p className="text-end pt-8 text-3xl mx-2">$380000</p>
-          <button className=" bg-gradient-to-r from-blue-900 to-fuchsia-600 w-full py-2.5">
-            View
-          </button>
-        </div>
-      </div>
-      </div>
-      <div className="col-span-3 " style={{ width: '100%', height: '300px' }}>
-      <ResponsiveContainer>
-        <PieChart>
-          <defs>
-            <linearGradient id="gradientColor" x1="0" y1="0" x2="1" y2="1"  >
-              <stop offset="0%" stopColor="#3D03FA" />
-              <stop offset="100%" stopColor="#A71CD2" />
-            </linearGradient>
-          </defs>
-          <Pie
-            data={data02}
-            dataKey="value"
-            cx="50%"
-            cy="50%"
-            innerRadius={105}
-            outerRadius={130}
-            paddingAngle={1}
-            
-            label
-            stroke="none"
-          >
-            {data02.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={index === 0 ? 'url(#gradientColor)' : COLORS[index % COLORS.length]}
-              />
-            ))}
-          </Pie>
-        </PieChart>
-      </ResponsiveContainer>
-    </div>
+        <div className="col-span-3">
+          <h3 style={{ color: "white", textAlign: "center" }}>Course Type</h3>
+          <PieChart width={600} height={300}>
+            <defs>
+              <linearGradient id="gradientColor" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="#3D03FA" />
+                <stop offset="100%" stopColor="#A71CD2" />
+              </linearGradient>
+            </defs>
 
+            <Pie
+              data={data}
+              cx="50%"
+              cy="50%"
+              innerRadius={95}
+              outerRadius={130}
+              startAngle={100}
+              endAngle={-260}
+              paddingAngle={2}
+              dataKey="value"
+            >
+              {data.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index]}  stroke="url(#borderGradient)"  
+                strokeWidth={3} />
+              ))}
+            </Pie>
+            <Legend
+              verticalAlign=""
+              align="right"
+              layout="vertical"
+              content={renderCustomizedLegend}
+            />
+          </PieChart>
+        </div>
       </div>
 
       <div className="grid grid-cols-12 font-extralight">

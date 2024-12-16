@@ -207,17 +207,17 @@ const Tickets = ({ permissions }) => {
                 ticket.map((data, index) => (
                   <tr className=" text-nowrap text-center " key={index}>
                     <td className="border border-slate-400 p-2">{data._id}</td>
-                    <td className="border border-slate-400 ">{data.fname}</td>
-                    <td className="border border-slate-400 ">{data.lname}</td>
+                    <td className="border border-slate-400 capitalize">{data.fname}</td>
+                    <td className="border border-slate-400 capitalize">{data.lname}</td>
                     <td className="border border-slate-400">{data.email}</td>
                     <td className="border border-slate-400">{data.phone}</td>
                     <td className="border border-slate-400">{data.ticketId}</td>
-                    <td className="border border-slate-400">{data.category}</td>
-                    <td className="border border-slate-400">{data.status} </td>
+                    <td className="border border-slate-400 capitalize">{data.category}</td>
+                    <td className="border border-slate-400 capitalize">{data.status} </td>
                     <td className="border border-slate-400 text-slate-500 ">
                       {formatDate2(data.createdAt)}
                     </td>
-                    <td className="border border-slate-400">{data.team}</td>
+                    <td className="border border-slate-400 capitalize">{data.team}</td>
                     <td className="border border-slate-400">
                       {data.priority}{" "}
                     </td>

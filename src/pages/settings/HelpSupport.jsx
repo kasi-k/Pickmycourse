@@ -8,13 +8,19 @@ import AddStatus from "./AddStatus";
 
 const HelpSupport = () => {
   const [activeTab, setActiveTab] = useState("tab1");
-  const [addModal, setAddModal] = useState("");
+  const [addModal, setAddModal] = useState(false);
+
+
   
-  useEffect(() => {
-    setAddModal(""); // Reset the modal when the tab changes
-  }, [activeTab]);
+
+
+  console.log('help render');
+
+
+  
   return (
-    <div className="font-extralight bg-[#000928] h-56 mx-2 lg:w-4/5 md:w-5/6 w-4/5">
+    <>
+    <div className="font-extralight bg-[#000928]  mx-2 lg:w-4/5 md:w-5/6 w-4/5 p-1.5 my-2">
       <div className="flex justify-between my-4 mx-4">
         <div className="flex gap-8 ">
           <p
@@ -48,7 +54,7 @@ const HelpSupport = () => {
             status
           </p>
         </div>
-        <div className="cursor-pointer">
+        {/* <div className="cursor-pointer">
           <p className="text-sm mt-5" onClick={() => setAddModal("1")}>
             {" "}
             {activeTab === "tab1" ? "Add Category" : ""}
@@ -59,13 +65,11 @@ const HelpSupport = () => {
           <p className="text-sm mt-5" onClick={() => setAddModal("3")}>
             {activeTab === "tab3" ? "Add Status" : ""}
           </p>
-        </div>
+        </div> */}
       </div>
-      <hr />
-      {activeTab === "tab1" && <Category />}
-      {activeTab === "tab2" && <Priority />}
-      {activeTab === "tab3" && <Status />}
-      <div className="my-32">
+    
+   
+      {/* <div className="">
         {activeTab === "tab1" && addModal === "1" ? (
           <AddCategory onClose={()=>setAddModal("")}/>
         ) : activeTab === "tab2" && addModal === "2" ? (
@@ -75,8 +79,12 @@ const HelpSupport = () => {
         ) : (
           ""
         )}
-      </div>
+      </div> */}
     </div>
+       {activeTab === "tab1" && <Category />}
+       {activeTab === "tab2" && <Priority />}
+       {activeTab === "tab3" && <Status />}
+       </>
   );
 };
 

@@ -10,8 +10,8 @@ import { toast } from "react-toastify";
 import { AiOutlineLoading } from "react-icons/ai";
 
 const schema = yup.object().shape({
-  fname: yup.string().trim().required("First name is required"),
-  lname: yup.string().required("Last name is required"),
+  fname: yup.string().trim().required("First name is required").transform((value) => value.toLowerCase()),
+  lname: yup.string().required("Last name is required").transform((value) => value.toLowerCase()),
   email: yup
     .string()
     .email("Please Enter a valid Email")
@@ -127,11 +127,7 @@ const AddUser = () => {
                 type="text"
                 placeholder="Enter First name"
                 className="outline-none text-black rounded-md py-1.5 px-3 my-3 "
-                onInput={(e) => {
-                  const value = e.target.value;
-                  e.target.value = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
-                }}
-
+             
               />
               <p className="text-red-700">{errors.fname?.message}</p>
             </div>
@@ -142,10 +138,6 @@ const AddUser = () => {
                 type="text"
                 placeholder="Enter Last name"
                 className="outline-none text-black rounded-md py-1.5 px-3 my-3"
-                onInput={(e) => {
-                  const value = e.target.value;
-                  e.target.value = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
-                }}
               />
               <p className="text-red-700">{errors.lname?.message}</p>
             </div>

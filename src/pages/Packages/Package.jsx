@@ -94,7 +94,7 @@ const Package = ({permissions}) => {
           data.map((plan, index) => (
             <div className="col-span-3 bg-[#000928]" key={index}>
               <div className=" grid  justify-center">
-                <p className=" text-center my-4">{plan.packagename}</p>
+                <p className=" text-center my-4 capitalize">{plan.packagename}</p>
                 <p className=" bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-14 py-1.5 ">
                   $ {plan.price} / Month
                 </p>

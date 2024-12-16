@@ -194,15 +194,15 @@ const Subscription = ({permissions}) => {
                 sub.map((data, index) => (
           <tr className=" text-nowrap text-center" key={index}>
             <td className="border border-slate-400  ">{data._id}</td>
-            <td className="border border-slate-400 ">{data.fname} </td>
-            <td className="border border-slate-400 ">{data.lname}</td>
+            <td className="border border-slate-400 capitalize ">{data.fname} </td>
+            <td className="border border-slate-400 capitalize ">{data.lname}</td>
             <td className="border border-slate-400">{data.email}</td>
             <td className="border border-slate-400">{data.phone}</td>
             <td className="border border-slate-400">{formatDate2(data.date)}</td>
-            <td className="border border-slate-400 px-2 "> {data.plan}</td>
+            <td className="border border-slate-400 px-2 capitalize "> {data.plan}</td>
             <td className="border border-slate-400 ">{data.amount}</td>
             <td className="border border-slate-400 ">{data.subscriberId}</td>
-            <td className="border border-slate-400 ">{data.method}</td>
+            <td className="border border-slate-400 capitalize">{data.method}</td>
             <td className=" border-b border-r border-slate-400 flex  justify-center items-center  ">
             {hasViewPermission && (
               <p  onClick={() =>
