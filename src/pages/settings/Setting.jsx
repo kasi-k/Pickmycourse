@@ -10,7 +10,7 @@ const Setting = ({ permissions }) => {
   const [activeTab, setActiveTab] = useState("");
   return (
     <>
-      <div className="grid grid-cols-12 h-screen my-2">
+      <div className="grid grid-cols-12 h-screen my-2 overflow-auto">
         <div className="lg:col-span-3 md:col-span-4 col-span-4    border-r-[1px] ">
           <div className="my-6 space-y-2 ">
             <p>Setting</p>

@@ -95,7 +95,7 @@ const Layout = ({ permissions }) => {
               }`}
             />
             <div>
-              <p className="text-xl font-extralight">
+              <p className="capitalize text-xl font-extralight">
                 Hello ! {fname} {lname}
               </p>
               <p className="text-xs font-extralight pt-1">

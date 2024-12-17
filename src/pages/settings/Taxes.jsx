@@ -18,7 +18,7 @@ const Taxes = () => {
 
   useEffect(() => {
     fetchTax();
-  }, []);
+  }, [isDeleteModal]);
 
   const fetchTax = async () => {
     try {
@@ -61,19 +61,23 @@ const Taxes = () => {
     setOnEdit(taxId);
     setTaxName(taxName);
     setPercentage(taxPercentage);
+    setAddTaxModal(false)
   };
+  const handleAddModal = ()=>{
+    setAddTaxModal(!addtaxmodal);
+    setOnEdit(null)
+  }
 
-  console.log('tax render');
   
 
   return (
     <>
       <div className="font-extralight">
-        <div className="w-7/12 h-36 bg-[#000928] space-y-2 my-2 mx-4">
+        <div className="lg:w-7/12 md:w-9/12 w-9/12 w- h-fit bg-[#000928] space-y-2 my-2 mx-4">
           <div className="flex justify-between">
             <p className="mx-2 mt-1">Taxes</p>
             <p
-              onClick={() => setAddTaxModal(true)}
+              onClick={() => handleAddModal()}
               className="mx-2 mt-3 text-sm cursor-pointer"
             >
               Add Tax
@@ -117,7 +121,7 @@ const Taxes = () => {
           />
         )}
 
-        {onEdit && (
+        {onEdit !==null && (
           <div className="grid font-extralight my-12 mx-4 space-y-6">
             <p>Edit Tax</p>
             <p>Tax name</p>

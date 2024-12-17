@@ -6,8 +6,6 @@ import Status from "./Status";
 const HelpSupport = () => {
   const [activeTab, setActiveTab] = useState("tab1");
 
-  console.log("help render");
-
   return (
     <>
       <div className="font-extralight bg-[#000928]  mx-2 lg:w-4/5 md:w-5/6 w-4/5 p-1.5 my-2">

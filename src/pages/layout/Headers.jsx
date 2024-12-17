@@ -51,7 +51,7 @@ const Headers = ({ Menus }) => {
             alt="Profile"
             className={`w-14 h-14 ${userImage?.image ? ' rounded-xl object-cover' : ''}`}  />
           <div>
-            <p className="text-xl font-extralight">Hello! John Doe</p>
+            <p className="text-xl font-extralight capitalize">Hello! John Doe</p>
             <p className="text-xs font-extralight pt-1">Subscription: Gold</p>
             <p className="text-xs font-extralight whitespace-nowrap py-1">
               Subscription Expiry: 12/12/26
