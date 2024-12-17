@@ -26,7 +26,7 @@ const Tickets = ({ permissions }) => {
 
   useEffect(() => {
     fetchNewTicket();
-  }, [isDeleteModal,ticket]);
+  }, [isDeleteModal]);
 
   const fetchNewTicket = async () => {
     try {
