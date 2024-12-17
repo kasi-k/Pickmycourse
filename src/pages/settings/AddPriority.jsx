@@ -16,7 +16,7 @@ const schema = yup
   })
   .required();
 
-const AddPriority = ({onClose}) => {
+const AddPriority = ({onClose,fetchPriority}) => {
   const {
     register,
     handleSubmit,
@@ -44,6 +44,7 @@ const AddPriority = ({onClose}) => {
         toast.success("New Priority Added")
         if(onClose){
           onClose();
+          fetchPriority();
         }
         
       }

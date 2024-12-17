@@ -179,7 +179,7 @@ const AddRole = ({onClose,fetchNewRole}) => {
   return (
     <div className="bg-[#000928] py-3">
       <div className="mb-2 mx-6">
-        <h3 className="my-2 text-base text-white">AAA Role Name:</h3>
+        <h3 className="my-2 text-base text-white">Role Name:</h3>
         <input
           type="text"
           value={roleName}

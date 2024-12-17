@@ -19,7 +19,7 @@ const schema = yup
  })
   .required();
 
-const AddStatus = ({ onClose }) => {
+const AddStatus = ({ onClose,fetchStatus }) => {
   const [selectedColor, setSelectedColor] = useState(null);
   const [colorData, setColorData] = useState([]);
 
@@ -54,6 +54,7 @@ const AddStatus = ({ onClose }) => {
         toast.success("New status Added");
         if (onClose) {
           onClose();
+          fetchStatus();
         }
       }
     } catch (error) {
@@ -112,7 +113,7 @@ const AddStatus = ({ onClose }) => {
       )}
     />
     <p className="text-red-500 text-sm">{errors.color?.message}</p>
-          <div className="absolute inset-y-0 right-[305px] flex items-center pr-5 bg-gray-300 px-4 rounded-lg pointer-events-none outline-none">
+          <div className="absolute inset-y-0 right-[370px] flex items-center pr-5 bg-gray-300 px-4 rounded-lg pointer-events-none outline-none">
             <FaCaretDown className="text-black text-2xl" />
           </div>
         </div>
