@@ -10,6 +10,7 @@ import { API } from "../../Host";
 import { toast } from "react-toastify";
 import { AiOutlineLoading } from "react-icons/ai";
 const schema = yup.object().shape({
+  stripeId: yup.string().trim().required("stripeId  is required"),
   packagename: yup.string().trim().required("Package name is required"),
   price: yup.number().required("price is required"),
   course: yup.string().trim().required("courses is required"),
@@ -29,12 +30,12 @@ const schema = yup.object().shape({
 
 const AddPackage = () => {
   const [isSaving, setIsSaving] = useState(false);
-  const[optionsTax,setOptionsTax]= useState([]);
+  const [optionsTax, setOptionsTax] = useState([]);
   const navigate = useNavigate();
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchTaxOptions();
-  },[])
+  }, []);
   const {
     register,
     handleSubmit,
@@ -73,8 +74,11 @@ const AddPackage = () => {
       if (Array.isArray(response.data.tax)) {
         setOptionsTax(response.data.tax);
       } else {
-        console.error("Expected an array of tax options, but got:", response.data);
-        setOptionsTax([]);  // Fallback to an empty array if the structure is unexpected
+        console.error(
+          "Expected an array of tax options, but got:",
+          response.data
+        );
+        setOptionsTax([]); // Fallback to an empty array if the structure is unexpected
       }
     } catch (error) {
       console.error("Error fetching taxes:", error);
@@ -131,17 +135,28 @@ const AddPackage = () => {
                 <option value="select" disabled>
                   Select Tax
                 </option>
-              {optionsTax && optionsTax.map((tax, index) => (
-                   <option key={index} value={tax.percentage}>
-                           {tax.percentage}%
-                          </option>
-                 ))}
+                {optionsTax &&
+                  optionsTax.map((tax, index) => (
+                    <option key={index} value={tax.percentage}>
+                      {tax.percentage}%
+                    </option>
+                  ))}
               </select>
               <p className="text-red-700">{errors.tax?.message}</p>
               <div className="absolute inset-y-0 right-0 flex items-center pr-5 bg-gray-300 px-4 rounded-lg pointer-events-none outline-none">
                 <FaCaretDown className="text-black text-2xl" />
               </div>
             </div>
+            <label className="text-lg col-span-12">
+              stripeId <span className=" text-red-600">*</span>
+            </label>
+            <input
+              {...register("stripeId")}
+              placeholder="Enter stripeId"
+              className="col-span-2 text-black rounded-md py-1.5 px-2"
+              required
+            />
+            <p className="text-red-700">{errors.stripeId?.message}</p>
 
             <label className="text-lg col-span-12">
               No of Subtopic <span className=" text-red-600">*</span>
