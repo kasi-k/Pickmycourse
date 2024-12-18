@@ -78,13 +78,13 @@ const AddStatus = ({ onClose,fetchStatus }) => {
         <input
           type="text"
           placeholder="Status Name"
-          className=" text-black rounded-md w-7/12 py-2 px-3 "
+          className=" text-black rounded-md lg:w-7/12 md:w-3/5 w-5/6 py-2 px-3 "
           {...register("status")}
         />
         <label htmlFor="">
           Select Color <span className="text-red-600 ">*</span>
         </label>
-        <div className="relative inline-block ">
+        <div className="relative inline-block lg:w-7/12 md:w-3/5 w-5/6 ">
         <Controller
             name="color"
             control={control}
@@ -92,7 +92,7 @@ const AddStatus = ({ onClose,fetchStatus }) => {
             render={({ field }) =>(
           <Select
           {...field}
-          className="w-7/12 outline-none rounded-md"
+          className=" outline-none rounded-md"
           value={selectedColor}
           onChange={(selectedOption) => {
             field.onChange(selectedOption.value);
@@ -113,7 +113,7 @@ const AddStatus = ({ onClose,fetchStatus }) => {
       )}
     />
     <p className="text-red-500 text-sm">{errors.color?.message}</p>
-          <div className="absolute inset-y-0 right-[370px] flex items-center pr-5 bg-gray-300 px-4 rounded-lg pointer-events-none outline-none">
+          <div className="absolute inset-y-0 right-0.5   flex items-center pr-5 bg-gray-300 px-4 rounded-lg pointer-events-none outline-none">
             <FaCaretDown className="text-black text-2xl" />
           </div>
         </div>

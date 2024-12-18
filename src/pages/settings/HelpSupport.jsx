@@ -10,7 +10,7 @@ const HelpSupport = () => {
     <>
       <div className="font-extralight bg-[#000928]  mx-2 lg:w-4/5 md:w-5/6 w-4/5 p-1.5 my-2">
         <div className="my-4 mx-4">
-          <div className="flex gap-8 ">
+          <div className="flex lg:gap-8 md:gap-8 gap-6 overflow-auto ">
             <p
               className={` cursor-pointer flex justify-between items-center text-md  transition-all duration-700  font-extralight   ${
                 activeTab === "tab1"

@@ -66,14 +66,14 @@ const Category = () => {
   return (
     <>
       <div className="-mt-14 font-extralight bg-[#000928] h-fit  mx-2 lg:w-4/5 md:w-5/6 w-4/5 p-1.5 my-2">
-        <p className="text-end mx-3 mb-4" onClick={() => handleAddModal()}>
+        <p className="text-end mx-3 lg:mt-0.5 md:mt-0.5 mt-6 mb-4 " onClick={() => handleAddModal()}>
           Add Category
         </p>
         <hr />
         {category &&
           category.map((data, index) => (
             <div key={index}>
-              <div className="flex justify-between mx-4 py-2 h-full">
+              <div className="flex justify-between mx-4 py-2 ">
                 <p className="capitalize">{data.category}</p>
                 <div className="flex mr-6 size-4 gap-2 cursor-pointer">
                   <img

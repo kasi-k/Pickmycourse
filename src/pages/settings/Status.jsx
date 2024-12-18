@@ -76,7 +76,7 @@ const Status = () => {
   return (
     <>
       <div className="-mt-14 font-extralight bg-[#000928] h-fit  mx-2 lg:w-4/5 md:w-5/6 w-4/5 p-1.5 my-2">
-        <p className="lg:text-end md:text-end text-end lg:mx-3 mb-3" onClick={() => handleAddModal()}>
+        <p className=" text-end mx-3 lg:mt-0.5 md:mt-0.5 mt-6 mb-3" onClick={() => handleAddModal()}>
           Add Status
         </p>
         <hr />
@@ -131,7 +131,7 @@ const Status = () => {
             type="text"
             value={editValue}
             placeholder=" Enter Status Name"
-            className=" w-7/12 rounded-md py-1.5 px-3 text-black"
+            className=" lg:w-7/12 md:w-7/12 rounded-md py-1.5 px-3 text-black"
             onChange={(e) => setEditValue(e.target.value)}
           />
           <p>Select Color:</p>
@@ -140,7 +140,7 @@ const Status = () => {
             value={colorOptions.find((option) => option.value === editColor)}
             onChange={(selectedOption) => setEditColor(selectedOption.value)}
             options={colorOptions}
-            className="w-7/12 outline-none rounded-md"
+            className="lg:w-7/12 md:w-7/12 outline-none rounded-md"
             getOptionLabel={(e) => (
               <div
                 style={{
