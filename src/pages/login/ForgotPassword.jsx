@@ -20,6 +20,7 @@ const schema = yup.object().shape({
 
 const ForgotPassword = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -39,6 +40,8 @@ const ForgotPassword = () => {
       if (response.status === 200) {
         toast.success("Link Sent to ur mailid Successfully ");
         setIsSubmitting(false);
+        navigate("/reset-password");
+        
       }
     } catch (error) {
       toast.error("Invalid Email");
@@ -46,9 +49,6 @@ const ForgotPassword = () => {
       console.log(error);
     }
   };
-  // const redirectResetPassword = () => {
-  //   navigate("/resetpassword");
-  // };
 
   return (
     <>
