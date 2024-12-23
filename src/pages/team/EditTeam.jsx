@@ -110,13 +110,16 @@ const EditTeam = () => {
       console.error("Error fetching taxes:", error);
     }
   };
+  const handlePassword = () => {
+    navigate('/reset-password')
+  }
   return (
     <>
       <div className="font-extralight my-4">
         <p className=" mx-2 text-lg ">Edit Team</p>
         <hr />
         <div className="mx-2 my-4 space-y-1">
-          <button className=" float-end bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-5 py-2">
+          <button onClick={handlePassword} className=" float-end bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-5 py-2">
             Change Password
           </button>
           <div className="mx-10 ">
