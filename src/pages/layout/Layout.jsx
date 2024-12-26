@@ -54,7 +54,8 @@ const Layout = ({ permissions }) => {
       icon: help,
       to: "/helpsupport",
     },
-    { title: "Reports", icon: report, to: "/report" },
+    permissions["report"] && { title: "Reports", icon: report, to: "/report" },
+
     permissions["setting"] && {
       title: "Settings",
       icon: setting,

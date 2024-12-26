@@ -83,7 +83,7 @@ const App = () => {
             <Route path="/viewcertificate" element={<ViewCertificate />} />
            
          
-            <Route path="/report" element={<Report />} />
+            {/* <Route path="/report" element={<Report />} /> */}
             <Route path="/addrole" element={<AddRole />} />
             <Route path="/updaterole" element={<UpdateRole />} />
             <Route path="/category" element={<Category />} />
@@ -150,6 +150,16 @@ const App = () => {
                   
                 />
                    <Route path="/viewticket" element={<ViewTicket permissions={memoizedFeatures["support"]}/>} />
+              </>
+            )}
+              {memoizedFeatures["report"] && (
+              <>
+                <Route
+                  path="/report"
+                  element={
+                    <Report permissions={memoizedFeatures["report"]} />
+                  }
+                />
               </>
             )}
                {memoizedFeatures["setting"] && (

@@ -7,6 +7,11 @@ import Courses from '../courses/Courses';
 
 const Report = () => {
   const [activeTab, setActiveTab] = useState("tab1");
+  const userPerm = ["create","edit","delete"]
+  const subPerm = ["view"]
+  const ticketPerm = ["view","reply"]
+  const teamPerm = ["create","edit","delete"]
+  const coursePerm = ["view","delete"]
   
   return (
     <>
@@ -82,11 +87,11 @@ const Report = () => {
           </div>
           <hr />
     </div>
-    {activeTab === "tab1" && <User/>}
-    {activeTab === "tab2" && <Subscription/>}
-    {activeTab === "tab3" && <Tickets/>}
-    {activeTab === "tab4" && <Team/>}
-    {activeTab === "tab5" && <Courses/>}
+    {activeTab === "tab1" && <User permissions={userPerm}/>}
+    {activeTab === "tab2" && <Subscription permissions={subPerm}/>}
+    {activeTab === "tab3" && <Tickets permissions={ticketPerm}/>}
+    {activeTab === "tab4" && <Team permissions={teamPerm}/>}
+    {activeTab === "tab5" && <Courses permissions={coursePerm}/>}
     </>
   )
 }
