@@ -10,6 +10,8 @@ import axios from "axios";
 import { API } from "../../Host";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import PhoneInput from "react-phone-input-2";
+
 
 const EditSchema = yup.object().shape({
   fname: yup.string().trim().required("First name is required"),
@@ -29,20 +31,21 @@ const EditUser = () => {
   const [isProfileModal, setIsProfileModal] = useState(false);
   const location = useLocation();
   const userId = location.state?.userId;
-  const useremail = localStorage.getItem("useremail")
-  const userphone = localStorage.getItem("userphone")
+  const useremail = localStorage.getItem("useremail");
+  const userphone = localStorage.getItem("userphone");
   const [userData, setUserData] = useState({});
   const [userImage, setUserImage] = useState({});
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchUser();
     fetchImage();
-  }, [isProfileModal,useremail,userphone]);
+  }, [isProfileModal, useremail, userphone]);
   const {
     register,
     handleSubmit,
     setValue,
+    getValues,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(EditSchema),
@@ -53,8 +56,8 @@ const EditUser = () => {
       const response = await axios.get(`${API}/api/getusersbyid/${userId}`);
       const responseData = response.data.user;
       setUserData(responseData);
-      localStorage.setItem("userphone",response.data.user.phone)
-      localStorage.setItem("useremail",response.data.user.email)
+      localStorage.setItem("userphone", response.data.user.phone);
+      localStorage.setItem("useremail", response.data.user.email);
       const data = response.data.user;
       setValue("fname", data.fname);
       setValue("lname", data.lname);
@@ -81,8 +84,8 @@ const EditUser = () => {
     const formData = {
       ...data,
     };
-    toast.success("User updated successfully")
-    navigate("/users")
+    toast.success("User updated successfully");
+    navigate("/users");
   };
 
   const CloseProfileModal = () => {
@@ -98,13 +101,11 @@ const EditUser = () => {
   };
 
   const handleUpdateClick = () => {
-   setIsModal(true)
-   
-   
+    setIsModal(true);
   };
-  const handleCancelClick = ()=>{
-    navigate("/users")
-  }
+  const handleCancelClick = () => {
+    navigate("/users");
+  };
   return (
     <>
       <div className="font-extralight my-4">
@@ -138,7 +139,6 @@ const EditUser = () => {
                     type="text"
                     id="fname"
                     className=" outline-none bg-transparent lg:w-1/2 md:w-1/2 w-28 px-2"
-                   
                     {...register("fname")}
                   />
                   <p className="text-red-700">{errors.fname?.message}</p>
@@ -189,51 +189,77 @@ const EditUser = () => {
                   <p className="text-red-700">{errors.email?.message}</p>
                 </div>
                 <hr className="lg:w-54 md:w-54 w-48 mb-6" />
-                <button
-                   onClick={() => handleUpdateClick()}
-                  className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-5 py-2"
+                <p
+                  onClick={() => handleUpdateClick()}
+                  className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-5 py-2 text-center w-1/3"
                 >
                   Update
-                </button>
+                </p>
               </div>
               <div>
                 <div className="flex flex-col">
                   <label className="mb-6">Phone</label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    id="phone"
-                    className="bg-transparent  outline-none lg:w-1/2 md:w-54 w-48 px-2"
-                    {...register("phone")}
+                  <PhoneInput
+                    // type="tel"
+                    // name="phone"
+                    // id="phone"
+                    country={"in"}
+                  
+                    value={getValues("phone")} // Get the current form value
+                    onChange={(value) => setValue("phone", value)} // Update form state
+                    inputStyle={{
+                      width: "230px",
+                      height: "30px",
+                      fontSize: "16px",
+                      background:"transparent",
+                      color:"white",
+                      border:"none"
+                    }}
+                    buttonStyle={{
+                      backgroundColor: "transparent",
+                      border: "none",
+                      borderRadius: "5px",
+                      padding: "5px",
+                      width: "60px",
+                    }}
+                    dropdownStyle={{
+                      backgroundColor: "#fff",
+                      border: "1px solid #ccc",
+                      borderRadius: "5px",
+                      maxHeight: "200px",
+                      overflowY: "auto",
+                    }}
                   />
                   <p className="text-red-700">{errors.phone?.message}</p>
                 </div>
-                <hr className="lg:w-1/2 md:w-54 w-48 mb-6" />
-                <button
+                <hr className="lg:w-1/2 md:w-52 w-48 mb-6" />
+                <p
                   onClick={() => setIsPhoneModal(true)}
-                  className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-5 py-2 "
+                  className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] text-center py-2 w-1/3 "
                 >
                   Update
-                </button>
+                </p>
               </div>
             </div>
             <div className="flex space-x-2">
-              <button type="submit"
-                  className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-5 py-2 "
-                >
-                  Update Changes
-                </button>
-                <p onClick={handleCancelClick}
-                  className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-5 py-2 "
-                >
-                  Cancel
-                </p>
-                </div>
+              <button
+                type="submit"
+                className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-5 py-2 "
+              >
+                Update Changes
+              </button>
+              <p
+                onClick={handleCancelClick}
+                className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-5 py-2 "
+              >
+                Cancel
+              </p>
+            </div>
           </form>
         </div>
       </div>
       {isProfileModal && <UpdateImage CloseProfileModal={CloseProfileModal} />}
-      {isModal && <UpdateEmail CloseEmailModal={CloseEmailModal}  />}
+      {isModal && <UpdateEmail CloseEmailModal={CloseEmailModal} />}
       {isPhoneModal && <UpdatePhone ClosePhoneModal={ClosePhoneModal} />}
     </>
   );
