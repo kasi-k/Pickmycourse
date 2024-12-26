@@ -52,7 +52,7 @@ const RolesPermission = () => {
         <div className="  h-fit bg-[#000928] space-y-4 my-2 mx-3 px-3 lg:col-span-4 md:col-span-8 col-span-8">
           <div className="flex justify-between ">
             <p className="mx-2 mt-4">Roles</p>
-            <p onClick={() => handleAdd()} className="mx-2 mt-4">
+            <p onClick={() => handleAdd()} className=" cursor-pointer mx-2 mt-4">
               Add Role
             </p>
           </div>

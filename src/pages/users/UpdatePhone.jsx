@@ -67,53 +67,59 @@ const UpdatePhone = ({ ClosePhoneModal }) => {
         callback: (response) => {
           console.log("reCAPTCHA solved:", response);
         },
+        "expired-callback": () => {
+          console.log("reCAPTCHA expired.");
+        },
       });
     }
   };
 
-  // Send OTP
-  const sendOtp = async () => {
-    try {
-      setupRecaptcha();
-      const appVerifier = window.recaptchaVerifier;
-      const formattedPhone = `+${phone}`; // Ensure the phone number has the country code
-      const confirmation = await signInWithPhoneNumber(auth, formattedPhone, appVerifier);
-      setConfirmationResult(confirmation);
-      toast.success("OTP sent successfully!");
-    } catch (error) {
-      console.error("Error sending OTP:", error.message);
-      toast.error(error.message);
+ // Send OTP
+const sendOtp = async () => {
+  try {
+    setupRecaptcha();
+    const appVerifier = window.recaptchaVerifier;
+    const formattedPhone = `+${phone}`; // Ensure the phone number has the country code
+    const confirmation = await signInWithPhoneNumber(auth, formattedPhone, appVerifier);
+    setConfirmationResult(confirmation);
+    toast.success("OTP sent successfully!");
+  } catch (error) {
+    console.error("Error sending OTP:", error.message);
+    toast.error(error.message);
+  }
+};
+
+// Verify OTP
+const verifyOtp = async () => {
+  try {
+    if (!confirmationResult) {
+      toast.error("Please send OTP first.");
+      return;
     }
-  };
+    await confirmationResult.confirm(otp);
 
-  // Verify OTP
-  const verifyOtp = async () => {
-    try {
-      if (!confirmationResult) {
-        toast.error("Please send OTP first.");
-        return;
-      }
-      await confirmationResult.confirm(otp);
+    // Extract the local number from the full phone number
+    const localPhoneNumber = phone.replace(/^\d{1,4}/, ""); // Remove up to 4 digits for the country code
 
-      // Call backend to update the phone number
-      const formData = { phone };
-      const response = await axios.post(
-        `${API}/api/phoneupdate?email=${email}`,
-        formData
-      );
+    // Call backend to update the phone number
+    const formData = { phone: localPhoneNumber };
+    const response = await axios.post(
+      `${API}/api/phoneupdate?email=${email}`,
+      formData
+    );
 
-      if (response.status === 200) {
-        toast.success("Phone number verified and updated successfully!");
-        localStorage.setItem("userphone", phone);
-        ClosePhoneModal();
-      } else {
-        toast.error("Failed to update phone number in backend.");
-      }
-    } catch (error) {
-      console.error("Error verifying OTP:", error.message);
-      toast.error("Invalid OTP. Please try again.");
+    if (response.status === 200) {
+      toast.success("Phone number verified and updated successfully!");
+      localStorage.setItem("userphone", localPhoneNumber);
+      ClosePhoneModal();
+    } else {
+      toast.error("Failed to update phone number in backend.");
     }
-  };
+  } catch (error) {
+    console.error("Error verifying OTP:", error.message);
+    toast.error("Invalid OTP. Please try again.");
+  }
+};
 
   return (
     <Modal>

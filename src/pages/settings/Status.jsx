@@ -76,7 +76,7 @@ const Status = () => {
   return (
     <>
       <div className="-mt-14 font-extralight bg-[#000928] h-fit  mx-2 lg:w-4/5 md:w-5/6 w-4/5 p-1.5 my-2">
-        <p className=" place-self-end mx-3 lg:mt-0.5 md:mt-0.5 mt-6 mb-3" onClick={() => handleAddModal()}>
+        <p className=" place-self-end mx-3 lg:mt-0.5 md:mt-0.5 mt-6 mb-3 cursor-pointer" onClick={() => handleAddModal()}>
           Add Status
         </p>
         <hr />

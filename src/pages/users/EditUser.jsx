@@ -181,6 +181,7 @@ const EditUser = () => {
                 <div className="flex flex-col">
                   <label className="mb-6">Email</label>
                   <input
+                  disabled
                     type="email"
                     id="email"
                     className="bg-transparent outline-none lg:w-64 md:w-60 w-52 px-2"
