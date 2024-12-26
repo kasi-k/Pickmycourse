@@ -25,25 +25,6 @@ const Invoice = ({ onClose, invoiceData }) => {
     }
   };
 
-  // Function to calculate tax and grand total
-  const calculateTaxAndGrandTotal = (amount, taxPercentage, method) => {
-    const taxAmount = (amount * taxPercentage) / 100;
-    const grandTotal = amount + taxAmount;
-
-    if (method === "razorpay") {
-      // If payment method is Razorpay, remove decimal places for grand total
-      return {
-        taxAmount: Math.round(taxAmount), // Remove decimal from tax amount
-        grandTotal: Math.round(grandTotal), // Remove decimal from grand total
-      };
-    } else {
-      return {
-        taxAmount,
-        grandTotal,
-      };
-    }
-  };
-
   // Function to handle download
   const handleDownload = async () => {
     setProcessing(true);

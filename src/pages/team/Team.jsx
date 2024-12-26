@@ -15,8 +15,8 @@ import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 import { toast } from "react-toastify";
 
-const csvData = `si,fname,email,lname,phone,dob,designation,type
-1,john,admin12@gmail.com,doe,9784561230,11-25-2024,1,free`;
+const csvData = `si,fname,email,lname,phone,dob,designation,type,password
+1,john,admin12@gmail.com,doe,9784561230,11-25-2024,1,free,Admin@123`;
 
 const Team = ({ permissions }) => {
   const hasCreatePermission = permissions?.includes("create");
