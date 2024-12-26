@@ -12,9 +12,10 @@ import setting from "../../assets/settings.png";
 import axios from "axios";
 import { API } from "../../Host";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
 const UpdateRole = ({ onClose }) => {
-  const [roleName, setRoleName] = useState("");  // role name state
+  const [roleName, setRoleName] = useState(""); // Role name state
   const [features, setFeatures] = useState([
     {
       name: "Dashboard",
@@ -113,17 +114,15 @@ const UpdateRole = ({ onClose }) => {
     },
   ]);
 
-  
-
   const [accessLevels, setAccessLevels] = useState([]);
   const [newRole, setNewRole] = useState([]);
 
   const location = useLocation();
   const roleId = location.state?.roleId;
-  const role = location.state?.role; 
-  
-  
- const navigate =useNavigate()
+  const role = location.state?.role;
+
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (roleId) {
       fetchExistingRoles();
@@ -132,40 +131,42 @@ const UpdateRole = ({ onClose }) => {
 
   const fetchExistingRoles = async () => {
     try {
-     
-      
       const response = await axios.get(
         `${API}/api/getrolebyid?role_name=${roleId}`
       );
-      const responseData = response.data.role; 
-      setRoleName(responseData.role_name);  // Set the existing role name
-      setNewRole(responseData.accessLevels);  // Set the access levels from the backend
-      setAccessLevels(responseData.accessLevels);  // Initial access levels
+      const responseData = response.data.role;
+      setRoleName(responseData.role_name); // Set the existing role name
+      setAccessLevels(responseData.accessLevels); // Set the access levels directly
+      setNewRole(responseData.accessLevels); // Set access levels from backend for checking
     } catch (error) {
       console.log(error);
     }
   };
 
+  // Handle feature checkbox changes
   const handleFeatureChange = (index) => {
     const newFeatures = [...features];
     newFeatures[index].checked = !newFeatures[index].checked;
     setFeatures(newFeatures);
 
+    const featureValue = newFeatures[index].value;
+
     if (newFeatures[index].checked) {
       setAccessLevels((prevAccessLevels) => {
         const newAccessLevel = {
-          feature: newFeatures[index].value,
+          feature: featureValue,
           permissions: newFeatures[index].permissions.map((p) => p.value),
         };
         return [...prevAccessLevels, newAccessLevel];
       });
     } else {
       setAccessLevels(
-        accessLevels.filter((level) => level.feature !== newFeatures[index].value)
+        accessLevels.filter((level) => level.feature !== featureValue)
       );
     }
   };
 
+  // Handle permission checkbox changes
   const handlePermissionChange = (index, permission) => {
     const newAccessLevels = [...accessLevels];
     const featureIndex = newAccessLevels.findIndex(
@@ -173,10 +174,9 @@ const UpdateRole = ({ onClose }) => {
     );
 
     if (featureIndex !== -1) {
-      if (newAccessLevels[featureIndex].permissions.includes(permission)) {
-        newAccessLevels[featureIndex].permissions = newAccessLevels[featureIndex].permissions.filter(
-          (p) => p !== permission
-        );
+      const permissionIndex = newAccessLevels[featureIndex].permissions.indexOf(permission);
+      if (permissionIndex !== -1) {
+        newAccessLevels[featureIndex].permissions.splice(permissionIndex, 1);
       } else {
         newAccessLevels[featureIndex].permissions.push(permission);
       }
@@ -184,30 +184,31 @@ const UpdateRole = ({ onClose }) => {
     }
   };
 
-  
-
+  // Handle Save Action
   const handleSave = async () => {
     const roleAccessLevel = {
       role_name: roleName,
       accessLevels: accessLevels,
-      status: "active", // or any other status you want to set
+      status: "active",
     };
+
     try {
-      const response = await axios.put(`${API}/api/update/${role}`,roleAccessLevel);
+      const response = await axios.put(
+        `${API}/api/update/${role}`,
+        roleAccessLevel
+      );
       console.log(response);
-      
     } catch (error) {
       console.log(error);
     }
-    navigate("/setting")
-    console.log(roleAccessLevel);
-    // Send roleAccessLevel to your backend API to update the role
+    navigate("/setting");
+    toast.success("Role Updated Successfully")
   };
 
   return (
     <>
       <div className="bg-[#000928] mx-3 my-2 py-3">
-        <div className=" mb-2 mx-6">
+        <div className="mb-2 mx-6">
           <h3 className="my-2 text-base text-white">Role Name:</h3>
           <input
             type="text"
@@ -224,11 +225,13 @@ const UpdateRole = ({ onClose }) => {
                 </label>
                 <input
                   type="checkbox"
-                  checked={newRole.some((role) => role.feature === feature.value)}
+                  checked={accessLevels.some(
+                    (level) => level.feature === feature.value
+                  )}
                   onChange={() => handleFeatureChange(featureIndex)}
                 />
               </div>
-              {newRole.some((role) => role.feature === feature.value) && (
+              {accessLevels.some((level) => level.feature === feature.value) && (
                 <div className="grid mx-6">
                   {feature.permissions.map((permission, permIndex) => (
                     <div className="flex items-center gap-2" key={permIndex}>
