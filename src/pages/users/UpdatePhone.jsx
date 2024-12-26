@@ -19,7 +19,7 @@ const phoneSchema = yup.object().shape({
 const UpdatePhone = ({ ClosePhoneModal }) => {
   const email = localStorage.getItem("useremail");
   const oldPhone = localStorage.getItem("userphone");
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState(oldPhone || ""); // Initialize with oldPhone
   const [otp, setOtp] = useState("");
   const [confirmationResult, setConfirmationResult] = useState(null);
 
@@ -62,61 +62,61 @@ const UpdatePhone = ({ ClosePhoneModal }) => {
   // Initialize reCAPTCHA
   const setupRecaptcha = () => {
     if (!window.recaptchaVerifier) {
-      window.recaptchaVerifier = new RecaptchaVerifier(auth,"recaptcha-container", {
+      window.recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {
         size: "invisible",
+        callback: (response) => {
+          console.log("reCAPTCHA solved:", response);
+        },
       });
     }
   };
 
-// Send OTP
-const sendOtp = async () => {
-  try {
-    setupRecaptcha();
-    const appVerifier = window.recaptchaVerifier;
-    const formattedPhone = `+${phone}`; // Ensure the phone number has the country code
-    const confirmation = await signInWithPhoneNumber(auth, formattedPhone, appVerifier);
-    setConfirmationResult(confirmation); // Update the state here
-    toast.success("OTP sent successfully!");
-  } catch (error) {
-    console.error("Error sending OTP:", error.message);
-    toast.error(error.message);
-  }
-};
-
-
-// Verify OTP
-const verifyOtp = async () => {
-  try {
-    if (!confirmationResult) {
-      toast.error("Please send OTP first.");
-      return;
+  // Send OTP
+  const sendOtp = async () => {
+    try {
+      setupRecaptcha();
+      const appVerifier = window.recaptchaVerifier;
+      const formattedPhone = `+${phone}`; // Ensure the phone number has the country code
+      const confirmation = await signInWithPhoneNumber(auth, formattedPhone, appVerifier);
+      setConfirmationResult(confirmation);
+      toast.success("OTP sent successfully!");
+    } catch (error) {
+      console.error("Error sending OTP:", error.message);
+      toast.error(error.message);
     }
-    await confirmationResult.confirm(otp);
+  };
 
-    // Call backend to update the phone number
-    const formData = { phone };
-    const response = await axios.post(
-      `${API}/api/phoneupdate?email=${email}`,
-      formData
-    );
+  // Verify OTP
+  const verifyOtp = async () => {
+    try {
+      if (!confirmationResult) {
+        toast.error("Please send OTP first.");
+        return;
+      }
+      await confirmationResult.confirm(otp);
 
-    if (response.status === 200) {
-      toast.success("Phone number verified and updated successfully!");
-      localStorage.setItem("userphone", phone);
-      ClosePhoneModal(); // Close the modal if necessary
-    } else {
-      toast.error("Failed to update phone number in backend.");
+      // Call backend to update the phone number
+      const formData = { phone };
+      const response = await axios.post(
+        `${API}/api/phoneupdate?email=${email}`,
+        formData
+      );
+
+      if (response.status === 200) {
+        toast.success("Phone number verified and updated successfully!");
+        localStorage.setItem("userphone", phone);
+        ClosePhoneModal();
+      } else {
+        toast.error("Failed to update phone number in backend.");
+      }
+    } catch (error) {
+      console.error("Error verifying OTP:", error.message);
+      toast.error("Invalid OTP. Please try again.");
     }
-  } catch (error) {
-    console.error("Error verifying OTP:", error.message);
-    toast.error("Invalid OTP. Please try again.");
-  }
-};
-
+  };
 
   return (
     <Modal>
-      <form onsubmit={handleSubmit(onsubmit)}>
       <div className="w-[530px] min-h-[330px] my-3 mx-8 font-extralight font-poppins">
         <p
           className="text-end text-2xl font-medium"
@@ -138,15 +138,15 @@ const verifyOtp = async () => {
               <PhoneInput
                 country={"in"}
                 className="text-black"
-                value={phone}
-                onChange={(phone) => setPhone(phone)}
+                value={phone} // Set phone state here
+                onChange={(phone) => setPhone(phone)} // Update phone state on change
                 inputStyle={{
                   width: "230px",
                   height: "30px",
                   fontSize: "16px",
-                  background:"transparent",
-                  color:"white",
-                  border:"none"
+                  background: "transparent",
+                  color: "white",
+                  border: "none",
                 }}
                 buttonStyle={{
                   backgroundColor: "transparent",
@@ -202,7 +202,6 @@ const verifyOtp = async () => {
               }}
             />
             <button
-              type="submit"
               onClick={verifyOtp}
               className="bg-green-700 my-4 px-4 py-2 text-xl font-extralight"
             >
@@ -210,12 +209,11 @@ const verifyOtp = async () => {
             </button>
           </div>
         )}
-       
       </div>
-      </form>
     </Modal>
   );
-  
 };
+
+
 
 export default UpdatePhone;

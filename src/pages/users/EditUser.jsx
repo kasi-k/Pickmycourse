@@ -183,12 +183,12 @@ const EditUser = () => {
                   <input
                     type="email"
                     id="email"
-                    className="bg-transparent outline-none lg:w-54 md:w-54 w-48 px-2"
+                    className="bg-transparent outline-none lg:w-64 md:w-60 w-52 px-2"
                     {...register("email")}
                   />
                   <p className="text-red-700">{errors.email?.message}</p>
                 </div>
-                <hr className="lg:w-54 md:w-54 w-48 mb-6" />
+                <hr className="lg:w-64 md:w-60 w-52 mb-6" />
                 <p
                   onClick={() => handleUpdateClick()}
                   className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-5 py-2 text-center w-1/3"
@@ -200,6 +200,7 @@ const EditUser = () => {
                 <div className="flex flex-col">
                   <label className="mb-6">Phone</label>
                   <PhoneInput
+                  disabled
                     // type="tel"
                     // name="phone"
                     // id="phone"
