@@ -22,7 +22,6 @@ const UpdatePhone = ({ ClosePhoneModal }) => {
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
   const [confirmationResult, setConfirmationResult] = useState(null);
-  const [isOtpVerified, setIsOtpVerified] = useState(false);
 
   const {
     register,
@@ -117,6 +116,7 @@ const verifyOtp = async () => {
 
   return (
     <Modal>
+      <form onsubmit={handleSubmit(onsubmit)}>
       <div className="w-[530px] min-h-[330px] my-3 mx-8 font-extralight font-poppins">
         <p
           className="text-end text-2xl font-medium"
@@ -141,10 +141,26 @@ const verifyOtp = async () => {
                 value={phone}
                 onChange={(phone) => setPhone(phone)}
                 inputStyle={{
-                  width: "380px",
-                  height: "60px",
-                  fontSize: "20px",
-                  margin: "20px",
+                  width: "230px",
+                  height: "30px",
+                  fontSize: "16px",
+                  background:"transparent",
+                  color:"white",
+                  border:"none"
+                }}
+                buttonStyle={{
+                  backgroundColor: "transparent",
+                  border: "none",
+                  borderRadius: "5px",
+                  padding: "5px",
+                  width: "60px",
+                }}
+                dropdownStyle={{
+                  backgroundColor: "#fff",
+                  border: "1px solid #ccc",
+                  borderRadius: "5px",
+                  maxHeight: "140px",
+                  overflowY: "auto",
                 }}
               />
               {errors.phone && (
@@ -186,7 +202,7 @@ const verifyOtp = async () => {
               }}
             />
             <button
-              type="button"
+              type="submit"
               onClick={verifyOtp}
               className="bg-green-700 my-4 px-4 py-2 text-xl font-extralight"
             >
@@ -196,6 +212,7 @@ const verifyOtp = async () => {
         )}
        
       </div>
+      </form>
     </Modal>
   );
   
