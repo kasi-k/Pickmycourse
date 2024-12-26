@@ -47,30 +47,47 @@ const Login = () => {
     const formData = {
       ...data,
     };
+  
     try {
+      // Step 1: Authenticate the user
       const response = await axios.post(`${API}/api/adminsignin`, formData);
-      console.log(response);
-      
       const responseData = response.data;
-      console.log(responseData.adminData);
-      console.log(responseData.adminData.email);
-
-
+  
       if (response.status === 200) {
         toast.success("Logged in Successfully");
+  
+        // Store user information
         localStorage.setItem("email", responseData.adminData.email);
         localStorage.setItem("fname", responseData.adminData.fname);
         localStorage.setItem("lname", responseData.adminData.lname);
         localStorage.setItem("phone", responseData.adminData.phone);
         localStorage.setItem("user", responseData.adminData._id);
-        localStorage.setItem('role',responseData.adminData.designation)
-        navigate("/dashboard");
+  
+        // Step 2: Fetch roles and permissions
+        const roleResponse = await axios.get(`${API}/api/getroles`, {
+          params: { userId: responseData.adminData._id },
+        });
+  
+        if (roleResponse.status === 200) {
+          const { roles, permissions } = roleResponse.data;
+  
+          // Store roles and permissions in localStorage
+          localStorage.setItem("roles", JSON.stringify(roles));
+          localStorage.setItem("permissions", JSON.stringify(permissions));
+          localStorage.setItem("role", responseData.adminData.designation);
+  
+          // Navigate to the dashboard
+          navigate("/dashboard");
+        } else {
+          toast.error("Failed to load roles and permissions.");
+        }
       }
     } catch (error) {
       console.log(error);
-      toast.error("Invalid Email-id Or Password")
+      toast.error("Invalid Email-id Or Password");
     }
   };
+  
   const redirectForgotPassword = () => {
     navigate("/forgotpassword");
   };
