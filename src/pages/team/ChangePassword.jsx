@@ -34,11 +34,11 @@ const schema = yup
   })
   .required();
 
-const ResetPassword = () => {
+const ChangePassword = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const token = new URLSearchParams(location.search).get("token");
+  const adminemail = location.state?.adminemail;
 
   const {
     register,
@@ -49,14 +49,16 @@ const ResetPassword = () => {
   });
   const onSubmit = async (data) => {
     const formData = {
-      password: data.confirmPassword,
-      token,
+      confirmpassword: data.confirmPassword,
     };
     try {
-      const response = await axios.post(`${API}/api/reset-password`, formData);
+      const response = await axios.post(
+        `${API}/api/changepassword?email=${adminemail}`,
+        formData
+      );
 
       if (response.status === 200) {
-        navigate("/");
+        navigate("/team");
       }
     } catch (error) {
       console.log(error);
@@ -69,7 +71,7 @@ const ResetPassword = () => {
         <div className="relative w-96 mx-1 bg-[#200098]  shadow-lg border-x-2 border-violet-950">
           <img src={frame} alt="Image" className="absolute opacity-20 z-0" />
           <img src={PMCLogo} alt="Image" className="mx-2 my-2" />
-          <p className="text-center text-white my-10">Reset Password</p>
+          <p className="text-center text-white my-10">Change Password</p>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="grid gap-3 mx-10 my-6 ">
               <label htmlFor="" className="text-white">
@@ -87,7 +89,7 @@ const ResetPassword = () => {
                 onClick={() => setShowPassword(!showPassword)}
                 className="flex justify-end items-center mx-4"
               >
-                <p className="absolute top-60 my-3 z-10 ">
+                <p className="text-blackabsolute top-60 my-3 z-10 ">
                   {showPassword ? <IoIosEye /> : <IoIosEyeOff />}
                 </p>
               </div>
@@ -106,7 +108,7 @@ const ResetPassword = () => {
                 onClick={() => setShowPassword(!showPassword)}
                 className="flex justify-end items-center mx-4"
               >
-                <p className="absolute bottom-80 my-4 z-10 ">
+                <p className="text-black absolute bottom-80 my-4 z-10  ">
                   {showPassword ? <IoIosEye /> : <IoIosEyeOff />}
                 </p>
               </div>
@@ -116,7 +118,7 @@ const ResetPassword = () => {
                   type="submit"
                   className=" text-white bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-1/2 py-2 "
                 >
-                  Reset Password
+                  Save
                 </button>
               </div>
             </div>
@@ -131,4 +133,4 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default ChangePassword;

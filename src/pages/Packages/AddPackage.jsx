@@ -48,7 +48,7 @@ const AddPackage = () => {
   const watchCourseType = watch("coursetype");
   const onSubmit = async (data) => {
     setIsSaving(true);
-    console.log(data);
+
     const formData = {
       ...data,
       packagename: data.packagename.toLowerCase(),

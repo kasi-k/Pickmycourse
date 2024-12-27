@@ -24,7 +24,7 @@ const ViewOnCourse = () => {
             setCourses(response.data);
             setProcessing(false);
         } catch (error) {
-            fetchUserCourses();
+            
         }
     };
 

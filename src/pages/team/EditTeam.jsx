@@ -5,13 +5,20 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
-import { API,formatDate2 } from "../../Host";
+import { API, formatDate2 } from "../../Host";
 import { toast } from "react-toastify";
 import UpdateImage from "../users/UpdateImage";
 
 const EditSchema = yup.object().shape({
-  fname: yup.string().trim().required("First name is required").transform((value) => value.toLowerCase()),
-  lname: yup.string().required("Last name is required").transform((value) => value.toLowerCase()),
+  fname: yup
+    .string()
+    .trim()
+    .required("First name is required")
+    .transform((value) => value.toLowerCase()),
+  lname: yup
+    .string()
+    .required("Last name is required")
+    .transform((value) => value.toLowerCase()),
   email: yup
     .string()
     .email("Please Enter a valid Email")
@@ -28,7 +35,8 @@ const EditTeam = () => {
   const userId = location.state?.userId;
   const [userData, setUserData] = useState({});
   const [userImage, setUserImage] = useState({});
-  const [designation,setDesignation] =useState([])
+  const [designation, setDesignation] = useState([]);
+  const [emailId, setEmailId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -57,6 +65,7 @@ const EditTeam = () => {
       setValue("lname", data.lname);
       setValue("dob", data.dob);
       setValue("email", data.email);
+      setEmailId(data.email);
       setValue("phone", data.phone);
       setValue("designation", data.designation);
     } catch (error) {
@@ -87,11 +96,10 @@ const EditTeam = () => {
         `${API}/api/adminupdate/${userId}`,
         formData
       );
-      console.log(response);
 
       if (response.status === 200) {
-        toast.success("Admin Updated Successfully")
-        navigate("/team")
+        toast.success("Admin Updated Successfully");
+        navigate("/team");
       }
     } catch (error) {
       console.error("Error updating category:", error);
@@ -103,23 +111,33 @@ const EditTeam = () => {
       if (Array.isArray(response.data.role)) {
         setDesignation(response.data.role);
       } else {
-        console.error("Expected an array of tax options, but got:", response.data);
-        setDesignation([]);  // Fallback to an empty array if the structure is unexpected
+        console.error(
+          "Expected an array of tax options, but got:",
+          response.data
+        );
+        setDesignation([]); // Fallback to an empty array if the structure is unexpected
       }
     } catch (error) {
       console.error("Error fetching taxes:", error);
     }
   };
-  const handlePassword = () => {
-    navigate('/reset-password')
-  }
+
   return (
     <>
       <div className="font-extralight my-4">
         <p className=" mx-2 text-lg ">Edit Team</p>
         <hr />
         <div className="mx-2 my-4 space-y-1">
-          <button onClick={handlePassword} className=" float-end bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-5 py-2">
+          <button
+            onClick={() =>
+              navigate(`/changepassword`, {
+                state: {
+                  adminemail: emailId,
+                },
+              })
+            }
+            className=" float-end bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] px-5 py-2"
+          >
             Change Password
           </button>
           <div className="mx-10 ">
@@ -193,11 +211,12 @@ const EditTeam = () => {
                     <option value="select" disabled>
                       Select Designation
                     </option>
-                {designation && designation.map((role, index) => (
-                   <option key={index} value={role.designation}>
-                           {role.role_name}
-                          </option>
-                 ))}
+                    {designation &&
+                      designation.map((role, index) => (
+                        <option key={index} value={role.designation}>
+                          {role.role_name}
+                        </option>
+                      ))}
                   </select>
                   <p className="text-red-700">{errors.designation?.message}</p>
                 </div>

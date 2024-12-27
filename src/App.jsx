@@ -34,37 +34,52 @@ import EditPackage from "./pages/Packages/EditPackage";
 import axios from "axios";
 import { API } from "./Host";
 import UpdateRole from "./pages/settings/UpdateRole";
+import ChangePassword from "./pages/team/ChangePassword";
 const App = () => {
+  const [rolename, setRolename] = useState(localStorage.getItem("role") || "");
+ 
+  
   const [features, setFeatures] = useState({});
-  const rolename = localStorage.getItem("role");
-  console.log(rolename);
+
+  const updateRole = () => {
+    const role = localStorage.getItem("role") || "";
+    setRolename(role);
+  };
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.get(
-          `${API}/api/getrolebyid?role_name=${rolename}`
-        );
-        console.log(response);
-        
-        const responseData = response.data.role;
-        console.log(responseData, "data");
+    const handleStorageChange = () => updateRole();
 
-        const featuresData = responseData.accessLevels.reduce(
-          (acc, current) => {
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (rolename) {
+      const fetchUserData = async () => {
+        try {
+          const response = await axios.get(`${API}/api/getrolebyid?role_name=${rolename}`);
+          const responseData = response.data.role;
+
+          const featuresData = responseData.accessLevels.reduce((acc, current) => {
             acc[current.feature] = current.permissions;
             return acc;
-          },
-          {}
-        );
-        setFeatures(featuresData);
-      } catch (error) {}
-    };
-    fetchUserData();
+          }, {});
+          setFeatures(featuresData);
+        } catch (error) {
+          console.error("Error fetching role data:", error);
+        }
+      };
+      fetchUserData();
+    } else {
+      setFeatures({}); // Clear features if no role is set
+    }
   }, [rolename]);
 
   const memoizedFeatures = useMemo(() => features, [features]);
-  console.log(memoizedFeatures, "log");
+  
 
   return (
     <>
@@ -137,6 +152,7 @@ const App = () => {
                   element={<Team permissions={memoizedFeatures["team"]} />}
                 />
                 <Route path="/editteam" element={<EditTeam />} />
+                <Route path="/changepassword" element={<ChangePassword />} />
                 <Route path="/addteam" element={<AddTeam />} />
               </>
             )}

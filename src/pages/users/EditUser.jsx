@@ -10,7 +10,7 @@ import axios from "axios";
 import { API } from "../../Host";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import PhoneInput from "react-phone-input-2";
+
 
 
 const EditSchema = yup.object().shape({
@@ -53,7 +53,7 @@ const EditUser = () => {
 
   const fetchUser = async () => {
     try {
-      const response = await axios.get(`${API}/api/getusersbyid/${userId}`);
+      const response = await axios.get(`${API}/api/getusersbyid?id=${userId}`);
       const responseData = response.data.user;
       setUserData(responseData);
       localStorage.setItem("userphone", response.data.user.phone);
@@ -200,37 +200,12 @@ const EditUser = () => {
               <div>
                 <div className="flex flex-col">
                   <label className="mb-6">Phone</label>
-                  <PhoneInput
+                  <input
                   disabled
-                    // type="tel"
-                    // name="phone"
-                    // id="phone"
-                    country={"in"}
-                  
-                    value={getValues("phone")} // Get the current form value
+                  className="bg-transparent outline-none lg:w-64 md:w-60 w-52 px-2"
+                   {...register("phone")} // Get the current form value
                     onChange={(value) => setValue("phone", value)} // Update form state
-                    inputStyle={{
-                      width: "230px",
-                      height: "30px",
-                      fontSize: "16px",
-                      background:"transparent",
-                      color:"white",
-                      border:"none"
-                    }}
-                    buttonStyle={{
-                      backgroundColor: "transparent",
-                      border: "none",
-                      borderRadius: "5px",
-                      padding: "5px",
-                      width: "60px",
-                    }}
-                    dropdownStyle={{
-                      backgroundColor: "#fff",
-                      border: "1px solid #ccc",
-                      borderRadius: "5px",
-                      maxHeight: "200px",
-                      overflowY: "auto",
-                    }}
+               
                   />
                   <p className="text-red-700">{errors.phone?.message}</p>
                 </div>

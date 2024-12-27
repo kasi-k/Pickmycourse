@@ -13,7 +13,7 @@ const schema = yup
   })
   .required();
 
-const AddCategory = ({ onClose,fetchCategory }) => {
+const AddCategory = ({ onClose, fetchCategory }) => {
   const {
     register,
     handleSubmit,
@@ -29,10 +29,9 @@ const AddCategory = ({ onClose,fetchCategory }) => {
       const response = await axios.post(`${API}/api/category`, formData);
 
       const responseData = response.data.Category;
-      console.log(responseData);
 
       if (response.status === 200) {
-        toast.success("New Category added")
+        toast.success("New Category added");
         if (onClose) {
           onClose();
           fetchCategory();

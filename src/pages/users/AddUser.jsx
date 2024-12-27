@@ -10,8 +10,15 @@ import { toast } from "react-toastify";
 import { AiOutlineLoading } from "react-icons/ai";
 
 const schema = yup.object().shape({
-  fname: yup.string().trim().required("First name is required").transform((value) => value.toLowerCase()),
-  lname: yup.string().required("Last name is required").transform((value) => value.toLowerCase()),
+  fname: yup
+    .string()
+    .trim()
+    .required("First name is required")
+    .transform((value) => value.toLowerCase()),
+  lname: yup
+    .string()
+    .required("Last name is required")
+    .transform((value) => value.toLowerCase()),
   email: yup
     .string()
     .email("Please Enter a valid Email")
@@ -58,18 +65,16 @@ const AddUser = () => {
 
   const onSubmit = async (data) => {
     setIsSaving(true);
-    console.log(data);
+
     const formData = {
       ...data,
-      type:"free"
+      type: "free",
     };
 
     try {
       const response = await axios.post(`${API}/api/usersignup`, formData);
-      console.log(response);
-      
+
       const responseData = response.data;
-      console.log(responseData.userId);
 
       if (response.status === 200 && selectedFile !== null) {
         localStorage.setItem("userid", responseData.userId._id);
@@ -81,7 +86,7 @@ const AddUser = () => {
 
         const response = await axios.post(`${API}/api/images`, payload);
         const responseData = response.data.image;
-        console.log(responseData);
+
         toast.success("User and profile Image created Successfully");
         navigate("/users");
       } else toast.success("User created Successfully");
@@ -106,9 +111,9 @@ const AddUser = () => {
           />
 
           <div
-            className={`relative text-base  bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] lg:w-40 h-12   my-5  `}
+            className={`relative text-base  bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] lg:w-40 md:w-36 w-36 h-12   my-5  `}
           >
-            <p className=" absolute text-lg  py-2.5 text-center right-4">
+            <p className=" absolute text-lg  py-2.5 text-center right-2">
               Upload Image
             </p>
             <input
@@ -127,7 +132,6 @@ const AddUser = () => {
                 type="text"
                 placeholder="Enter First name"
                 className="outline-none text-black rounded-md py-1.5 px-3 my-3 "
-             
               />
               <p className="text-red-700">{errors.fname?.message}</p>
             </div>

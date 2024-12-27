@@ -30,7 +30,7 @@ const ForgotPassword = () => {
   });
   const onSubmit = async (data) => {
     setIsSubmitting(true);
-    console.log(data);
+
     const formData = {
       ...data,
       company: "PMC",
@@ -41,7 +41,6 @@ const ForgotPassword = () => {
         toast.success("Link Sent to ur mailid Successfully ");
         setIsSubmitting(false);
         navigate("/reset-password");
-        
       }
     } catch (error) {
       toast.error("Invalid Email");

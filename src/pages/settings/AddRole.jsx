@@ -11,14 +11,17 @@ import report from "../../assets/report.png";
 import setting from "../../assets/settings.png";
 import axios from "axios";
 import { toast } from "react-toastify";
-import {API} from '../../Host'
+import { API } from "../../Host";
 
-const AddRole = ({onClose,fetchNewRole}) => {
+const AddRole = ({ onClose, fetchNewRole }) => {
   const [roleName, setRoleName] = useState("");
-  console.log('render');
-  
+
   const [features, setFeatures] = useState([
-    { name: "Dashboard", icon: dashboard, value: "dashboard", permissions: [
+    {
+      name: "Dashboard",
+      icon: dashboard,
+      value: "dashboard",
+      permissions: [
         { label: "Total Courses Generated", value: "totalcourse" },
         { label: "Total No Of Users", value: "totalusers" },
         { label: "Revenue Generated", value: "totalrevenue" },
@@ -28,61 +31,89 @@ const AddRole = ({onClose,fetchNewRole}) => {
         { label: "Ticket Status", value: "ticketstatus" },
         { label: "Monthly Activity Progress", value: "monthlyProgress" },
         { label: "Revenue", value: "revenue" },
-      ] 
+      ],
     },
-    { name: "Packages", icon: Package, value: "packages", permissions: [
+    {
+      name: "Packages",
+      icon: Package,
+      value: "packages",
+      permissions: [
         { label: "Can view Packages", value: "view" },
         { label: "Can add Packages", value: "add" },
         { label: "Can edit Packages", value: "edit" },
         { label: "Can delete Packages", value: "delete" },
-      ] 
+      ],
     },
-    { name: "Courses", icon: course, value: "courses", permissions: [
+    {
+      name: "Courses",
+      icon: course,
+      value: "courses",
+      permissions: [
         { label: "Can view Courses", value: "view" },
         { label: "Can Generate Courses", value: "create" },
         { label: "Can delete Courses", value: "delete" },
-      ] 
+      ],
     },
-    { name: "Subscriptions", icon: subscribe, value: "subscription" , permissions: [
-      { label: "Can view Subscriptions", value: "view" },
-    ] 
-  },
-    { name: "Users", icon: user, value: "users", permissions: [
+    {
+      name: "Subscriptions",
+      icon: subscribe,
+      value: "subscription",
+      permissions: [{ label: "Can view Subscriptions", value: "view" }],
+    },
+    {
+      name: "Users",
+      icon: user,
+      value: "users",
+      permissions: [
         { label: "Can View Users", value: "view" },
         { label: "Can add Users", value: "create" },
         { label: "Can Edit Users", value: "edit" },
         { label: "Can Delete Users", value: "delete" },
-      ] 
+      ],
     },
-    { name: "Team", icon: team, value: "team", permissions: [
+    {
+      name: "Team",
+      icon: team,
+      value: "team",
+      permissions: [
         { label: "Can View Team", value: "view" },
         { label: "Can add Team", value: "create" },
         { label: "Can Edit Team", value: "edit" },
         { label: "Can Delete Team", value: "delete" },
-      ] 
+      ],
     },
-    { name: "Help & Support", icon: help, value: "support", permissions: [
+    {
+      name: "Help & Support",
+      icon: help,
+      value: "support",
+      permissions: [
         { label: "Can view Tickets", value: "view" },
         { label: "Can assign Tickets", value: "assign" },
         { label: "Can reply to all tickets", value: "reply" },
         { label: "Can reply to self tickets", value: "self" },
-      ] 
+      ],
     },
-    { name: "Reports", icon: report, value: "report", permissions: [
+    {
+      name: "Reports",
+      icon: report,
+      value: "report",
+      permissions: [
         { label: "Can view Reports", value: "view" },
         { label: "Can Download Reports", value: "download" },
-      ] 
+      ],
     },
-    { name: "Settings", icon: setting, value: "setting", permissions: [
+    {
+      name: "Settings",
+      icon: setting,
+      value: "setting",
+      permissions: [
         { label: "Roles & permission", value: "roles" },
         { label: "Taxes", value: "tax" },
         { label: "Help & Support", value: "support" },
-      ] 
+      ],
     },
   ]);
   const [accessLevels, setAccessLevels] = useState([]);
-  
-
 
   const handleFeatureChange = (index) => {
     const newFeatures = [...features];
@@ -94,25 +125,25 @@ const AddRole = ({onClose,fetchNewRole}) => {
       setAccessLevels((prevAccessLevels) => {
         const newAccessLevel = {
           feature: newFeatures[index].value,
-          permissions: newFeatures[index].permissions.map(p => p.value),
+          permissions: newFeatures[index].permissions.map((p) => p.value),
         };
         return [...prevAccessLevels, newAccessLevel];
       });
     } else {
       // Remove feature and all permissions
       setAccessLevels(
-        accessLevels.filter( (level) => level.feature !== newFeatures[index].value
+        accessLevels.filter(
+          (level) => level.feature !== newFeatures[index].value
         )
       );
     }
   };
 
- 
   // const handleFeatureChange = (index) => {
   //   const newFeatures = [...features];
   //   newFeatures[index].checked = !newFeatures[index].checked;
   //   setFeatures(newFeatures);
-  
+
   //   if (newFeatures[index].checked) {
   //     // Add feature and all permissions
   //     setAccessLevels((prevAccessLevels) => {
@@ -148,24 +179,26 @@ const AddRole = ({onClose,fetchNewRole}) => {
     }
   };
 
-  const handleSave = async() => {
+  const handleSave = async () => {
     const roleAccessLevel = {
       role_name: roleName,
       accessLevels: accessLevels,
       status: "active", // or any other status you want to set
     };
-    console.log(roleAccessLevel);
+
     // Here you can send roleAccessLevel to your backend API
 
     try {
-      const response = await axios.post(`${API}/api/roleaccesslevel`, roleAccessLevel, {
-      });
-      console.log(response);
-      
+      const response = await axios.post(
+        `${API}/api/roleaccesslevel`,
+        roleAccessLevel,
+        {}
+      );
+
       if (response.status === 200) {
         toast.success("Role created Successfully");
-        onClose()
-        fetchNewRole()
+        onClose();
+        fetchNewRole();
       } else {
         console.error("Error in posting data", response);
         toast.error("Failed to Upload");
@@ -174,7 +207,6 @@ const AddRole = ({onClose,fetchNewRole}) => {
       console.error("Error in posting data", error);
     }
   };
-  
 
   return (
     <div className="bg-[#000928] py-3">
@@ -203,9 +235,7 @@ const AddRole = ({onClose,fetchNewRole}) => {
               <div className="grid mx-6">
                 {feature.permissions.map((permission, permIndex) => (
                   <div className="flex items-center gap-2" key={permIndex}>
-                    <label className="text-sm w-4/6">
-                      {permission.label}
-                    </label>
+                    <label className="text-sm w-4/6">{permission.label}</label>
                     <input
                       type="checkbox"
                       value={permission.value}

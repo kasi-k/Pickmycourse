@@ -9,7 +9,11 @@ import { API } from "../../Host";
 import { toast } from "react-toastify";
 
 const schema = yup.object().shape({
-  packagename: yup.string().trim().required("Package name is required").transform((value) => value.toLowerCase()),
+  packagename: yup
+    .string()
+    .trim()
+    .required("Package name is required")
+    .transform((value) => value.toLowerCase()),
   email: yup.string().email().required("Email is required"),
 });
 const AdduserPackage = () => {
@@ -28,7 +32,6 @@ const AdduserPackage = () => {
     resolver: yupResolver(schema),
   });
   const onSubmit = async (data) => {
-    console.log(data);
     const selectedPackage = userPackage.find(
       (plan) => plan.packagename === data.packagename
     );
@@ -37,15 +40,12 @@ const AdduserPackage = () => {
         ...data,
         course: selectedPackage.course,
       };
-      localStorage.setItem("plan",data.packagename);
-      localStorage.setItem("courses",selectedPackage.course);
-      console.log(formData);
-   
+      localStorage.setItem("plan", data.packagename);
+      localStorage.setItem("courses", selectedPackage.course);
 
       try {
-        const response = await axios.post(`${API}/api/addusertoplan`,formData);
-          navigate("/packages");
-     
+        const response = await axios.post(`${API}/api/addusertoplan`, formData);
+        navigate("/packages");
       } catch (error) {
         console.log(error);
       }

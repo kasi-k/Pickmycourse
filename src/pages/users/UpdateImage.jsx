@@ -52,7 +52,7 @@ const UpdateImage = ({ CloseProfileModal }) => {
         toast.success("Profile Image Updated Succesfully");
         CloseProfileModal();
       } else {
-        console.log("Failed to Upload");
+        toast.error("Failed to Upload");
       }
     } catch (error) {
       console.log(error);

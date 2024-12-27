@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Select from "react-select";
 import { FaCaretDown } from "react-icons/fa";
-import { useForm,Controller} from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
@@ -13,20 +13,20 @@ const schema = yup
   .shape({
     status: yup.string().trim().required("Priority Name is required"),
     color: yup
-    .string()
-    .required("Please select a color")
-    .oneOf(["green", "blue", "yellow"], "Invalid color selection"),
- })
+      .string()
+      .required("Please select a color")
+      .oneOf(["green", "blue", "yellow"], "Invalid color selection"),
+  })
   .required();
 
-const AddStatus = ({ onClose,fetchStatus }) => {
+const AddStatus = ({ onClose, fetchStatus }) => {
   const [selectedColor, setSelectedColor] = useState(null);
   const [colorData, setColorData] = useState([]);
 
   const colorOptions = [
-    { value: "green",  color: "green" },
+    { value: "green", color: "green" },
     { value: "blue", color: "blue" },
-    { value: "yellow",  color: "yellow" },
+    { value: "yellow", color: "yellow" },
   ];
   const {
     register,
@@ -38,17 +38,15 @@ const AddStatus = ({ onClose,fetchStatus }) => {
   });
   const onSubmit = async (data) => {
     setColorData([...colorData, data.color]);
-    console.log(data);
+
     const formData = {
       ...data,
     };
-    console.log(formData);
+
     try {
       const response = await axios.post(`${API}/api/status`, formData);
-      console.log(response);
 
       const responseData = response.data.Status;
-      console.log(responseData);
 
       if (response.status === 200) {
         toast.success("New status Added");
@@ -85,34 +83,33 @@ const AddStatus = ({ onClose,fetchStatus }) => {
           Select Color <span className="text-red-600 ">*</span>
         </label>
         <div className="relative inline-block lg:w-7/12 md:w-3/5 w-5/6 ">
-        <Controller
+          <Controller
             name="color"
             control={control}
             rules={{ required: "Please select a color" }}
-            render={({ field }) =>(
-          <Select
-          {...field}
-          className=" outline-none rounded-md"
-          value={selectedColor}
-          onChange={(selectedOption) => {
-            field.onChange(selectedOption.value);
-            handleChange(selectedOption);
-          }}
-          options={colorOptions}
-          getOptionLabel={(e) => (
-            <div
-              style={{
-                backgroundColor: e.color,
-                padding: "16px",
-                width: "95%",
-              }}
-            >
-            </div>
-          )}
-        />
-      )}
-    />
-    <p className="text-red-500 text-sm">{errors.color?.message}</p>
+            render={({ field }) => (
+              <Select
+                {...field}
+                className=" outline-none rounded-md"
+                value={selectedColor}
+                onChange={(selectedOption) => {
+                  field.onChange(selectedOption.value);
+                  handleChange(selectedOption);
+                }}
+                options={colorOptions}
+                getOptionLabel={(e) => (
+                  <div
+                    style={{
+                      backgroundColor: e.color,
+                      padding: "16px",
+                      width: "95%",
+                    }}
+                  ></div>
+                )}
+              />
+            )}
+          />
+          <p className="text-red-500 text-sm">{errors.color?.message}</p>
           <div className="absolute inset-y-0 right-0.5   flex items-center pr-5 bg-gray-300 px-4 rounded-lg pointer-events-none outline-none">
             <FaCaretDown className="text-black text-2xl" />
           </div>

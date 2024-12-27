@@ -82,7 +82,6 @@ const EditPackage = () => {
         `${API}/api/subscriptionplan/${userId}`,
         formData
       );
-      console.log(response);
 
       if (response.status === 200) {
         toast.success("Package Updated Successfully");

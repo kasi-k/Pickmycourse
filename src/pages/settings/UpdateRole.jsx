@@ -174,7 +174,8 @@ const UpdateRole = ({ onClose }) => {
     );
 
     if (featureIndex !== -1) {
-      const permissionIndex = newAccessLevels[featureIndex].permissions.indexOf(permission);
+      const permissionIndex =
+        newAccessLevels[featureIndex].permissions.indexOf(permission);
       if (permissionIndex !== -1) {
         newAccessLevels[featureIndex].permissions.splice(permissionIndex, 1);
       } else {
@@ -197,12 +198,11 @@ const UpdateRole = ({ onClose }) => {
         `${API}/api/update/${role}`,
         roleAccessLevel
       );
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
     navigate("/setting");
-    toast.success("Role Updated Successfully")
+    toast.success("Role Updated Successfully");
   };
 
   return (
@@ -231,11 +231,15 @@ const UpdateRole = ({ onClose }) => {
                   onChange={() => handleFeatureChange(featureIndex)}
                 />
               </div>
-              {accessLevels.some((level) => level.feature === feature.value) && (
+              {accessLevels.some(
+                (level) => level.feature === feature.value
+              ) && (
                 <div className="grid mx-6">
                   {feature.permissions.map((permission, permIndex) => (
                     <div className="flex items-center gap-2" key={permIndex}>
-                      <label className="text-sm w-4/6">{permission.label}</label>
+                      <label className="text-sm w-4/6">
+                        {permission.label}
+                      </label>
                       <input
                         type="checkbox"
                         value={permission.value}

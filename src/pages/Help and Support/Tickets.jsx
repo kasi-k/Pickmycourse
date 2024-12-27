@@ -16,9 +16,7 @@ import "jspdf-autotable";
 
 const Tickets = ({ permissions }) => {
   const hasViewPermission = permissions?.includes("view");
-  //  console.log(hasViewPermission);
-  
-   
+
   const [ticket, setTicket] = useState([]);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [onDelete, setOnDelete] = useState("");
@@ -207,17 +205,27 @@ const Tickets = ({ permissions }) => {
                 ticket.map((data, index) => (
                   <tr className=" text-nowrap text-center " key={index}>
                     <td className="border border-slate-400 p-2">{data._id}</td>
-                    <td className="border border-slate-400 capitalize">{data.fname}</td>
-                    <td className="border border-slate-400 capitalize">{data.lname}</td>
+                    <td className="border border-slate-400 capitalize">
+                      {data.fname}
+                    </td>
+                    <td className="border border-slate-400 capitalize">
+                      {data.lname}
+                    </td>
                     <td className="border border-slate-400">{data.email}</td>
                     <td className="border border-slate-400">{data.phone}</td>
                     <td className="border border-slate-400">{data.ticketId}</td>
-                    <td className="border border-slate-400 capitalize">{data.category}</td>
-                    <td className="border border-slate-400 capitalize">{data.status} </td>
+                    <td className="border border-slate-400 capitalize">
+                      {data.category}
+                    </td>
+                    <td className="border border-slate-400 capitalize">
+                      {data.status}{" "}
+                    </td>
                     <td className="border border-slate-400 text-slate-500 ">
                       {formatDate2(data.createdAt)}
                     </td>
-                    <td className="border border-slate-400 capitalize">{data.team}</td>
+                    <td className="border border-slate-400 capitalize">
+                      {data.team}
+                    </td>
                     <td className="border border-slate-400">
                       {data.priority}{" "}
                     </td>

@@ -14,7 +14,7 @@ const schema = yup
   })
   .required();
 
-const AddTax = ({ onClose,fetchTax }) => {
+const AddTax = ({ onClose, fetchTax }) => {
   const {
     register,
     handleSubmit,
@@ -30,13 +30,12 @@ const AddTax = ({ onClose,fetchTax }) => {
       const response = await axios.post(`${API}/api/tax`, formData);
 
       const responseData = response.data.tax;
-      console.log(responseData);
 
       if (response.status === 200) {
         toast.success("Tax Added Successfully");
         if (onClose) {
           onClose();
-          fetchTax()
+          fetchTax();
         }
       }
     } catch (error) {
@@ -71,7 +70,10 @@ const AddTax = ({ onClose,fetchTax }) => {
         />
         <p className="text-red-700">{errors.percentage?.message}</p>
         <div className="flex justify-center my-4 w-7/12">
-          <button type="submit" className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-36 py-1.5  ">
+          <button
+            type="submit"
+            className="bg-gradient-to-r from-[#3D03FA] to-[#A71CD2] w-36 py-1.5  "
+          >
             Save
           </button>
         </div>

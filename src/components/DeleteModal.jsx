@@ -12,8 +12,7 @@ const DeleteModal = ({title,onClose,onDelete,Children}) => {
       const responseData = response.data;
       toast.success(`${title} Deleted Successfully`)
       onClose()
-      console.log(response);
-      console.log(responseData);
+     
     } catch (error) {
       console.log(error);
     }

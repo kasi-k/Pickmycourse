@@ -5,17 +5,20 @@ import axios from "axios";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { toast } from 'react-toastify'; 
+import { toast } from "react-toastify";
 
 const emailSchema = yup.object().shape({
-  email: yup.string().email("Invalid email format").required("Email is required"),
+  email: yup
+    .string()
+    .email("Invalid email format")
+    .required("Email is required"),
 });
 
 const UpdateEmail = ({ CloseEmailModal }) => {
-  const oldEmail = localStorage.getItem('useremail');
-  const phone = localStorage.getItem('userphone');
+  const oldEmail = localStorage.getItem("useremail");
+  const phone = localStorage.getItem("userphone");
   const [stepModal, setStepModal] = useState(false);
-  
+
   const {
     register,
     handleSubmit,
@@ -34,25 +37,26 @@ const UpdateEmail = ({ CloseEmailModal }) => {
   const handle2Modal = () => {
     setStepModal(false);
     CloseEmailModal();
-  }; 
+  };
 
-  const onsubmit = async(data) => {
+  const onsubmit = async (data) => {
     setStepModal(true);
     const formData = {
-      ...data
+      ...data,
     };
-    console.log(formData);
 
     try {
-      const response = await axios.post(`${API}/api/emailupdate?phone=${phone}`, formData);
+      const response = await axios.post(
+        `${API}/api/emailupdate?phone=${phone}`,
+        formData
+      );
       if (response.status === 200) {
         toast.success("Email updated successfully");
-        localStorage.setItem("useremail", data.email); 
+        localStorage.setItem("useremail", data.email);
         // CloseEmailModal()
-        setValue("useremail", data.email); 
+        setValue("useremail", data.email);
       } else {
         toast.error("Failed to update email");
-        console.log("Error in posting data");
       }
     } catch (error) {
       console.log(error);
@@ -82,11 +86,15 @@ const UpdateEmail = ({ CloseEmailModal }) => {
               </label>
               <input
                 type="text"
-                className={`py-3 pe-0 ps-2 block w-full bg-transparent border-t-transparent border-b border-x-transparent border-b-gray-400 outline-none disabled:pointer-events-none my-3 ${errors.email ? 'border-red-500' : ''}`}
+                className={`py-3 pe-0 ps-2 block w-full bg-transparent border-t-transparent border-b border-x-transparent border-b-gray-400 outline-none disabled:pointer-events-none my-3 ${
+                  errors.email ? "border-red-500" : ""
+                }`}
                 placeholder="johndoe@gmail.com"
                 {...register("email")}
               />
-              {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+              {errors.email && (
+                <p className="text-red-500 text-sm">{errors.email.message}</p>
+              )}
             </div>
             <div className="flex justify-center my-8">
               <button
@@ -102,11 +110,16 @@ const UpdateEmail = ({ CloseEmailModal }) => {
       {stepModal && (
         <Modal>
           <div className="w-[550px] min-h-[330px] my-4 mx-8 font-extralight font-poppins">
-            <p className="text-end text-2xl font-medium" onClick={() => handle2Modal()}>x</p>
+            <p
+              className="text-end text-2xl font-medium"
+              onClick={() => handle2Modal()}
+            >
+              x
+            </p>
             <p className="text-center text-lg my-4">Update Email</p>
             <p className="text-center text-normal lg:mx-12 md:mx-12 mx-4 my-16">
               We have sent you a verification link to your email. Please verify
- your email to continue.
+              your email to continue.
             </p>
           </div>
         </Modal>

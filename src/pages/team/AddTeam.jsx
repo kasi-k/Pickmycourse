@@ -11,8 +11,15 @@ import { AiOutlineLoading } from "react-icons/ai";
 import { useEffect } from "react";
 
 const schema = yup.object().shape({
-  fname: yup.string().trim().required("First name is required").transform((value) => value.toLowerCase()),
-  lname: yup.string().required("Last name is required").transform((value) => value.toLowerCase()),
+  fname: yup
+    .string()
+    .trim()
+    .required("First name is required")
+    .transform((value) => value.toLowerCase()),
+  lname: yup
+    .string()
+    .required("Last name is required")
+    .transform((value) => value.toLowerCase()),
   email: yup
     .string()
     .email("Please Enter a valid Email")
@@ -27,12 +34,12 @@ const AddTeam = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [base64Image, setBase64Image] = useState("");
   const [preview, setPreview] = useState(null);
-  const [designation,setDesignation] =useState([])
+  const [designation, setDesignation] = useState([]);
   const navigate = useNavigate();
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchDesignation();
-  },[])
+  }, []);
   const {
     register,
     handleSubmit,
@@ -63,16 +70,15 @@ const AddTeam = () => {
 
   const onSubmit = async (data) => {
     setIsSaving(true);
-    console.log(data);
+
     const formData = {
       ...data,
-      password:"Admin@123",
-      type:"free"
+      password: "Admin@123",
+      type: "free",
     };
     try {
       const response = await axios.post(`${API}/api/adminsignup`, formData);
       const reAdminId = response.data.userId;
-      console.log(reAdminId);
 
       if (response.status === 200 && selectedFile !== null) {
         const payload = {
@@ -83,7 +89,7 @@ const AddTeam = () => {
 
         const response = await axios.post(`${API}/api/images`, payload);
         const responseData = response.data.image;
-        console.log(responseData);
+
         toast.success("AdminId and profile Image created Successfully");
         navigate("/team");
       } else toast.success("New Admin created Successfully");
@@ -101,14 +107,16 @@ const AddTeam = () => {
       if (Array.isArray(response.data.role)) {
         setDesignation(response.data.role);
       } else {
-        console.error("Expected an array of tax options, but got:", response.data);
-        setDesignation([]);  // Fallback to an empty array if the structure is unexpected
+        console.error(
+          "Expected an array of tax options, but got:",
+          response.data
+        );
+        setDesignation([]); // Fallback to an empty array if the structure is unexpected
       }
     } catch (error) {
       console.error("Error fetching taxes:", error);
     }
   };
-
 
   return (
     <>
@@ -202,11 +210,12 @@ const AddTeam = () => {
                 <option value="select" disabled>
                   Select Designation
                 </option>
-                {designation && designation.map((role, index) => (
-                   <option key={index} value={role.designation}>
-                           {role.role_name}
-                          </option>
-                 ))}
+                {designation &&
+                  designation.map((role, index) => (
+                    <option key={index} value={role.designation}>
+                      {role.role_name}
+                    </option>
+                  ))}
               </select>
               <p className="text-red-700">{errors.designation?.message}</p>
             </div>
@@ -218,7 +227,7 @@ const AddTeam = () => {
             }`}
             disabled={isSaving}
           >
-             {isSaving ? (
+            {isSaving ? (
               <div className="flex  text-xl gap-2">
                 <AiOutlineLoading className="h-6 w-6 animate-spin" />
                 <p>Saving....</p>

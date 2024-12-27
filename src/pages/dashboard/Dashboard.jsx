@@ -31,7 +31,6 @@ const renderCustomizedLegend = (props) => {
               background: entry.color.startsWith("url")
                 ? "linear-gradient(to bottom right, #3D03FA, #A71CD2)"
                 : entry.color,
-                
             }}
           ></span>
 
@@ -60,21 +59,16 @@ const Dashboard = () => {
       try {
         const response = await axios.get(postURL);
         setCourses(response.data);
-      } catch (error) {
-        // fetchUserCourses();
-      }
+      } catch (error) {}
     };
 
     const fetchUsers = async () => {
       const postURL = API + `/api/getusers`;
       try {
         const response = await axios.get(postURL);
-        console.log(response);
 
         setUsers(response.data.user);
-      } catch (error) {
-        // fetchUsers();
-      }
+      } catch (error) {}
     };
 
     fetchUserCourses();
@@ -191,8 +185,12 @@ const Dashboard = () => {
               dataKey="value"
             >
               {data.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index]}  stroke="url(#borderGradient)"  
-                strokeWidth={3} />
+                <Cell
+                  key={`cell-${index}`}
+                  fill={COLORS[index]}
+                  stroke="url(#borderGradient)"
+                  strokeWidth={3}
+                />
               ))}
             </Pie>
             <Legend

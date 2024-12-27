@@ -22,6 +22,7 @@ const UpdatePhone = ({ ClosePhoneModal }) => {
   const [phone, setPhone] = useState(oldPhone || ""); // Initialize with oldPhone
   const [otp, setOtp] = useState("");
   const [confirmationResult, setConfirmationResult] = useState(null);
+  const [countryCode, setCountryCode] = useState("");
 
   const {
     register,
@@ -51,75 +52,86 @@ const UpdatePhone = ({ ClosePhoneModal }) => {
         ClosePhoneModal();
       } else {
         toast.error("Failed to update phone number");
-        console.log("Error in posting data");
       }
     } catch (error) {
       console.log(error);
       toast.error("An error occurred while updating phone number");
     }
   };
-
+  const handlePhoneChange = (value, data) => {
+    setPhone(value);
+    setCountryCode(data.dialCode);
+  };
   // Initialize reCAPTCHA
   const setupRecaptcha = () => {
     if (!window.recaptchaVerifier) {
-      window.recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {
-        size: "invisible",
-        callback: (response) => {
-          console.log("reCAPTCHA solved:", response);
-        },
-        "expired-callback": () => {
-          console.log("reCAPTCHA expired.");
-        },
-      });
+      window.recaptchaVerifier = new RecaptchaVerifier(
+        auth,
+        "recaptcha-container",
+        {
+          size: "invisible",
+          callback: (response) => {
+            console.log("reCAPTCHA solved:");
+          },
+          "expired-callback": () => {
+            console.log("reCAPTCHA expired.");
+          },
+        }
+      );
     }
   };
 
- // Send OTP
-const sendOtp = async () => {
-  try {
-    setupRecaptcha();
-    const appVerifier = window.recaptchaVerifier;
-    const formattedPhone = `+${phone}`; // Ensure the phone number has the country code
-    const confirmation = await signInWithPhoneNumber(auth, formattedPhone, appVerifier);
-    setConfirmationResult(confirmation);
-    toast.success("OTP sent successfully!");
-  } catch (error) {
-    console.error("Error sending OTP:", error.message);
-    toast.error(error.message);
-  }
-};
+  // Send OTP
+  const sendOtp = async () => {
+    try {
+      setupRecaptcha();
+      const appVerifier = window.recaptchaVerifier;
+      const formattedPhone = `+${phone}`;
 
-// Verify OTP
-const verifyOtp = async () => {
-  try {
-    if (!confirmationResult) {
-      toast.error("Please send OTP first.");
-      return;
+      // Ensure the phone number has the country code
+      const confirmation = await signInWithPhoneNumber(
+        auth,
+        formattedPhone,
+        appVerifier
+      );
+      setConfirmationResult(confirmation);
+      toast.success("OTP sent successfully!");
+    } catch (error) {
+      console.error("Error sending OTP:", error.message);
+      toast.error("Mobile Number already exists");
     }
-    await confirmationResult.confirm(otp);
+  };
 
-    // Extract the local number from the full phone number
-    const localPhoneNumber = phone.replace(/^\d{1,4}/, ""); // Remove up to 4 digits for the country code
+  // Verify OTP
+  const verifyOtp = async () => {
+    try {
+      if (!confirmationResult) {
+        toast.error("Please send OTP first.");
+        return;
+      }
+      await confirmationResult.confirm(otp);
+      const localPhoneNumber = phone.slice(countryCode.length);
 
-    // Call backend to update the phone number
-    const formData = { phone: localPhoneNumber };
-    const response = await axios.post(
-      `${API}/api/phoneupdate?email=${email}`,
-      formData
-    );
+      // Call backend to update the phone number
+      const formData = { phone: localPhoneNumber };
 
-    if (response.status === 200) {
-      toast.success("Phone number verified and updated successfully!");
-      localStorage.setItem("userphone", localPhoneNumber);
-      ClosePhoneModal();
-    } else {
-      toast.error("Failed to update phone number in backend.");
+      const response = await axios.post(
+        `${API}/api/phoneupdate?email=${email}`,
+        formData
+      );
+
+      if (response.status === 200) {
+        toast.success("Phone number verified and updated successfully!");
+        localStorage.setItem("userphone", localPhoneNumber);
+        ClosePhoneModal();
+      } else {
+        toast.error("Failed to update phone number in backend.");
+      }
+    } catch (error) {
+      console.error("Error verifying OTP:", error.message);
+      toast.error("Invalid OTP. Please try again.");
     }
-  } catch (error) {
-    console.error("Error verifying OTP:", error.message);
-    toast.error("Invalid OTP. Please try again.");
-  }
-};
+  };
 
   return (
     <Modal>
@@ -134,8 +146,8 @@ const verifyOtp = async () => {
           <div>
             <p className="text-center text-lg my-2">Update Phone</p>
             <p className="text-center text-sm lg:mx-12 md:mx-12 mx-4 my-6">
-              Enter your new Phone Number (please note we will send an OTP
-              to your new phone number)
+              Enter your new Phone Number (please note we will send an OTP to
+              your new phone number)
             </p>
             <div className="lg:mx-6 md:mx-6 mx-1 my-8">
               <label htmlFor="phone" className="text-normal">
@@ -145,7 +157,7 @@ const verifyOtp = async () => {
                 country={"in"}
                 className="text-black"
                 value={phone} // Set phone state here
-                onChange={(phone) => setPhone(phone)} // Update phone state on change
+                onChange={handlePhoneChange} // Update phone state on change
                 inputStyle={{
                   width: "230px",
                   height: "30px",
@@ -219,7 +231,5 @@ const verifyOtp = async () => {
     </Modal>
   );
 };
-
-
 
 export default UpdatePhone;
