@@ -149,14 +149,14 @@ const Dashboard = () => {
           <div className="grid grid-cols-4 gap-2">
             <div className="bg-[#000928] col-span-2 drop-shadow-2xl">
               <p className="mx-2 my-1 text-base">Revenue Generated</p>
-              <p className="text-end pt-8 text-3xl mx-2">$3800000</p>
+              <p className="text-end pt-8 text-3xl mx-2">$0</p>
               <button className=" bg-gradient-to-r from-blue-900 to-fuchsia-600 w-full py-2.5">
                 View
               </button>
             </div>
             <div className="bg-[#000928] col-span-2 drop-shadow-2xl">
               <p className="mx-2 my-1 text-base">Recurring Revenue</p>
-              <p className="text-end pt-8 text-3xl mx-2">$380000</p>
+              <p className="text-end pt-8 text-3xl mx-2">$0</p>
               <button className=" bg-gradient-to-r from-blue-900 to-fuchsia-600 w-full py-2.5">
                 View
               </button>
