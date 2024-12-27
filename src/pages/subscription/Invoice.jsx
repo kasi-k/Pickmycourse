@@ -127,7 +127,7 @@ const Invoice = ({ onClose, invoiceData }) => {
             <div className="grid grid-cols-12 gap-3 text-black mx-3 my-3">
               <div className="col-span-6 ">
                 <p className="font-normal">Tax:</p>
-                <p>GST {invoiceSub.tax}%</p>
+                <p>{invoiceSub.tax}%</p>
               </div>
               <div className="col-span-6 ">
                 <p>
