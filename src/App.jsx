@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState,Suspense } from "react";
+import React, { useEffect, useMemo, useState, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -7,6 +7,7 @@ import NotFound from "./404";
 import Login from "./pages/login/Login";
 import axios from "axios";
 import { API } from "./Host";
+import Policy from "./pages/policy/Policy";
 
 const ForgotPassword = React.lazy(() => import("./pages/login/ForgotPassword"));
 const Package = React.lazy(() => import("./pages/Packages/Package"));
@@ -50,7 +51,6 @@ const ViewCertificate = React.lazy(() =>
 const EditPackage = React.lazy(() => import("./pages/Packages/EditPackage"));
 const UpdateRole = React.lazy(() => import("./pages/settings/UpdateRole"));
 const ChangePassword = React.lazy(() => import("./pages/team/ChangePassword"));
-
 
 const App = () => {
   const [rolename, setRolename] = useState(localStorage.getItem("role") || "");
@@ -104,117 +104,119 @@ const App = () => {
   return (
     <>
       <BrowserRouter>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Routes>
-          <Route path="" element={<Login />} />
-          <Route path="/forgotpassword" element={<ForgotPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/content" element={<Content />} />
-          <Route path="/" element={<Layout permissions={memoizedFeatures} />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/adduserPackage" element={<AdduserPackage />} />
-            <Route path="/create" element={<GenerateCourse />} />
-            <Route path="/topics" element={<ListTopics />} />
-            <Route path="/viewcourse" element={<ViewOwnCourse />} />
-            <Route path="/viewcertificate" element={<ViewCertificate />} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <Routes>
+            <Route path="" element={<Login />} />
+            <Route path="/forgotpassword" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/content" element={<Content />} />
+            <Route path="/" element={<Layout permissions={memoizedFeatures} />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/adduserPackage" element={<AdduserPackage />} />
+              <Route path="/create" element={<GenerateCourse />} />
+              <Route path="/topics" element={<ListTopics />} />
+              <Route path="/viewcourse" element={<ViewOwnCourse />} />
+              <Route path="/viewcertificate" element={<ViewCertificate />} />
 
-            {/* <Route path="/report" element={<Report />} /> */}
-            <Route path="/addrole" element={<AddRole />} />
-            <Route path="/updaterole" element={<UpdateRole />} />
-            <Route path="/category" element={<Category />} />
+              <Route path="/addrole" element={<AddRole />} />
+              <Route path="/updaterole" element={<UpdateRole />} />
+              <Route path="/category" element={<Category />} />
+              <Route path="/policy" element={<Policy />} />
 
-            {memoizedFeatures["packages"] && (
-              <>
-                <Route
-                  path="/packages"
-                  element={
-                    <Package permissions={memoizedFeatures["packages"]} />
-                  }
-                />
-                <Route path="/addpackage" element={<AddPackage />} />
-                <Route path="/editpackage" element={<EditPackage />} />
-              </>
-            )}
-            {memoizedFeatures["courses"] && (
-              <>
-                <Route
-                  path="/courses"
-                  element={
-                    <Courses permissions={memoizedFeatures["courses"]} />
-                  }
-                />
-              </>
-            )}
-            {memoizedFeatures["subscription"] && (
-              <>
-                <Route
-                  path="/subscription"
-                  element={
-                    <Subscription
-                      permissions={memoizedFeatures["subscription"]}
-                    />
-                  }
-                />
-              </>
-            )}
-            {memoizedFeatures["users"] && (
-              <>
-                <Route
-                  path="/users"
-                  element={<User permissions={memoizedFeatures["users"]} />}
-                />
-                <Route path="/adduser" element={<AddUser />} />
-                <Route path="/edituser" element={<EditUser />} />
-              </>
-            )}
-            {memoizedFeatures["team"] && (
-              <>
-                <Route
-                  path="/team"
-                  element={<Team permissions={memoizedFeatures["team"]} />}
-                />
-                <Route path="/editteam" element={<EditTeam />} />
-                <Route path="/changepassword" element={<ChangePassword />} />
-                <Route path="/addteam" element={<AddTeam />} />
-              </>
-            )}
-            {memoizedFeatures["support"] && (
-              <>
-                <Route
-                  path="helpsupport"
-                  element={
-                    <Tickets permissions={memoizedFeatures["support"]} />
-                  }
-                />
-                <Route
-                  path="/viewticket"
-                  element={
-                    <ViewTicket permissions={memoizedFeatures["support"]} />
-                  }
-                />
-              </>
-            )}
-            {memoizedFeatures["report"] && (
-              <>
-                <Route
-                  path="/report"
-                  element={<Report permissions={memoizedFeatures["report"]} />}
-                />
-              </>
-            )}
-            {memoizedFeatures["setting"] && (
-              <>
-                <Route
-                  path="/setting"
-                  element={
-                    <Setting permissions={memoizedFeatures["setting"]} />
-                  }
-                />
-              </>
-            )}
-          </Route>
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+              {memoizedFeatures["packages"] && (
+                <>
+                  <Route
+                    path="/packages"
+                    element={
+                      <Package permissions={memoizedFeatures["packages"]} />
+                    }
+                  />
+                  <Route path="/addpackage" element={<AddPackage />} />
+                  <Route path="/editpackage" element={<EditPackage />} />
+                </>
+              )}
+              {memoizedFeatures["courses"] && (
+                <>
+                  <Route
+                    path="/courses"
+                    element={
+                      <Courses permissions={memoizedFeatures["courses"]} />
+                    }
+                  />
+                </>
+              )}
+              {memoizedFeatures["subscription"] && (
+                <>
+                  <Route
+                    path="/subscription"
+                    element={
+                      <Subscription
+                        permissions={memoizedFeatures["subscription"]}
+                      />
+                    }
+                  />
+                </>
+              )}
+              {memoizedFeatures["users"] && (
+                <>
+                  <Route
+                    path="/users"
+                    element={<User permissions={memoizedFeatures["users"]} />}
+                  />
+                  <Route path="/adduser" element={<AddUser />} />
+                  <Route path="/edituser" element={<EditUser />} />
+                </>
+              )}
+              {memoizedFeatures["team"] && (
+                <>
+                  <Route
+                    path="/team"
+                    element={<Team permissions={memoizedFeatures["team"]} />}
+                  />
+                  <Route path="/editteam" element={<EditTeam />} />
+                  <Route path="/changepassword" element={<ChangePassword />} />
+                  <Route path="/addteam" element={<AddTeam />} />
+                </>
+              )}
+              {memoizedFeatures["support"] && (
+                <>
+                  <Route
+                    path="helpsupport"
+                    element={
+                      <Tickets permissions={memoizedFeatures["support"]} />
+                    }
+                  />
+                  <Route
+                    path="/viewticket"
+                    element={
+                      <ViewTicket permissions={memoizedFeatures["support"]} />
+                    }
+                  />
+                </>
+              )}
+              {memoizedFeatures["report"] && (
+                <>
+                  <Route
+                    path="/report"
+                    element={
+                      <Report permissions={memoizedFeatures["report"]} />
+                    }
+                  />
+                </>
+              )}
+              {memoizedFeatures["setting"] && (
+                <>
+                  <Route
+                    path="/setting"
+                    element={
+                      <Setting permissions={memoizedFeatures["setting"]} />
+                    }
+                  />
+                </>
+              )}
+            </Route>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
         </Suspense>
       </BrowserRouter>
       <ToastContainer
