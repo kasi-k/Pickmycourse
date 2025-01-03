@@ -12,7 +12,8 @@ import { AiOutlineLoading } from "react-icons/ai";
 const schema = yup.object().shape({
   stripeId: yup.string().trim().required("stripeId  is required"),
   packagename: yup.string().trim().required("Package name is required"),
-  price: yup.number().required("price is required"),
+  price: yup.number().required("price in USD is required"),
+  inr: yup.number().required("price in INR required"),
   course: yup.string().trim().required("courses is required"),
   tax: yup.number().required("tax is required"),
   subtopic: yup
@@ -103,15 +104,24 @@ const AddPackage = () => {
             />
             <p className="text-red-700">{errors.packagename?.message}</p>
             <label className="text-lg col-span-12">
-              Price <span className=" text-red-600">*</span>
+              Price In USD <span className=" text-red-600">*</span>
             </label>
             <input
               {...register("price")}
-              placeholder="Enter Price"
+              placeholder="Enter Price In USD"
               className="col-span-2 text-black rounded-md py-1.5 px-2"
               required
             />
-            <p className="text-red-700">{errors.price?.message}</p>
+            <label className="text-lg col-span-12">
+              Price In INR <span className=" text-red-600">*</span>
+            </label>
+            <input
+              {...register("inr")}
+              placeholder="Enter Price In INR"
+              className="col-span-2 text-black rounded-md py-1.5 px-2"
+              required
+            />
+            <p className="text-red-700">{errors.inr?.message}</p>
             <label className="text-lg col-span-12">
               No of Courses per month <span className=" text-red-600">*</span>
             </label>
