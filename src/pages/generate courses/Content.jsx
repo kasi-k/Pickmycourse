@@ -542,8 +542,8 @@ const Content = () => {
           className=" flex gap-2 mx-4 items-center text-white font-poppins font-extralight "
           onClick={redirectcourse}
         >
-          <FaCaretSquareLeft className="text-lg" />
-          <p className="my-3"> Back to Home</p>
+          <FaCaretSquareLeft className="text-lg cursor-pointer" />
+          <p className="my-3 cursor-pointer "> Back to Home</p>
         </span>
         <div className=" font-poppins font-extralight ">
           {topics.map((topic) => (
