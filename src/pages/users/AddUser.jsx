@@ -117,6 +117,7 @@ const AddUser = () => {
               Upload Image
             </p>
             <input
+              accept=".jpg,.jpeg,.png,.gif"
               type="file"
               onChange={handleFileChange}
               className="opacity-0 w-full h-full"

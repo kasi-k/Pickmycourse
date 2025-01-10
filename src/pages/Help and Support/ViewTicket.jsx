@@ -336,13 +336,14 @@ const ViewTicket = ({ permissions }) => {
                           <label htmlFor="">
                             Attachments (you can select multiple files)
                           </label>
-                          <div className="border bg-white rounded-lg py-1.5 my-1 flex items-center ">
+                          <div className="border bg-white rounded-lg py-1.5 my-1 flex items-center">
                             <div className="absolute inset-y-1 top-7 left-0 rounded-lg px-2 py-2  flex items-center  bg-gray-300  pointer-events-none outline-none text-black">
                               Choose Files
                             </div>
                             <input
+                              accept=".jpg,.jpeg,.png,.gif"
                               type="file"
-                              className="opacity-0  text-black "
+                              className="opacity-0 w-28 text-black "
                               id="file-input"
                               multiple
                               onChange={(e) =>
@@ -350,7 +351,7 @@ const ViewTicket = ({ permissions }) => {
                               }
                             />
                             <span
-                              className="absolute  top-12 -translate-y-1/2 lg:right-2 md:right-4 right-16 text-normal text-black"
+                              className="absolute top-12 -translate-y-1/2 lg:right-2 md:right-4 right-16 text-normal text-black"
                               id="file-name"
                             >
                               {selectedFiles.length > 0

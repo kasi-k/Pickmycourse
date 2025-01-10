@@ -5,7 +5,6 @@ import { API } from "../../Host";
 import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 
-
 const UpdateImage = ({ CloseProfileModal }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [base64Image, setBase64Image] = useState("");
@@ -21,7 +20,7 @@ const UpdateImage = ({ CloseProfileModal }) => {
     }
     const maxSizeInBytes = 2 * 1024 * 1024; // 2MB
     if (file.size > maxSizeInBytes) {
-       toast.error("File size exceeds 2MB!");
+      toast.error("File size exceeds 2MB!");
       return;
     }
     setSelectedFile(file);
@@ -67,30 +66,28 @@ const UpdateImage = ({ CloseProfileModal }) => {
         >
           x
         </p>
-        <p className="mx-16 text-xl my-2">Choose Profile Image</p>
+        <p className="mx-16 text-xl my-3">Choose Profile Image</p>
 
-        <div className="relative mt-6 mx-16 ">
-          <label className="block bg-white rounded-lg">
-            <span className="sr-only">Choose File</span>
+        <div className="relative w-2/3 mx-20">
+          <div className="border bg-white rounded-lg py-1.5 my-1 ">
+            <div className="absolute inset-y-0  left-0 rounded-lg px-2 py-5 flex items-center  bg-gray-300  pointer-events-none outline-none text-black">
+              Choose Files
+            </div>
             <input
+              accept=".jpg,.jpeg,.png,.gif"
               type="file"
-              className="hidden"
+                className="opacity-0 w-28 text-black "
               id="file-input"
               onChange={handleFileChange}
             />
-            <button
-              className="bg-gray-300 text-black px-4 py-2.5 rounded-md"
-              for="file-input"
+
+            <span
+              className="absolute top-5 -translate-y-1/2 lg:right-2 md:right-4 right-16 text-normal text-black "
+              id="file-name"
             >
-              Choose Files
-            </button>
-          </label>
-          <span
-            className="absolute top-1/2 -translate-y-1/2 lg:right-4 md:right-4 right-16 text-normal text-black"
-            id="file-name"
-          >
-            No Files Chosen
-          </span>
+              No Files Chosen
+            </span>
+          </div>
         </div>
         {preview && (
           <div className="text-center text-lg my-2">

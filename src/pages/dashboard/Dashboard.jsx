@@ -3,6 +3,7 @@ import axios from "axios";
 import { API } from "../../Host";
 import { useNavigate } from "react-router-dom";
 import { PieChart, Pie, Cell, Legend } from "recharts";
+import Filter from "../../assets/filter.png";
 
 const data = [
   { name: "Video", value: 100 },
@@ -21,7 +22,6 @@ const renderCustomizedLegend = (props) => {
           key={`legend-item-${index}`}
           style={{ display: "flex", alignItems: "center", marginBottom: 8 }}
         >
-          {/* Color Box */}
           <span
             style={{
               display: "inline-block",
@@ -33,8 +33,6 @@ const renderCustomizedLegend = (props) => {
                 : entry.color,
             }}
           ></span>
-
-          {/* Legend Text */}
           <label
             htmlFor={`${entry.value}`}
             style={{ fontSize: "16px", cursor: "pointer" }}
@@ -51,13 +49,13 @@ const Dashboard = () => {
   const userId = localStorage.getItem("user");
   const [courses, setCourses] = useState([]);
   const [users, setUsers] = useState([]);
+  const [filter, setFilter] = useState("This Month"); // Filter state
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserCourses = async () => {
-      const postURL = API + `/api/courses?userId=${userId}`;
       try {
-        const response = await axios.get(postURL);
+        const response = await axios.get(`${API}/api/getcourses`);
         setCourses(response.data);
       } catch (error) {}
     };
@@ -74,36 +72,61 @@ const Dashboard = () => {
     fetchUserCourses();
     fetchUsers();
   }, []);
+  // Helper function to get last month's date range
+const getLastMonthDateRange = () => {
+  const date = new Date();
+  const lastMonth = new Date(date.getFullYear(), date.getMonth() - 1);
+  const startOfMonth = new Date(lastMonth.getFullYear(), lastMonth.getMonth(), 1);
+  const endOfMonth = new Date(
+    lastMonth.getFullYear(),
+    lastMonth.getMonth() + 1,
+    0
+  );
+  return { startOfMonth, endOfMonth };
+};
 
   const currentDate = new Date();
   const currentMonth = currentDate.getMonth();
   const currentYear = currentDate.getFullYear();
 
-  const coursesThisMonthCount = courses.filter((course) => {
-    const courseDate = new Date(course.date);
-    return (
-      courseDate.getMonth() === currentMonth &&
-      courseDate.getFullYear() === currentYear
-    );
-  }).length;
+  
 
-  const completedThisMonthCount = courses.filter((course) => {
-    const courseDate = new Date(course.date);
-    return (
-      course.completed &&
-      courseDate.getMonth() === currentMonth &&
-      courseDate.getFullYear() === currentYear
-    );
-  }).length;
+  // Helper function to filter courses based on the selected filter
+  const getFilteredCourses = () => {
+    return courses.filter((course) => {
+      const courseDate = new Date(course.date);
+      switch (filter) {
+        case "This Month":
+          return (
+            courseDate.getMonth() === currentMonth &&
+            courseDate.getFullYear() === currentYear
+          );
+          case "Last Month":
+            const { startOfMonth, endOfMonth } = getLastMonthDateRange();
+            return courseDate >= startOfMonth && courseDate <= endOfMonth;
+        case "Last 3 Months":
+          return courseDate >= new Date(currentDate.setMonth(currentMonth - 3));
+        case "Last 6 Months":
+          return courseDate >= new Date(currentDate.setMonth(currentMonth - 6));
+        case "Last 12 Months":
+          return (
+            courseDate >= new Date(currentDate.setMonth(currentMonth - 12))
+          );
+        default:
+          return true;
+      }
+    });
+  };
 
-  const ActiveThisMonthCount = courses.filter((course) => {
-    const courseDate = new Date(course.date);
-    return (
-      course.completed === false &&
-      courseDate.getMonth() === currentMonth &&
-      courseDate.getFullYear() === currentYear
-    );
-  }).length;
+  const filteredCourses = getFilteredCourses();
+
+  const completedThisMonthCount = filteredCourses.filter(
+    (course) => course.completed
+  ).length;
+
+  const ActiveThisMonthCount = filteredCourses.filter(
+    (course) => !course.completed
+  ).length;
 
   const redirectToCourses = () => {
     navigate("/courses");
@@ -114,6 +137,9 @@ const Dashboard = () => {
   const redirectTotickets = () => {
     navigate("/helpsupport");
   };
+  const redirectToreports = () => {
+    navigate("/report");
+  };
 
   return (
     <div className=" font-extralight  mx-4 my-8">
@@ -121,10 +147,11 @@ const Dashboard = () => {
         <div className="col-span-4  space-y-4">
           <div className="grid grid-cols-4 gap-2   ">
             <div className="bg-[#000928]  drop-shadow-2xl col-span-2 ">
-              <p className="mx-2 my-1 text-base">Total Courses Generated</p>
+              <div className="flex items-center justify-between">
+                <p className="mx-2 my-1 text-base">Total Courses Generated</p>
+              </div>
               <p className="text-end pt-8 text-3xl mx-2">
-                {" "}
-                {courses && courses.length}
+                {filteredCourses.length}
               </p>
               <button
                 onClick={redirectToCourses}
@@ -150,14 +177,20 @@ const Dashboard = () => {
             <div className="bg-[#000928] col-span-2 drop-shadow-2xl">
               <p className="mx-2 my-1 text-base">Revenue Generated</p>
               <p className="text-end pt-8 text-3xl mx-2">$0</p>
-              <button className=" bg-gradient-to-r from-blue-900 to-fuchsia-600 w-full py-2.5">
+              <button
+                onClick={redirectToreports}
+                className=" bg-gradient-to-r from-blue-900 to-fuchsia-600 w-full py-2.5"
+              >
                 View
               </button>
             </div>
             <div className="bg-[#000928] col-span-2 drop-shadow-2xl">
               <p className="mx-2 my-1 text-base">Recurring Revenue</p>
               <p className="text-end pt-8 text-3xl mx-2">$0</p>
-              <button className=" bg-gradient-to-r from-blue-900 to-fuchsia-600 w-full py-2.5">
+              <button
+                onClick={redirectToreports}
+                className=" bg-gradient-to-r from-blue-900 to-fuchsia-600 w-full py-2.5"
+              >
                 View
               </button>
             </div>
@@ -203,46 +236,99 @@ const Dashboard = () => {
         </div>
       </div>
 
+      {/* Monthly Activity Progress Section */}
       <div className="grid grid-cols-12 font-extralight">
         <div className="col-span-7">
-          <p className="font-poppins my-4 text-sm">Monthly Activity Progress</p>
+          <div className="flex gap-16">
+            <p className="font-poppins my-4 text-sm">
+              Monthly Activity Progress
+            </p>
+            <div className="relative flex items-center space-x-1 ">
+              <select
+                className="rounded bg-transparent opacity-30 pr-1"
+                value={filter}
+                onChange={(e) => setFilter(e.target.value)}
+              >
+                <option className="text-black" value="This Month">
+                  This Month
+                </option>
+
+                <option className="text-black" value="Last Month">
+                  Last Month
+                </option>
+                <option className="text-black" value="Last 3 Months">
+                  Last 3 Months
+                </option>
+                <option className="text-black" value="Last 6 Months">
+                  Last 6 Months
+                </option>
+                <option className="text-black" value="Last 12 Months">
+                  Last 12 Months
+                </option>
+              </select>
+              <img
+                src={Filter}
+                alt="Filter image"
+                className="absolute size-6 right-0"
+              />
+            </div>
+          </div>
           <span>
             <p className="w-2/4 text-xl mx-4 text-end">
-              {coursesThisMonthCount}/10
+              {filteredCourses.length}/{courses.length}
             </p>
             <div className="w-2/4 bg-gray-200 rounded-full h-3 dark:bg-gray-700 mx-5">
               <div
                 className=" bg-gradient-to-r from-blue-900 to-fuchsia-600 h-3 rounded-full"
-                style={{ width: `${(coursesThisMonthCount / 10) * 100}%` }}
+                style={{
+                  width: `${
+                    courses.length > 0
+                      ? (filteredCourses.length / courses.length) * 100
+                      : 0
+                  }%`,
+                }}
               ></div>
             </div>
-            <p className="mx-5">Courses Generated this month</p>
+            <p className="mx-5">Courses Generated</p>
           </span>
           <span>
             <p className="w-2/4 text-xl mx-4 text-end">
-              {ActiveThisMonthCount}/10
+              {ActiveThisMonthCount}/{filteredCourses.length}
             </p>
             <div className="w-2/4 bg-gray-200 rounded-full h-3 dark:bg-gray-700 mx-5">
               <div
                 className=" bg-gradient-to-r from-blue-900 to-fuchsia-600 h-3 rounded-full"
-                style={{ width: `${(ActiveThisMonthCount / 10) * 100}%` }}
+                style={{
+                  width: `${
+                    filteredCourses.length > 0
+                      ? (ActiveThisMonthCount / filteredCourses.length) * 100
+                      : 0
+                  }%`,
+                }}
               ></div>
             </div>
-            <p className="mx-5"> Active Courses this month</p>
+            <p className="mx-5">Active Courses</p>
           </span>
           <span>
             <p className="w-2/4 text-xl mx-4 text-end">
-              {completedThisMonthCount}/10
+              {completedThisMonthCount}/{filteredCourses.length}
             </p>
             <div className="w-2/4 bg-gray-200 rounded-full h-3 dark:bg-gray-700 mx-5">
               <div
                 className=" bg-gradient-to-r from-blue-900 to-fuchsia-600 h-3 rounded-full"
-                style={{ width: `${(completedThisMonthCount / 10) * 100}%` }}
+                style={{
+                  width: `${
+                    filteredCourses.length > 0
+                      ? (completedThisMonthCount / filteredCourses.length) * 100
+                      : 0
+                  }%`,
+                }}
               ></div>
             </div>
-            <p className="mx-5"> Completed Courses this month</p>
+            <p className="mx-5">Completed Courses</p>
           </span>
         </div>
+        {/* Ticket Status Section */}
         <div className="col-span-4 my-8 h-52 bg-[#000928]">
           <p className=" text-lg bg-gradient-to-r from-[#110038] to-[#08006B] py-2 ">
             <span className="mx-2 my-2">Ticket Status</span>
