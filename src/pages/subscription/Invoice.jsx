@@ -3,13 +3,15 @@ import Logo from "../../assets/PMC_Logo.png";
 import Modal from "../../components/Modal";
 import { API, formatDate2 } from "../../Host";
 import axios from "axios";
-import { toPng } from "html-to-image";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 import { AiOutlineLoading } from "react-icons/ai";
+import { toast } from "react-toastify";
 
 const Invoice = ({ onClose, invoiceData }) => {
   const [invoiceSub, setInvoiceSub] = useState([]);
   const [processing, setProcessing] = useState(false);
-  const pdfRef = useRef(null);
+  const pdfRef = useRef();
 
   useEffect(() => {
     fetchInvoice();
@@ -25,26 +27,31 @@ const Invoice = ({ onClose, invoiceData }) => {
     }
   };
 
-  // Function to handle download
   const handleDownload = async () => {
-    setProcessing(true);
+    setProcessing(true); // Start processing
     try {
-      // Generate the image (PNG)
-      const dataUrl = await toPng(pdfRef.current, { cacheBust: false });
+      // Capture the element as a canvas
+      const canvas = await html2canvas(pdfRef.current, { scale: 2 }); // Higher scale for better quality
+      const imgData = canvas.toDataURL("image/png"); // Convert to image
 
-      // Create an anchor tag and trigger the download
-      const link = document.createElement("a");
-      link.download = `PMC_Invoice.png`;
-      link.href = dataUrl;
-      link.click();
+      // Create a new PDF document
+      const pdf = new jsPDF("p", "mm", "a4"); // Portrait, millimeters, A4 size
 
-      // Show a success message
-      toast.success("Downloaded");
+      // Calculate dimensions to fit the content
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight); // Add the image to the PDF
+
+      // Save the PDF
+      pdf.save("PMC_Invoice.pdf");
+
+      toast.success("Invoice downloaded as PDF!"); // Show success toast
     } catch (error) {
-      // Handle errors in case of failure
-      toast.error("Failed to download invoice");
+      console.error("Error generating PDF:", error); // Log error
+      toast.error("Failed to generate PDF."); // Show error toast
     } finally {
-      setProcessing(false); // Reset the processing state after download is finished
+      setProcessing(false); // Reset processing state
     }
   };
 
