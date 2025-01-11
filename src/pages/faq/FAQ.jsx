@@ -25,6 +25,7 @@ const FAQ = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -40,9 +41,10 @@ const FAQ = () => {
       setFaq(response.data);
 
       if (response.status === 200) {
-        setAddFaq(null);
         fetchNewFaq();
         toast.success("FAQ created  Successfully");
+        reset();
+        setAddFaq(null);
       }
     } catch (error) {
       console.log(error);
@@ -62,53 +64,62 @@ const FAQ = () => {
   const handleAddFaq = () => {
     setAddFaq(!addFaq);
   };
+  
+  const handleCancel = () => {
+    setAddFaq(null)
+  }
   const Accdata = [
     ...(newFaq
       ? newFaq.map((data) => ({
+          dataId: data._id,
           title: data.title, // Directly access the `title` property
           content: data.content, // Directly access the `content` property
         }))
-      : [])
-
+      : []),
   ];
 
   return (
     <>
       <div className="mx-4 my-6 font-poppins">
-        {addFaq !== null && (
+        {addFaq !== null  && (
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="mx-3 grid gap-2 w-96"
           >
-            <label htmlFor="">Question ?</label>
+            <label htmlFor="">Generate a FAQ ?</label>
             <textarea
               {...register("title")}
               name="title"
               id="question"
-              className=" bg-transparent px-2 text-white border border-white rounded-lg"
-              placeholder="Enter New FAQ Question ?"
+              className=" bg-transparent px-3 py-3 text-white border border-white rounded-lg placeholder-center"
+              placeholder="Enter a  FAQ ?"
             />
             {errors.title && (
               <p className="text-red-500 text-sm">{errors.title.message}</p>
             )}
-            <label htmlFor="">Answer</label>
+            <label htmlFor="">FAQ Description</label>
             <textarea
               {...register("content")}
               name="content"
               id="answer"
-              className=" bg-transparent px-2 text-white border border-white rounded-lg"
-              placeholder="Enter FAQ Answer"
+              className=" bg-transparent px-3 py-4  text-white border border-white rounded-lg placeholder-center"
+              placeholder="Enter description"
             />
             {errors.content && (
               <p className="text-red-500 text-sm">{errors.content.message}</p>
             )}
-            <div className="flex justify-center my-2 ">
+            <div className="flex justify-center my-2 gap-2 ">
               <button
                 type="submit"
-                className=" text-white bg-gradient-to-r from-[#3D03FA] to-[#A71CD2]  py-2 px-6  "
+                className=" text-white  text-lg  bg-gradient-to-r from-[#3D03FA] to-[#A71CD2]  py-2 px-6  "
               >
                 Save
               </button>
+              <p
+              onClick={handleCancel} className="cursor-pointer text-lg  bg-white  border-2 border-black  text-black px-6 py-2"
+              >
+               Cancel
+              </p>
             </div>
           </form>
         )}
@@ -121,19 +132,16 @@ const FAQ = () => {
             >
               Add FAQ
             </button>
-            <div className="flex items-center gap-3 bg-white w-96 px-6 py-1.5  rounded-md mr-1">
-              <FaSearch className="text-black text-xl" />
-              <input
-                type="text"
-                placeholder="Search by topic"
-                className="bg-transparent w-full outline-none text-center font-extralight text-black"
-              />
-            </div>
           </div>
         </div>
         <hr className="my-2 " />
-        {Accdata.map(({ title, content }) => (
-          <Accordion title={title} content={content} />
+        {Accdata.map(({ title, content, dataId }) => (
+          <Accordion
+            title={title}
+            content={content}
+            dataId={dataId}
+            fetchNewFaq={fetchNewFaq}
+          />
         ))}
       </div>
     </>

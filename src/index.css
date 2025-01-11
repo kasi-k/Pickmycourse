@@ -26,3 +26,7 @@
     background:#4c07f4;
     border-radius:8px
 }
+.placeholder-center::placeholder {
+    line-height: 3; /* Adjust as needed to fine-tune vertical alignment */
+  }
+  
