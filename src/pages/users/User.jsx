@@ -122,9 +122,9 @@ const User = ({ permissions }) => {
       Email: data.email,
       Phone: data.phone,
       DOB: formatDate2(data.dob),
-      Plan: "Basic", // Or any other plan logic
-      Courses: 2, // Or any dynamic value you want to show
-      "Subscription Date": "22-05-1990", // Adjust based on your needs
+      Plan: data.type, // Or any other plan logic
+      // Courses: 2, // Or any dynamic value you want to show
+      // "Subscription Date": "22-05-1990", // Adjust based on your needs
     }));
   };
 
