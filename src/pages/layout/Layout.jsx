@@ -14,6 +14,7 @@ import help from "../../assets/services.png";
 import report from "../../assets/report.png";
 import setting from "../../assets/settings.png";
 import policy from "../../assets/policy.png"
+import Faq from "../../assets/faq.png"
 import logout from "../../assets/logout.png";
 import LogOut from "../auth/LogOut";
 import axios from "axios";
@@ -63,6 +64,7 @@ const Layout = ({ permissions }) => {
       to: "/setting",
     },
     { title: "Policy", icon: policy, to: "/policy" },
+    { title: "FAQ", icon: Faq, to: "/faq" },
     {
       title: "Logout",
       icon: logout,
