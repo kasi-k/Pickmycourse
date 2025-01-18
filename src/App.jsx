@@ -8,7 +8,8 @@ import Login from "./pages/login/Login";
 import axios from "axios";
 import { API } from "./Host";
 import Policy from "./pages/policy/Policy";
-import FAQ from "./pages/FAQ/Faq";
+import FAQ from "./pages/faq/FAQ";
+
 
 const ForgotPassword = React.lazy(() => import("./pages/login/ForgotPassword"));
 const Package = React.lazy(() => import("./pages/Packages/Package"));
@@ -123,7 +124,7 @@ const App = () => {
               <Route path="/updaterole" element={<UpdateRole />} />
               <Route path="/category" element={<Category />} />
               <Route path="/policy" element={<Policy />} />
-              <Route path="/faq" element={<FAQ />} />
+              <Route path="/faq" element={<FAQ/>} />
 
               {memoizedFeatures["packages"] && (
                 <>
