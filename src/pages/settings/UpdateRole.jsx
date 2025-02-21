@@ -198,11 +198,15 @@ const UpdateRole = ({ onClose }) => {
         `${API}/api/update/${role}`,
         roleAccessLevel
       );
+      if (response.status === 200) {
+        navigate("/setting");
+        window.location.reload()
+        toast.success("Role Updated Successfully");
+      }
     } catch (error) {
       console.log(error);
     }
-    navigate("/setting");
-    toast.success("Role Updated Successfully");
+
   };
 
   return (

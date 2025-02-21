@@ -77,7 +77,8 @@ const AddUser = () => {
       const responseData = response.data;
 
       if (response.status === 200 && selectedFile !== null) {
-        localStorage.setItem("userid", responseData.userId._id);
+        {
+        const userid = responseData.userId;
         const payload = {
           name: selectedFile.name,
           user: userid,
@@ -85,10 +86,11 @@ const AddUser = () => {
         };
 
         const response = await axios.post(`${API}/api/images`, payload);
-        const responseData = response.data.image;
+        
 
         toast.success("User and profile Image created Successfully");
         navigate("/users");
+      }
       } else toast.success("User created Successfully");
       navigate("/users");
     } catch (error) {
